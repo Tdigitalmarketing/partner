@@ -1,0 +1,1414 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0812">
+  <meta name="description" content="Programa de Parceiros TDigital — uma sequência de lançamento controlada pelo scroll, feita para influenciadores e criadores de conteúdo.">
+  <title>TDigital · Programa de Parceiros</title>
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/plexmono-500-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    @font-face {
+      font-family: "Archivo";
+      font-style: normal;
+      font-weight: 100 900;
+      font-stretch: 75% 125%;
+      font-display: swap;
+      src: url("fonts/archivo-latin-ext.woff2") format("woff2");
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+
+    @font-face {
+      font-family: "Archivo";
+      font-style: normal;
+      font-weight: 100 900;
+      font-stretch: 75% 125%;
+      font-display: swap;
+      src: url("fonts/archivo-latin.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    @font-face {
+      font-family: "IBM Plex Mono";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/plexmono-400-latin-ext.woff2") format("woff2");
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+
+    @font-face {
+      font-family: "IBM Plex Mono";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/plexmono-400-latin.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    @font-face {
+      font-family: "IBM Plex Mono";
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url("fonts/plexmono-500-latin-ext.woff2") format("woff2");
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+
+    @font-face {
+      font-family: "IBM Plex Mono";
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url("fonts/plexmono-500-latin.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    :root {
+      /* Amostrado do filme: espaço profundo, nebulosa, roxo do foguete,
+         neon da academia e o dourado do feixe de ignição. */
+      --void: #0b0812;
+      --void-soft: #16111a;
+      --nebula: #4e3765;
+      --violet: #7c4bad;
+      --neon: #8472a4;
+      --ignition: #f2b45c;
+      --star: #f4f1f8;
+      --alloy: #a49cb4;
+      --paper: #f2eff6;
+
+      --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+      --data: "IBM Plex Mono", ui-monospace, monospace;
+      --gutter: clamp(20px, 4.2vw, 72px);
+      --ease-out: cubic-bezier(.22, 1, .36, 1);
+      --line: rgba(244, 241, 248, .17);
+      --frame-progress: 0;
+      --title-wdth: 82;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      background: var(--void);
+      color: var(--star);
+      font-family: var(--display);
+      scroll-behavior: auto;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--void);
+      color: var(--star);
+      overflow-x: clip;
+    }
+
+    body.is-loading { overflow: hidden; }
+
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 2px solid var(--ignition); outline-offset: 5px; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Os capítulos ficam ocultos até entrarem em cena, então o CTA da sequência
+       não é alcançável por teclado antes da rolagem. Este atalho leva direto ao
+       conteúdo do programa. */
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 1100;
+      padding: 14px 18px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      background: var(--star);
+      color: var(--void);
+      font-family: var(--data);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transform: translateY(-160%);
+      transition: transform 220ms var(--ease-out);
+    }
+
+    .skip-link:focus { transform: translateY(0); }
+
+    /* ---------- Pré-lançamento (loader) ---------- */
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      padding: max(24px, env(safe-area-inset-top)) var(--gutter) max(24px, env(safe-area-inset-bottom));
+      background: var(--void);
+      transition: clip-path 900ms var(--ease-out), visibility 900ms;
+      clip-path: inset(0 0 0 0);
+    }
+
+    .loader.is-done {
+      clip-path: inset(0 0 100% 0);
+      visibility: hidden;
+    }
+
+    .loader__mark {
+      align-self: center;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+    }
+
+    .loader__number {
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(84px, 19vw, 300px);
+      font-weight: 780;
+      font-variation-settings: "wdth" 78;
+      letter-spacing: -.075em;
+      line-height: .68;
+    }
+
+    .loader__meta,
+    .micro {
+      font-family: var(--data);
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1.5;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .loader__meta { text-align: right; color: var(--alloy); }
+
+    .loader__foot {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding-top: 22px;
+    }
+
+    .loader__track,
+    .telemetry__track {
+      position: relative;
+      height: 1px;
+      overflow: hidden;
+      background: rgba(244, 241, 248, .24);
+    }
+
+    .loader__fill,
+    .telemetry__fill {
+      position: absolute;
+      inset: 0;
+      background: var(--violet);
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+
+    /* ---------- Cabeçalho ---------- */
+
+    .site-header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 90;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 20px;
+      min-height: 70px;
+      padding: max(16px, env(safe-area-inset-top)) var(--gutter) 12px;
+      pointer-events: none;
+      text-shadow: 0 1px 14px rgba(11, 8, 18, .92), 0 0 34px rgba(11, 8, 18, .7);
+      transition: opacity 400ms ease, visibility 400ms;
+    }
+
+    /* O cabeçalho pertence ao filme: sai de cena quando o fundo claro chega. */
+    .site-header.is-hidden { opacity: 0; visibility: hidden; }
+
+    .site-header__brand {
+      justify-self: start;
+      font-size: 13px;
+      font-weight: 720;
+      letter-spacing: -.02em;
+      text-transform: uppercase;
+    }
+
+    .site-header__center { color: rgba(244, 241, 248, .8); }
+    .site-header__end { justify-self: end; text-align: right; color: rgba(244, 241, 248, .8); }
+
+    /* ---------- Palco da sequência ---------- */
+
+    .sequence {
+      position: relative;
+      height: 700vh;
+      background: var(--void);
+    }
+
+    .stage {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100svh;
+      overflow: hidden;
+      background: var(--void);
+      isolation: isolate;
+    }
+
+    #film-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Escurece só as bordas: o assunto fica sempre no claro. */
+    .stage__scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(90deg, rgba(11, 8, 18, .76) 0%, rgba(11, 8, 18, .14) 36%, transparent 57%),
+        linear-gradient(270deg, rgba(11, 8, 18, .62) 0%, rgba(11, 8, 18, .08) 28%, transparent 46%),
+        linear-gradient(0deg, rgba(11, 8, 18, .72) 0%, transparent 33%);
+      opacity: var(--scrim-opacity, .78);
+      transition: opacity 500ms ease;
+      pointer-events: none;
+    }
+
+    .stage__grid {
+      position: absolute;
+      inset: 0 var(--gutter);
+      z-index: 2;
+      background-image: repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent calc(8.333% - 1px),
+        rgba(244, 241, 248, .07) calc(8.333% - 1px),
+        rgba(244, 241, 248, .07) 8.333%
+      );
+      mask-image: linear-gradient(180deg, transparent, black 14%, black 82%, transparent);
+      opacity: .5;
+      pointer-events: none;
+    }
+
+    .mobile-aperture { display: none; }
+
+    /* ---------- Capítulos ---------- */
+
+    .chapters {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .chapter {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      align-content: center;
+      column-gap: clamp(10px, 1.2vw, 20px);
+      padding: 96px var(--gutter) 104px;
+      visibility: hidden;
+    }
+
+    .chapter.is-visible { visibility: visible; }
+
+    .chapter__copy {
+      position: relative;
+      align-self: center;
+    }
+
+    .chapter__eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 22px;
+      color: var(--star);
+    }
+
+    .chapter__eyebrow::before {
+      content: "";
+      width: 26px;
+      height: 2px;
+      background: var(--ignition);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 650ms 100ms var(--ease-out);
+    }
+
+    .chapter.is-visible .chapter__eyebrow::before { transform: scaleX(1); }
+
+    .reveal {
+      overflow: hidden;
+      padding-bottom: .08em;
+    }
+
+    .reveal > span {
+      display: block;
+      transform: translateY(112%);
+      transition: transform 760ms var(--ease-out);
+    }
+
+    .reveal:nth-child(3) > span { transition-delay: 90ms; }
+    .reveal:nth-child(4) > span { transition-delay: 160ms; }
+    .chapter.is-visible .reveal > span { transform: translateY(0); }
+
+    .chapter__title {
+      margin: 0;
+      font-size: clamp(50px, 7.4vw, 118px);
+      font-weight: 760;
+      font-variation-settings: "wdth" var(--title-wdth);
+      letter-spacing: -.062em;
+      line-height: .84;
+      text-transform: uppercase;
+      text-wrap: balance;
+      text-shadow: 0 2px 30px rgba(11, 8, 18, .72);
+    }
+
+    .chapter__deck {
+      max-width: 30rem;
+      margin: 26px 0 0;
+      font-size: clamp(17px, 1.5vw, 23px);
+      font-weight: 450;
+      line-height: 1.28;
+      letter-spacing: -.025em;
+      text-wrap: balance;
+      text-shadow: 0 1px 18px rgba(11, 8, 18, .8);
+    }
+
+    .chapter__fact {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      align-items: baseline;
+      margin-top: 32px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      color: var(--alloy);
+      max-width: 26rem;
+    }
+
+    /* A — Masthead: criador à direita do centro, texto no canto inferior esquerdo. */
+    .chapter--hero { align-content: end; }
+    .chapter--hero .chapter__copy { grid-column: 1 / 7; padding-bottom: 5vh; }
+    .chapter--hero .chapter__title { font-size: clamp(76px, 11.2vw, 172px); line-height: .74; }
+    .chapter--hero .chapter__deck { max-width: 23rem; }
+
+    .chapter--left .chapter__copy { grid-column: 1 / 6; }
+
+    /* C — Índice: numeral do estágio à esquerda, texto na abertura à direita. */
+    .chapter--index .chapter__copy { grid-column: 7 / 13; z-index: 2; }
+    .chapter--index .chapter__title { font-size: clamp(44px, 5.4vw, 86px); }
+    .chapter__giant-index {
+      position: absolute;
+      z-index: -1;
+      left: var(--gutter);
+      top: 50%;
+      color: transparent;
+      font-size: clamp(150px, 23vw, 330px);
+      font-weight: 800;
+      font-variation-settings: "wdth" 78;
+      letter-spacing: -.09em;
+      line-height: .7;
+      -webkit-text-stroke: 1px rgba(244, 241, 248, .38);
+      transform: translateY(-48%);
+      opacity: 0;
+      transition: opacity 600ms ease, font-variation-settings 1000ms var(--ease-out);
+    }
+
+    .chapter.is-visible .chapter__giant-index {
+      opacity: 1;
+      font-variation-settings: "wdth" 104;
+    }
+
+    /* D — Declaração dividida: o aparelho fica no centro, as palavras o contornam. */
+    .chapter--split .chapter__copy {
+      grid-column: 1 / 13;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(10px, 1.2vw, 20px);
+      row-gap: 22vh;
+      align-items: start;
+    }
+
+    /* As palavras descem em diagonal, acompanhando a inclinação do aparelho. */
+    .chapter--split .split-start { grid-column: 1 / 6; }
+    .chapter--split .split-end { grid-column: 8 / 13; margin-top: 17vh; text-align: right; justify-self: end; }
+    .chapter--split .chapter__title { font-size: clamp(46px, 6.6vw, 104px); }
+    .chapter--split .chapter__deck { margin-left: auto; }
+
+    /* E — Ação final: o foguete ocupa o centro, o texto e a ação o flanqueiam. */
+    .chapter--final { align-content: center; }
+    .chapter--final .chapter__copy {
+      grid-column: 1 / 13;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(10px, 1.2vw, 20px);
+      align-items: center;
+    }
+
+    .chapter--final .final-lead { grid-column: 1 / 6; }
+    .chapter--final .final-act { grid-column: 8 / 13; justify-self: end; text-align: right; }
+    .chapter--final .chapter__title { font-size: clamp(38px, 4.4vw, 70px); }
+    .chapter--final .final-act .chapter__deck { max-width: 20rem; margin: 0 0 24px auto; font-size: clamp(15px, 1.2vw, 18px); }
+
+    .cta {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 34px;
+      min-width: min(100%, 280px);
+      min-height: 54px;
+      padding: 0 18px;
+      border: 1px solid rgba(244, 241, 248, .56);
+      background: rgba(11, 8, 18, .28);
+      color: var(--star);
+      font-family: var(--data);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-align: left;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 250ms ease, background 250ms ease, border-color 250ms ease;
+    }
+
+    .cta::after { content: "↗"; font-size: 16px; }
+    .cta:hover { background: var(--violet); border-color: var(--violet); color: var(--star); }
+
+    /* ---------- Console de lançamento ---------- */
+
+    .telemetry {
+      position: absolute;
+      inset: auto var(--gutter) max(18px, env(safe-area-inset-bottom));
+      z-index: 8;
+      display: grid;
+      grid-template-columns: auto minmax(80px, 1fr) auto auto auto;
+      align-items: center;
+      gap: 18px;
+      pointer-events: none;
+    }
+
+    .telemetry__fill {
+      transform: scaleX(var(--frame-progress));
+      will-change: transform;
+    }
+
+    .telemetry__chapter { min-width: 17ch; }
+    .telemetry__clock { min-width: 11ch; color: var(--star); }
+    .telemetry__frame { color: var(--alloy); }
+
+    /* A ignição é o único momento em que a interface muda de cor. */
+    .stage.is-ignited .telemetry__fill { background: var(--ignition); }
+    .stage.is-ignited .telemetry__clock { color: var(--ignition); }
+
+    .scroll-cue {
+      display: inline-grid;
+      grid-template-columns: auto 18px;
+      align-items: center;
+      gap: 9px;
+      color: var(--star);
+    }
+
+    .scroll-cue::after {
+      content: "";
+      width: 18px;
+      height: 18px;
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      transform: rotate(45deg) translate(-3px, 3px);
+      animation: cue 1.8s ease-in-out infinite;
+    }
+
+    @keyframes cue {
+      0%, 100% { transform: rotate(45deg) translate(-3px, 3px); opacity: .35; }
+      50% { transform: rotate(45deg) translate(1px, 7px); opacity: 1; }
+    }
+
+    /* ---------- Segundo ato: folha de contato ---------- */
+
+    .editorial {
+      position: relative;
+      z-index: 10;
+      padding: clamp(100px, 13vw, 190px) var(--gutter);
+      background: var(--paper);
+      color: var(--void);
+    }
+
+    .editorial__head {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      align-items: end;
+      gap: 40px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(11, 8, 18, .26);
+    }
+
+    .editorial__title {
+      max-width: 10ch;
+      margin: 0;
+      font-size: clamp(54px, 8.8vw, 140px);
+      font-weight: 790;
+      font-variation-settings: "wdth" 86;
+      letter-spacing: -.072em;
+      line-height: .84;
+      text-transform: uppercase;
+    }
+
+    .editorial__aside {
+      justify-self: end;
+      max-width: 28rem;
+      margin: 0;
+      font-size: clamp(17px, 1.5vw, 22px);
+      line-height: 1.38;
+      letter-spacing: -.025em;
+    }
+
+    .contact-sheet {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: clamp(10px, 1.2vw, 20px);
+      margin-top: clamp(48px, 7vw, 104px);
+    }
+
+    .shot {
+      position: relative;
+      margin: 0;
+      overflow: hidden;
+      background: var(--void-soft);
+    }
+
+    .shot--lead { grid-column: 1 / 9; }
+    .shot--top { grid-column: 9 / 13; align-self: start; margin-top: 10vw; }
+    .shot--low { grid-column: 3 / 7; margin-top: 2vw; }
+    .shot--end { grid-column: 7 / 13; margin-top: 8vw; }
+
+    .shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: saturate(.86) contrast(1.03);
+      transition: transform 900ms var(--ease-out), filter 500ms ease;
+    }
+
+    .shot:hover img { transform: scale(1.018); filter: saturate(1); }
+
+    .shot figcaption {
+      position: absolute;
+      inset: auto 0 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      background: rgba(11, 8, 18, .78);
+      color: var(--star);
+    }
+
+    /* ---------- Sequência do programa ---------- */
+
+    .protocol {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(20px, 3vw, 48px);
+      margin-top: clamp(80px, 12vw, 160px);
+      padding-top: 24px;
+      border-top: 1px solid rgba(11, 8, 18, .26);
+    }
+
+    .protocol__step { margin: 0; }
+    .protocol__step dt {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      font-family: var(--data);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(11, 8, 18, .6);
+    }
+
+    .protocol__step strong {
+      display: block;
+      margin: 16px 0 10px;
+      font-size: clamp(24px, 2.6vw, 38px);
+      font-weight: 740;
+      font-variation-settings: "wdth" 92;
+      letter-spacing: -.045em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .protocol__step dd {
+      max-width: 24rem;
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.5;
+      color: rgba(11, 8, 18, .78);
+    }
+
+    .editorial__note {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      gap: 40px;
+      margin-top: clamp(80px, 12vw, 170px);
+      padding-top: 24px;
+      border-top: 1px solid rgba(11, 8, 18, .26);
+    }
+
+    .editorial__note strong {
+      max-width: 11ch;
+      font-size: clamp(34px, 4.6vw, 70px);
+      font-weight: 730;
+      font-variation-settings: "wdth" 90;
+      letter-spacing: -.055em;
+      line-height: .94;
+      text-transform: uppercase;
+    }
+
+    .editorial__note div { justify-self: end; max-width: 32rem; }
+    .editorial__note p { margin: 0 0 24px; font-size: 18px; line-height: 1.55; }
+
+    .cta--dark {
+      border-color: rgba(11, 8, 18, .5);
+      background: transparent;
+      color: var(--void);
+    }
+
+    .cta--dark:hover { background: var(--violet); border-color: var(--violet); color: var(--star); }
+
+    .site-footer {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      padding: 44px var(--gutter) max(44px, env(safe-area-inset-bottom));
+      border-top: 1px solid rgba(244, 241, 248, .14);
+      background: var(--void);
+      color: var(--alloy);
+    }
+
+    .site-footer p { margin: 0; max-width: 50rem; }
+    .site-footer a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      text-underline-offset: 4px;
+    }
+
+    /* ---------- Direção de arte para toque ---------- */
+
+    @media (max-width: 780px) {
+      :root { --gutter: 20px; }
+
+      .site-header {
+        grid-template-columns: 1fr auto;
+        min-height: 58px;
+      }
+
+      .site-header__center { display: none; }
+      .sequence { height: 620vh; }
+
+      .stage__scrim {
+        background:
+          linear-gradient(180deg, rgba(11, 8, 18, .5), transparent 20%),
+          linear-gradient(0deg, rgba(11, 8, 18, .9), transparent 32%);
+      }
+
+      .stage__grid { opacity: .28; }
+
+      /* Espelha MOBILE_FOCAL (38%) e MOBILE_ZOOM: 56.25vw × 1.28 = 72vw de altura. */
+      .mobile-aperture {
+        position: absolute;
+        z-index: 3;
+        top: calc(38% - 36vw);
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 72vw;
+        border-top: 1px solid rgba(244, 241, 248, .22);
+        border-bottom: 1px solid rgba(244, 241, 248, .22);
+        pointer-events: none;
+      }
+
+      .chapter {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        align-content: end;
+        padding: 76px var(--gutter) 96px;
+      }
+
+      .chapter__copy,
+      .chapter--hero .chapter__copy,
+      .chapter--left .chapter__copy,
+      .chapter--index .chapter__copy,
+      .chapter--split .chapter__copy,
+      .chapter--final .chapter__copy {
+        grid-column: 1 / 7;
+        display: block;
+      }
+
+      .chapter__eyebrow { margin-bottom: 14px; }
+      .chapter__title { font-size: clamp(48px, 14vw, 76px); line-height: .88; }
+      .chapter__deck { max-width: 24rem; margin-top: 14px; font-size: 17px; }
+      .chapter__fact { margin-top: 16px; }
+
+      .chapter--hero .chapter__copy { padding-bottom: 0; }
+      .chapter--hero .chapter__title { font-size: clamp(64px, 21vw, 108px); }
+      .chapter--hero .chapter__deck { max-width: 19rem; }
+
+      .chapter--split .split-start,
+      .chapter--split .split-end {
+        grid-column: auto;
+        text-align: left;
+        justify-self: start;
+      }
+
+      .chapter--split .split-end { margin-top: 4px; }
+      .chapter--split .chapter__title { font-size: clamp(44px, 13vw, 72px); }
+      .chapter--split .chapter__deck { margin-left: 0; }
+
+      .chapter__giant-index {
+        left: auto;
+        right: -6vw;
+        top: 9vh;
+        font-size: 58vw;
+        transform: none;
+      }
+
+      .chapter--final .final-lead,
+      .chapter--final .final-act {
+        grid-column: auto;
+        justify-self: start;
+        text-align: left;
+      }
+
+      .chapter--final .chapter__title { font-size: clamp(40px, 11.5vw, 62px); }
+      .chapter--final .final-act .chapter__deck { margin: 14px 0 20px; }
+      .chapter--final .cta { margin-top: 4px; }
+
+      .telemetry {
+        grid-template-columns: auto 1fr auto;
+        gap: 12px;
+      }
+
+      .telemetry__chapter { min-width: 0; max-width: 20ch; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+      .telemetry__frame,
+      .scroll-cue { display: none; }
+
+      .loader__mark { display: block; }
+      .loader__number { font-size: 36vw; }
+      .loader__meta { margin-top: 22px; text-align: left; }
+
+      .editorial { padding-top: 100px; padding-bottom: 100px; }
+      .editorial__head { grid-template-columns: 1fr; }
+      .editorial__title { font-size: 17vw; }
+      .editorial__aside { justify-self: start; }
+      .contact-sheet { grid-template-columns: repeat(6, 1fr); gap: 10px; }
+      .shot--lead { grid-column: 1 / 7; }
+      .shot--top { grid-column: 3 / 7; margin-top: 12vw; }
+      .shot--low { grid-column: 1 / 5; margin-top: 0; }
+      .shot--end { grid-column: 1 / 7; margin-top: 12vw; }
+      .protocol { grid-template-columns: 1fr; gap: 40px; }
+      .editorial__note { grid-template-columns: 1fr; gap: 32px; }
+      .editorial__note div { justify-self: start; }
+      .site-footer { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+      .sequence { height: 100svh; }
+      .chapter:not(.chapter--hero) { display: none; }
+      .chapter--hero { visibility: visible; }
+      .chapter--hero .reveal > span { transform: translateY(0); }
+      .chapter--hero .chapter__eyebrow::before { transform: scaleX(1); }
+      .telemetry { display: none; }
+    }
+  </style>
+</head>
+<body class="is-loading">
+  <a class="skip-link" href="#editorial-title">Pular a animação e ir para o programa</a>
+
+  <div class="loader" id="loader" aria-label="Carregando a sequência de lançamento">
+    <div class="loader__mark">
+      <p class="loader__number" aria-hidden="true">T−9</p>
+      <div class="loader__meta">TDigital Partners<br>Sequência de lançamento<br>9,17 segundos · 120 quadros</div>
+    </div>
+    <div class="loader__foot">
+      <span class="micro" id="loader-label">Preparando sequência</span>
+      <div class="loader__track" aria-hidden="true"><span class="loader__fill" id="loader-fill"></span></div>
+      <span class="micro" id="loader-count">000%</span>
+    </div>
+  </div>
+
+  <header class="site-header" aria-label="Informações do projeto">
+    <div class="site-header__brand">TDigital / Parceiros</div>
+    <div class="site-header__center micro">Programa de parceiros para criadores</div>
+    <div class="site-header__end micro">9,17 s<br>120 quadros</div>
+  </header>
+
+  <main>
+    <section class="sequence" id="sequence" aria-label="Filme controlado pelo scroll">
+      <div class="stage" id="stage">
+        <canvas id="film-canvas" role="img" aria-label="Um criador de conteúdo lança o próprio celular ao ar; o aparelho atravessa o espaço e um foguete da TDigital decola da tela."></canvas>
+        <div class="stage__scrim" aria-hidden="true"></div>
+        <div class="stage__grid" aria-hidden="true"></div>
+        <div class="mobile-aperture" aria-hidden="true"></div>
+
+        <div class="chapters" aria-live="off">
+          <article class="chapter chapter--hero" data-center="0.045" data-window="0.085" data-label="01 · Decolagem">
+            <div class="chapter__copy">
+              <p class="chapter__eyebrow micro">TDigital · Programa de Parceiros</p>
+              <h1 class="chapter__title reveal"><span>Decole</span></h1>
+              <p class="chapter__deck reveal"><span>O programa de parceiros da TDigital para influenciadores e criadores de conteúdo.</span></p>
+            </div>
+          </article>
+
+          <article class="chapter chapter--left" data-center="0.205" data-window="0.066" data-label="02 · O impulso">
+            <div class="chapter__copy">
+              <p class="chapter__eyebrow micro">Estágio 02 · O impulso</p>
+              <h2 class="chapter__title reveal"><span>O primeiro impulso é seu</span></h2>
+              <p class="chapter__deck reveal"><span>Você já tem o único equipamento que importa: o celular na sua mão e as pessoas que confiam em você.</span></p>
+            </div>
+          </article>
+
+          <article class="chapter chapter--index" data-center="0.345" data-window="0.062" data-label="03 · A ferramenta">
+            <div class="chapter__giant-index" aria-hidden="true">03</div>
+            <div class="chapter__copy">
+              <p class="chapter__eyebrow micro">Estágio 03 · A ferramenta</p>
+              <h2 class="chapter__title reveal"><span>Um aparelho basta</span></h2>
+              <p class="chapter__deck reveal"><span>Você publica do jeito que já publica. A estrutura de mídia fica com a gente.</span></p>
+              <div class="chapter__fact micro"><span>Seq 03</span><span>Quadros 036 – 050</span></div>
+            </div>
+          </article>
+
+          <article class="chapter chapter--split" data-center="0.555" data-window="0.062" data-label="04 · A travessia">
+            <div class="chapter__copy">
+              <div class="split-start">
+                <p class="chapter__eyebrow micro">Estágio 04 · A travessia</p>
+                <h2 class="chapter__title reveal"><span>Do local</span></h2>
+              </div>
+              <div class="split-end">
+                <h2 class="chapter__title reveal"><span>ao ilimitado</span></h2>
+                <p class="chapter__deck reveal"><span>O mesmo conteúdo, com investimento por trás. É o que muda a escala do seu alcance.</span></p>
+              </div>
+            </div>
+          </article>
+
+          <article class="chapter chapter--left" data-center="0.745" data-window="0.060" data-label="05 · Ignição">
+            <div class="chapter__copy">
+              <p class="chapter__eyebrow micro">Estágio 05 · Ignição</p>
+              <h2 class="chapter__title reveal"><span>Ignição</span></h2>
+              <p class="chapter__deck reveal"><span>Tráfego pago, criativo e mensuração ligados por trás daquilo que você publica.</span></p>
+              <div class="chapter__fact micro"><span>Seq 05</span><span>Quadros 084 – 098</span></div>
+            </div>
+          </article>
+
+          <article class="chapter chapter--final" data-center="0.935" data-window="0.075" data-label="06 · Lançamento">
+            <div class="chapter__copy">
+              <div class="final-lead">
+                <p class="chapter__eyebrow micro">Estágio 06 · Lançamento</p>
+                <h2 class="chapter__title reveal"><span>Seu lançamento começa aqui</span></h2>
+              </div>
+              <div class="final-act">
+                <p class="chapter__deck">Conte pra gente onde você publica e quem te acompanha.</p>
+                <a class="cta" href="mailto:comercial@tdigitalsocialmedia.com?subject=Programa%20de%20Parceiros%20TDigital" aria-label="Candidatar-se ao Programa de Parceiros TDigital por e-mail">Candidatar-se ao programa</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="telemetry" aria-hidden="true">
+          <span class="telemetry__chapter micro" id="telemetry-chapter">01 · Decolagem</span>
+          <div class="telemetry__track"><span class="telemetry__fill"></span></div>
+          <span class="telemetry__clock micro" id="telemetry-clock">T−00:07,3</span>
+          <span class="telemetry__frame micro" id="telemetry-frame">Q 0001 / 0120</span>
+          <span class="scroll-cue micro">Role para pilotar</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="editorial" aria-labelledby="editorial-title">
+      <div class="editorial__head">
+        <h2 class="editorial__title" id="editorial-title">Do bolso à órbita.</h2>
+        <p class="editorial__aside">A sequência inteira dura 9,17 segundos. Aqui ela virou 120 quadros que você controla com o scroll — do chão da academia até a decolagem.</p>
+      </div>
+
+      <div class="contact-sheet">
+        <figure class="shot shot--lead">
+          <img src="frames/desktop/frame-0006.webp" alt="Criador de conteúdo segurando o celular em uma academia iluminada de roxo." loading="lazy" width="1280" height="720">
+          <figcaption class="micro"><span>O criador</span><span>Q 0006</span></figcaption>
+        </figure>
+        <figure class="shot shot--top">
+          <img src="frames/desktop/frame-0042.webp" alt="O celular girando no ar com a academia desfocada ao fundo." loading="lazy" width="1280" height="720">
+          <figcaption class="micro"><span>O impulso</span><span>Q 0042</span></figcaption>
+        </figure>
+        <figure class="shot shot--low">
+          <img src="frames/desktop/frame-0076.webp" alt="O celular suspenso em uma nebulosa violeta." loading="lazy" width="1280" height="720">
+          <figcaption class="micro"><span>A travessia</span><span>Q 0076</span></figcaption>
+        </figure>
+        <figure class="shot shot--end">
+          <img src="frames/desktop/frame-0114.webp" alt="Um foguete roxo com a marca TDigital decolando da tela do celular." loading="lazy" width="1280" height="720">
+          <figcaption class="micro"><span>O lançamento</span><span>Q 0114</span></figcaption>
+        </figure>
+      </div>
+
+      <dl class="protocol">
+        <div class="protocol__step">
+          <dt>Estágio 01</dt>
+          <strong>Candidatura</strong>
+          <dd>Você conta onde publica, sobre o que fala e quem te acompanha.</dd>
+        </div>
+        <div class="protocol__step">
+          <dt>Estágio 02</dt>
+          <strong>Ativação</strong>
+          <dd>A gente alinha o formato da parceria com o seu canal e o seu público.</dd>
+        </div>
+        <div class="protocol__step">
+          <dt>Estágio 03</dt>
+          <strong>Lançamento</strong>
+          <dd>Você publica. A TDigital cuida de mídia, criativo e mensuração.</dd>
+        </div>
+      </dl>
+
+      <div class="editorial__note">
+        <strong>Feito para quem já tem audiência.</strong>
+        <div>
+          <p>Se você cria conteúdo e quer transformar audiência em parceria, o próximo passo é uma conversa. Fale com o time comercial da TDigital e a gente explica como funciona.</p>
+          <a class="cta cta--dark" href="mailto:comercial@tdigitalsocialmedia.com?subject=Programa%20de%20Parceiros%20TDigital">Falar com o time</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer micro">
+    <p>TDigital Social Media · Programa de Parceiros. Sequência construída a partir do filme institucional da marca.</p>
+    <a href="mailto:comercial@tdigitalsocialmedia.com">comercial@tdigitalsocialmedia.com ↗</a>
+  </footer>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const FRAME_COUNT = 120;
+      const FRAME_PAD = 4;
+      const LERP_FACTOR = 0.115;
+      const DWELL_WIDTH = 0.038;
+      const DWELL_PEAK = 2.7;
+      const LUT_SIZE = 2400;
+      const MOBILE_QUERY = "(max-width: 780px)";
+      const MOBILE_ZOOM = 1.28;
+      const MOBILE_FOCAL = 0.38;
+      const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
+      const DWELL_CENTERS = [0.045, 0.205, 0.345, 0.555, 0.745, 0.935];
+
+      // Relógio de missão: o feixe irrompe da tela do celular por volta deste ponto.
+      const CLIP_SECONDS = 9.17;
+      const IGNITION_AT = 0.8;
+
+      const sequence = document.getElementById("sequence");
+      const stage = document.getElementById("stage");
+      const canvas = document.getElementById("film-canvas");
+      const ctx = canvas.getContext("2d", { alpha: false, desynchronized: true });
+      const loader = document.getElementById("loader");
+      const loaderFill = document.getElementById("loader-fill");
+      const loaderCount = document.getElementById("loader-count");
+      const loaderLabel = document.getElementById("loader-label");
+      const telemetryChapter = document.getElementById("telemetry-chapter");
+      const telemetryClock = document.getElementById("telemetry-clock");
+      const telemetryFrame = document.getElementById("telemetry-frame");
+      const chapters = Array.from(document.querySelectorAll(".chapter"));
+      const reducedMotion = window.matchMedia(REDUCED_QUERY).matches;
+      const mobileMedia = window.matchMedia(MOBILE_QUERY);
+      const frameStores = {
+        desktop: createFrameStore("frames/desktop"),
+        mobile: createFrameStore("frames/mobile")
+      };
+      const chapterVisibility = new WeakMap();
+      let useMobileFrames = mobileMedia.matches;
+      let activeStore = useMobileFrames ? frameStores.mobile : frameStores.desktop;
+      let currentFrame = 0;
+      let targetFrame = 0;
+      let lastDrawn = -1;
+      let lastClock = "";
+      let ignited = false;
+      let pageVisible = true;
+      let rafId = 0;
+      let sequenceTop = 0;
+      let sequenceDistance = 1;
+
+      function createFrameStore(directory) {
+        return {
+          directory,
+          images: new Array(FRAME_COUNT),
+          loaded: new Uint8Array(FRAME_COUNT),
+          promises: new Array(FRAME_COUNT)
+        };
+      }
+
+      function frameUrl(index, store = activeStore) {
+        return `${store.directory}/frame-${String(index + 1).padStart(FRAME_PAD, "0")}.webp`;
+      }
+
+      function setLoaderProgress(ratio) {
+        const safeRatio = Math.max(0, Math.min(1, ratio));
+        loaderFill.style.transform = `scaleX(${safeRatio})`;
+        loaderCount.textContent = `${String(Math.round(safeRatio * 100)).padStart(3, "0")}%`;
+      }
+
+      function loadFrame(index, store = activeStore, retries = 1) {
+        if (store.loaded[index]) return Promise.resolve(store.images[index]);
+        if (store.promises[index]) return store.promises[index];
+
+        store.promises[index] = new Promise((resolve) => {
+          const attempt = (remaining) => {
+            const image = new Image();
+            store.images[index] = image;
+            image.decoding = "async";
+            image.onload = () => {
+              store.loaded[index] = 1;
+              resolve(image);
+            };
+            image.onerror = () => {
+              if (remaining > 0) {
+                window.setTimeout(() => attempt(remaining - 1), 140);
+              } else {
+                store.images[index] = null;
+                store.promises[index] = null;
+                resolve(null);
+              }
+            };
+            image.src = frameUrl(index, store);
+          };
+          attempt(retries);
+        });
+        return store.promises[index];
+      }
+
+      async function loadInBatches(indices, size = 8, store = activeStore) {
+        for (let start = 0; start < indices.length; start += size) {
+          const batch = indices.slice(start, start + size);
+          await Promise.all(batch.map((index) => loadFrame(index, store)));
+        }
+      }
+
+      function nearestLoaded(index, store = activeStore) {
+        if (store.loaded[index]) return index;
+        for (let distance = 1; distance < FRAME_COUNT; distance += 1) {
+          const before = index - distance;
+          const after = index + distance;
+          if (before >= 0 && store.loaded[before]) return before;
+          if (after < FRAME_COUNT && store.loaded[after]) return after;
+        }
+        return -1;
+      }
+
+      function resizeCanvas() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const width = Math.round(stage.clientWidth * dpr);
+        const height = Math.round(stage.clientHeight * dpr);
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
+          lastDrawn = -1;
+        }
+      }
+
+      function updateSequenceMetrics() {
+        const rect = sequence.getBoundingClientRect();
+        sequenceTop = window.scrollY + rect.top;
+        sequenceDistance = Math.max(1, rect.height - window.innerHeight);
+      }
+
+      function drawFrame(index) {
+        const resolved = nearestLoaded(Math.max(0, Math.min(FRAME_COUNT - 1, index)));
+        if (resolved < 0 || resolved === lastDrawn) return;
+        const image = activeStore.images[resolved];
+        if (!image || !image.naturalWidth) return;
+
+        const width = canvas.width;
+        const height = canvas.height;
+        ctx.fillStyle = "#0b0812";
+        ctx.fillRect(0, 0, width, height);
+
+        let scale;
+        let drawWidth;
+        let drawHeight;
+        let x;
+        let y;
+
+        if (useMobileFrames) {
+          // Faixa acima do centro, abrindo o rodapé para o texto. O zoom corta as
+          // laterais (o assunto fica sempre no centro do quadro) para a faixa não
+          // ficar franzina no retrato. MOBILE_ZOOM e MOBILE_FOCAL precisam
+          // acompanhar a altura e o topo de .mobile-aperture.
+          scale = (width / image.naturalWidth) * MOBILE_ZOOM;
+          drawWidth = image.naturalWidth * scale;
+          drawHeight = image.naturalHeight * scale;
+          x = (width - drawWidth) / 2;
+          y = height * MOBILE_FOCAL - drawHeight / 2;
+        } else {
+          scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+          drawWidth = image.naturalWidth * scale;
+          drawHeight = image.naturalHeight * scale;
+          x = (width - drawWidth) / 2;
+          y = (height - drawHeight) / 2;
+        }
+
+        ctx.drawImage(image, x, y, drawWidth, drawHeight);
+        lastDrawn = resolved;
+      }
+
+      const rawAtEffective = new Float64Array(LUT_SIZE + 1);
+
+      function buildDwellLut() {
+        let total = 0;
+        const density = new Float64Array(LUT_SIZE + 1);
+        for (let i = 0; i <= LUT_SIZE; i += 1) {
+          const effective = i / LUT_SIZE;
+          let value = 1;
+          for (const center of DWELL_CENTERS) {
+            const delta = (effective - center) / DWELL_WIDTH;
+            value += DWELL_PEAK * Math.exp(-0.5 * delta * delta);
+          }
+          density[i] = value;
+          if (i > 0) total += (density[i - 1] + value) * 0.5;
+          rawAtEffective[i] = total;
+        }
+        for (let i = 0; i <= LUT_SIZE; i += 1) rawAtEffective[i] /= total;
+      }
+
+      function remapProgress(raw) {
+        let low = 0;
+        let high = LUT_SIZE;
+        while (low < high) {
+          const mid = (low + high) >> 1;
+          if (rawAtEffective[mid] < raw) low = mid + 1;
+          else high = mid;
+        }
+        const index = Math.max(1, low);
+        const leftRaw = rawAtEffective[index - 1];
+        const rightRaw = rawAtEffective[index];
+        const span = rightRaw - leftRaw || 1;
+        const mix = (raw - leftRaw) / span;
+        return Math.max(0, Math.min(1, (index - 1 + mix) / LUT_SIZE));
+      }
+
+      function rawScrollProgress() {
+        return Math.max(0, Math.min(1, (window.scrollY - sequenceTop) / sequenceDistance));
+      }
+
+      function missionClock(effective) {
+        const offset = (effective - IGNITION_AT) * CLIP_SECONDS;
+        const sign = offset < 0 ? "−" : "+";
+        const absolute = Math.abs(offset);
+        const seconds = Math.floor(absolute);
+        const tenths = Math.floor((absolute - seconds) * 10);
+        return `T${sign}00:${String(seconds).padStart(2, "0")},${tenths}`;
+      }
+
+      function updateChapters(effective) {
+        let active = chapters[0];
+        let nearest = Infinity;
+        for (const chapter of chapters) {
+          const center = Number(chapter.dataset.center);
+          const windowSize = Number(chapter.dataset.window);
+          const distance = Math.abs(effective - center);
+          const visible = distance <= windowSize;
+          if (chapterVisibility.get(chapter) !== visible) {
+            chapterVisibility.set(chapter, visible);
+            chapter.classList.toggle("is-visible", visible);
+            chapter.setAttribute("aria-hidden", String(!visible));
+          }
+          if (distance < nearest) {
+            nearest = distance;
+            active = chapter;
+          }
+        }
+        if (telemetryChapter.textContent !== active.dataset.label) {
+          telemetryChapter.textContent = active.dataset.label;
+        }
+      }
+
+      function updateInterface(raw, effective, frame) {
+        document.documentElement.style.setProperty("--frame-progress", raw.toFixed(4));
+        document.documentElement.style.setProperty("--title-wdth", String(Math.round(80 + effective * 28)));
+        telemetryFrame.textContent = `Q ${String(frame + 1).padStart(4, "0")} / ${String(FRAME_COUNT).padStart(4, "0")}`;
+
+        const clock = missionClock(effective);
+        if (clock !== lastClock) {
+          telemetryClock.textContent = clock;
+          lastClock = clock;
+        }
+
+        const nowIgnited = effective >= IGNITION_AT;
+        if (nowIgnited !== ignited) {
+          ignited = nowIgnited;
+          stage.classList.toggle("is-ignited", ignited);
+        }
+
+        const edge = Math.min(effective, 1 - effective) / 0.08;
+        stage.style.setProperty("--scrim-opacity", String(Math.min(0.82, 0.5 + edge * 0.23)));
+      }
+
+      function dismissLoader() {
+        setLoaderProgress(1);
+        loader.classList.add("is-done");
+        document.body.classList.remove("is-loading");
+        window.setTimeout(() => loader.remove(), 1000);
+      }
+
+      function showLoadError() {
+        loaderLabel.textContent = "Não foi possível carregar os quadros — recarregue a página";
+        loaderCount.textContent = "ERRO";
+        loaderCount.style.color = "var(--ignition)";
+        loader.setAttribute("aria-label", "Os quadros do filme não puderam ser carregados. Recarregue a página para tentar de novo.");
+      }
+
+      function renderReducedPoster(frame) {
+        currentFrame = frame;
+        targetFrame = frame;
+        drawFrame(frame);
+        chapters.forEach((chapter, index) => {
+          const visible = index === 0;
+          chapterVisibility.set(chapter, visible);
+          chapter.classList.toggle("is-visible", visible);
+          chapter.setAttribute("aria-hidden", String(!visible));
+        });
+      }
+
+      function tick() {
+        if (!pageVisible || reducedMotion) return;
+        const raw = rawScrollProgress();
+        const effective = remapProgress(raw);
+        targetFrame = Math.round(effective * (FRAME_COUNT - 1));
+        currentFrame += (targetFrame - currentFrame) * LERP_FACTOR;
+        const frame = Math.round(currentFrame);
+        drawFrame(frame);
+        updateChapters(effective);
+        updateInterface(raw, effective, frame);
+        rafId = requestAnimationFrame(tick);
+      }
+
+      async function init() {
+        buildDwellLut();
+        resizeCanvas();
+        updateSequenceMetrics();
+        setLoaderProgress(0.06);
+
+        if (reducedMotion) {
+          const posterFrame = Math.round(0.92 * (FRAME_COUNT - 1));
+          const poster = await loadFrame(posterFrame);
+          if (!poster) {
+            showLoadError();
+            return;
+          }
+          renderReducedPoster(posterFrame);
+          dismissLoader();
+          return;
+        }
+
+        const critical = Array.from(new Set([
+          0,
+          ...DWELL_CENTERS.map((center) => Math.round(center * (FRAME_COUNT - 1))),
+          FRAME_COUNT - 1
+        ])).sort((a, b) => a - b);
+
+        const firstFrame = await loadFrame(0);
+        if (firstFrame) {
+          drawFrame(0);
+          setLoaderProgress(0.28);
+        }
+
+        const criticalTail = critical.filter((index) => index !== 0);
+        let prepared = 0;
+        await Promise.all(criticalTail.map(async (index) => {
+          const image = await loadFrame(index);
+          prepared += 1;
+          setLoaderProgress(0.28 + 0.68 * (prepared / criticalTail.length));
+          return image;
+        }));
+
+        const readyFrame = nearestLoaded(0);
+        if (readyFrame < 0) {
+          showLoadError();
+          return;
+        }
+        drawFrame(readyFrame);
+        dismissLoader();
+        tick();
+
+        const remaining = Array.from({ length: FRAME_COUNT }, (_, index) => index)
+          .filter((index) => !critical.includes(index));
+        loadInBatches(remaining);
+      }
+
+      async function swapFrameSet(event) {
+        useMobileFrames = event.matches;
+        activeStore = useMobileFrames ? frameStores.mobile : frameStores.desktop;
+        lastDrawn = -1;
+        resizeCanvas();
+        updateSequenceMetrics();
+
+        const frame = Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(currentFrame)));
+        const image = await loadFrame(frame, activeStore);
+        if (!image) return;
+        drawFrame(frame);
+
+        const byDistance = Array.from({ length: FRAME_COUNT }, (_, index) => index)
+          .sort((a, b) => Math.abs(a - frame) - Math.abs(b - frame));
+        loadInBatches(byDistance, 8, activeStore);
+      }
+
+      const header = document.querySelector(".site-header");
+      const editorial = document.querySelector(".editorial");
+      if (window.IntersectionObserver && header && editorial) {
+        new IntersectionObserver((entries) => {
+          for (const entry of entries) header.classList.toggle("is-hidden", entry.isIntersecting);
+        }, { rootMargin: "-64px 0px 0px 0px" }).observe(editorial);
+      }
+
+      window.addEventListener("resize", () => {
+        resizeCanvas();
+        updateSequenceMetrics();
+      }, { passive: true });
+      mobileMedia.addEventListener("change", swapFrameSet);
+      document.addEventListener("visibilitychange", () => {
+        pageVisible = !document.hidden;
+        if (pageVisible && !reducedMotion) {
+          cancelAnimationFrame(rafId);
+          tick();
+        }
+      });
+
+      init();
+    })();
+  </script>
+</body>
+</html>
