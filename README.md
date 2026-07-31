@@ -1,40 +1,82 @@
-# TDigital · Programa de Parceiros
+# TDigital Partners — Landing page de captação
 
-Landing page cinematográfica do Programa de Parceiros da TDigital, voltada a
-influenciadores e criadores de conteúdo. A rolagem controla quadro a quadro o
-filme institucional da marca: o criador lança o próprio celular ao ar, o
-aparelho atravessa o espaço e um foguete da TDigital decola da tela.
+Landing page do Programa de Parceiros da TDigital, para influenciadores e
+criadores de conteúdo que querem indicar empresas e receber comissões
+recorrentes. Construída a partir do Prompt Mestre do projeto (seção 8,
+"Arquitetura da landing page").
+
+O filme institucional da marca é o hero: a rolagem controla quadro a quadro a
+sequência em que o criador lança o próprio celular, o aparelho atravessa o
+espaço e um foguete da TDigital decola da tela. Abaixo do filme vem a página de
+vendas completa.
 
 ## Como abrir
 
-O site é estático, mas precisa ser servido por HTTP — abrir o arquivo direto
-pelo `file://` quebra o carregamento dos quadros.
+Site estático, sem build e sem dependências. Precisa ser servido por HTTP —
+abrir por `file://` quebra o carregamento dos quadros.
 
 ```bash
 python3 -m http.server 8080
 # http://localhost:8080
 ```
 
-Publicação: basta subir a pasta inteira em qualquer host estático
-(GitHub Pages, Netlify, Vercel, S3). Não há build nem dependências.
+Publicação: suba a pasta inteira em qualquer host estático (GitHub Pages,
+Netlify, Vercel, S3).
 
 ## Estrutura
 
 ```
 index.html              página inteira (HTML, CSS e JS embutidos)
-frames/desktop/         120 quadros WebP 1280×720  (4,7 MB)
-frames/mobile/          120 quadros WebP  768×432  (2,2 MB)
+frames/desktop/         120 quadros WebP 1920×1080  (6,2 MB)
+frames/mobile/          120 quadros WebP  900×506   (2,8 MB)
 frames/manifest.json    metadados da extração
 fonts/                  Archivo + IBM Plex Mono (WOFF2, self-hosted)
 ```
 
-## Como a sequência funciona
+## Seções
 
-O filme tem 9,17 s e virou 120 quadros desenhados num `<canvas>`. A posição da
-rolagem escolhe o quadro; uma curva de *dwell* desacelera a passagem no centro
-de cada capítulo, criando zonas de leitura sem travar a reprodução entre elas.
+| Âncora | Seção |
+|---|---|
+| — | Hero sobre o filme: título, subtítulo, CTA e microcopy aprovados |
+| — | Identificação do problema |
+| `#como-funciona` | As quatro etapas |
+| — | O que a TDigital faz |
+| `#comissoes` | Faixas 5% / 10% / 15%, recorrência e nível único |
+| `#simulador` | Calculadora ilustrativa |
+| `#beneficios` | Benefícios |
+| `#transparencia` | O que gera e o que não gera comissão, status e dados |
+| `#para-quem` | Perfis atendidos |
+| — | Institucional (prova social pendente de aprovação) |
+| `#duvidas` | FAQ com 12 perguntas |
+| `#candidatura` | CTA final e formulário |
 
-Pontos de ajuste no `<script>` do `index.html`:
+## Pontos de configuração
+
+Tudo no `<script>` do fim do `index.html`.
+
+### Formulário
+
+```js
+const FORM_ENDPOINT = "";   // vazio => entrega por e-mail
+const CONTACT_EMAIL = "comercial@tdigitalsocialmedia.com";
+```
+
+Sem back-end, o formulário valida os campos e abre o e-mail do visitante já
+preenchido, para que nenhuma candidatura se perca em silêncio. Assim que o
+endpoint existir, preencha `FORM_ENDPOINT` e o envio passa a ser um `POST`
+`multipart/form-data`. Nenhum dado do formulário é enviado para analytics.
+
+### Simulador
+
+```js
+const TIERS = [{ max: 5, pct: 5 }, { max: 10, pct: 10 }, { max: 15, pct: 15 }];
+```
+
+Serve só para a projeção ilustrativa da página. O cálculo que vale é o do
+back-end, com registro auditável por competência — nada financeiro deve ser
+decidido no navegador.
+
+### Sequência em canvas
 
 | Constante | O que faz |
 |---|---|
@@ -42,40 +84,66 @@ Pontos de ajuste no `<script>` do `index.html`:
 | `DWELL_CENTERS` | onde cada capítulo desacelera (0 a 1) |
 | `DWELL_WIDTH` / `DWELL_PEAK` | largura e intensidade da desaceleração |
 | `LERP_FACTOR` | suavização do quadro atual |
-| `IGNITION_AT` | ponto em que o relógio vira `T+` e a interface acende |
+| `IGNITION_AT` | ponto em que o relógio vira `T+` e o trilho acende |
 | `MOBILE_ZOOM` / `MOBILE_FOCAL` | recorte e altura da faixa no celular |
 
 `MOBILE_ZOOM` e `MOBILE_FOCAL` precisam continuar espelhados em
 `.mobile-aperture` no CSS, senão as réguas da faixa saem do lugar.
 
-Os capítulos são posicionados por `data-center` e `data-window` em cada
-`<article class="chapter">`. O texto foi colocado no espaço negativo real de
-cada trecho do filme, então mudar um `data-center` normalmente exige rever
-onde a cópia daquele capítulo aparece.
+### Analytics
+
+A página só empurra eventos para `window.dataLayer`. Nenhuma ferramenta de
+terceiros é carregada — GTM, GA4 e Meta Pixel entram quando forem aprovados.
+Eventos already disparados: `page_view`, `hero_cta_click` (com
+`cta_location`), `how_it_works_view`, `calculator_start`,
+`calculator_complete`, `form_start`, `partner_application_submit`.
+Nenhum dado pessoal vai para o dataLayer.
 
 ## Regerar os quadros
 
-Se o filme for trocado, refaça a extração com o mesmo enquadramento:
-
 ```bash
 python3 extract_frames.py --input hero.mp4 --output frames \
-  --frames 120 --quality 82 --desktop-res 1280x720 --desktop-only
+  --frames 120 --quality 74 --desktop-res 1920x1080 --desktop-only
 python3 extract_frames.py --input hero.mp4 --output frames \
-  --frames 120 --quality 72 --mobile-res 768x432 --mobile-only
+  --frames 120 --quality 72 --mobile-res 900x506 --mobile-only
 ```
 
-Os quadros nunca devem passar da resolução do vídeo original — ampliar só
-aumenta o peso sem ganhar detalhe.
+Os quadros nunca devem passar da resolução do vídeo original.
 
 ## Acessibilidade
 
-- `prefers-reduced-motion` troca a sequência por um quadro fixo da decolagem.
-- Um atalho de teclado ("Pular a animação e ir para o programa") leva direto ao
-  conteúdo, porque o CTA da sequência só existe depois da rolagem.
-- Contraste de texto acima de 4,5:1 em todas as áreas medidas.
+- `prefers-reduced-motion` troca a sequência por um quadro fixo da decolagem,
+  mantendo título, subtítulo e CTA.
+- Atalho de teclado ("Pular a animação e ir para o conteúdo") como primeiro
+  foco da página.
+- Menu mobile com `aria-expanded`, fecha no Escape e ao escolher um link.
+- Formulário valida no envio, marca cada campo com erro e move o foco para o
+  primeiro problema.
+- Contraste medido acima do mínimo WCAG AA em todos os textos da página.
+- Alvos de toque de no mínimo 44px.
 
-## Cópia
+## Pendências antes de publicar
 
-Os textos descrevem o posicionamento do programa sem citar números, comissões
-ou prazos, porque esses dados não foram fornecidos. Antes de publicar, revise a
-seção "Estágio 01/02/03" e acrescente as condições reais da parceria.
+Itens que dependem de decisão ou material da TDigital:
+
+1. **Logo oficial.** A marca no topo é um placeholder tipográfico. Substituir
+   pelo arquivo oficial — a logo não deve ser redesenhada nem recriada.
+2. **Prova institucional.** "Mais de R$ 100 milhões em negócios entregues",
+   depoimentos, logos de clientes e cases estão fora da página até haver
+   confirmação e material comprobatório. O ponto de inserção está marcado por
+   comentário no HTML, na seção institucional.
+3. **Imagens com homens e mulheres.** O filme enviado tem um único criador
+   homem. A direção pede representação de ambos e, de preferência, uma dupla
+   de influenciadores.
+4. **Regras financeiras em aberto** (listadas na seção 5 do Prompt Mestre):
+   comportamento acima de 15 clientes ativos, mudança de faixa retroativa ou
+   não, datas de fechamento e pagamento, valor mínimo de saque, documentação
+   fiscal, regras de desconto/upgrade/downgrade, estorno e renegociação,
+   validade da indicação, critério de duplicidade, duração do bônus de
+   parceiro indicado e a partir de quando contam os 12 meses.
+5. **Textos jurídicos.** Política de privacidade, termos de uso e regulamento
+   ainda não existem; os links do formulário precisam apontar para eles depois
+   da revisão jurídica.
+6. **Domínio.** As tags canonical e Open Graph usam
+   `partners.tdigitalsocialmedia.com.br` como suposição — ajustar para o
+   domínio real.

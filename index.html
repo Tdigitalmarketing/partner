@@ -4,8 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b0812">
-  <meta name="description" content="Programa de Parceiros TDigital — uma sequência de lançamento controlada pelo scroll, feita para influenciadores e criadores de conteúdo.">
-  <title>TDigital · Programa de Parceiros</title>
+  <title>TDigital Partners — Indique empresas e receba comissões recorrentes</title>
+  <meta name="description" content="Você já influencia pessoas. Indique empresas para a TDigital, nós fazemos toda a venda e você recebe comissões recorrentes por até 12 meses enquanto o cliente estiver ativo.">
+  <link rel="canonical" href="https://partners.tdigitalsocialmedia.com.br/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="TDigital Partners">
+  <meta property="og:title" content="TDigital Partners — Indique empresas e receba comissões recorrentes">
+  <meta property="og:description" content="Você conecta. Nós vendemos. Você continua ganhando. Comissões recorrentes por até 12 meses, enquanto o cliente estiver ativo.">
+  <meta property="og:url" content="https://partners.tdigitalsocialmedia.com.br/">
+  <meta property="og:image" content="https://partners.tdigitalsocialmedia.com.br/frames/desktop/frame-0114.webp">
+  <meta property="og:image:width" content="1920">
+  <meta property="og:image:height" content="1080">
+  <meta property="og:image:alt" content="Um foguete com a marca TDigital decolando da tela de um celular.">
+  <meta name="twitter:card" content="summary_large_image">
+
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/plexmono-500-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -67,25 +81,28 @@
     }
 
     :root {
-      /* Amostrado do filme: espaço profundo, nebulosa, roxo do foguete,
-         neon da academia e o dourado do feixe de ignição. */
+      /* Amostrado do filme + base da marca: roxo, lilás, preto, branco.
+         O dourado é reservado a valor, conquista e comissão. */
       --void: #0b0812;
-      --void-soft: #16111a;
-      --nebula: #4e3765;
+      --void-2: #120d1c;
+      --surface: rgba(244, 241, 248, .045);
+      --surface-2: rgba(244, 241, 248, .075);
       --violet: #7c4bad;
-      --neon: #8472a4;
+      --lilac: #a97bd8;
       --ignition: #f2b45c;
       --star: #f4f1f8;
-      --alloy: #a49cb4;
-      --paper: #f2eff6;
+      --alloy: #b3aac4;
+      --line: rgba(244, 241, 248, .14);
+      --line-strong: rgba(244, 241, 248, .28);
 
       --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
       --data: "IBM Plex Mono", ui-monospace, monospace;
       --gutter: clamp(20px, 4.2vw, 72px);
+      --maxw: 1240px;
       --ease-out: cubic-bezier(.22, 1, .36, 1);
-      --line: rgba(244, 241, 248, .17);
       --frame-progress: 0;
       --title-wdth: 82;
+      --value-gradient: linear-gradient(100deg, var(--violet) 0%, var(--lilac) 42%, var(--ignition) 100%);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -94,7 +111,8 @@
       background: var(--void);
       color: var(--star);
       font-family: var(--display);
-      scroll-behavior: auto;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
     }
 
     body {
@@ -106,10 +124,14 @@
     }
 
     body.is-loading { overflow: hidden; }
+    body.menu-open { overflow: hidden; }
 
     a { color: inherit; }
-    button, a { -webkit-tap-highlight-color: transparent; }
-    :focus-visible { outline: 2px solid var(--ignition); outline-offset: 5px; }
+    button, a { -webkit-tap-highlight-color: transparent; font-family: inherit; }
+    :focus-visible { outline: 2px solid var(--ignition); outline-offset: 4px; }
+
+    h1, h2, h3, p, dl, dd, figure, ul { margin: 0; }
+    ul { padding: 0; list-style: none; }
 
     .sr-only {
       position: absolute;
@@ -123,18 +145,55 @@
       border: 0;
     }
 
-    /* Os capítulos ficam ocultos até entrarem em cena, então o CTA da sequência
-       não é alcançável por teclado antes da rolagem. Este atalho leva direto ao
-       conteúdo do programa. */
-    .skip-link {
-      position: fixed;
-      top: 12px;
-      left: 12px;
-      z-index: 1100;
-      padding: 14px 18px;
-      min-height: 44px;
+    .micro {
+      font-family: var(--data);
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1.5;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .shell { width: 100%; max-width: var(--maxw); margin: 0 auto; }
+
+    /* ---------- Botões ---------- */
+
+    .btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 52px;
+      padding: 0 26px;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      font-family: var(--data);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 200ms var(--ease-out), background 220ms ease, border-color 220ms ease, color 220ms ease;
+    }
+
+    .btn--primary { background: var(--violet); color: #fff; }
+    .btn--primary:hover { background: var(--lilac); transform: translateY(-1px); }
+    .btn--ghost { border-color: var(--line-strong); background: rgba(11, 8, 18, .35); color: var(--star); }
+    .btn--ghost:hover { border-color: var(--star); background: var(--star); color: var(--void); }
+    .btn--sm { min-height: 44px; padding: 0 18px; }
+
+    /* ---------- Atalho de teclado ---------- */
+
+    .skip-link {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1200;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 12px 18px;
       background: var(--star);
       color: var(--void);
       font-family: var(--data);
@@ -142,13 +201,13 @@
       letter-spacing: .08em;
       text-transform: uppercase;
       text-decoration: none;
-      transform: translateY(-160%);
+      transform: translateY(-180%);
       transition: transform 220ms var(--ease-out);
     }
 
     .skip-link:focus { transform: translateY(0); }
 
-    /* ---------- Pré-lançamento (loader) ---------- */
+    /* ---------- Pré-lançamento ---------- */
 
     .loader {
       position: fixed;
@@ -162,10 +221,7 @@
       clip-path: inset(0 0 0 0);
     }
 
-    .loader.is-done {
-      clip-path: inset(0 0 100% 0);
-      visibility: hidden;
-    }
+    .loader.is-done { clip-path: inset(0 0 100% 0); visibility: hidden; }
 
     .loader__mark {
       align-self: center;
@@ -173,28 +229,16 @@
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: end;
       gap: 24px;
-      border-bottom: 1px solid var(--line);
       padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
     }
 
     .loader__number {
-      margin: 0;
-      font-family: var(--display);
-      font-size: clamp(84px, 19vw, 300px);
+      font-size: clamp(72px, 17vw, 260px);
       font-weight: 780;
       font-variation-settings: "wdth" 78;
       letter-spacing: -.075em;
-      line-height: .68;
-    }
-
-    .loader__meta,
-    .micro {
-      font-family: var(--data);
-      font-size: 10px;
-      font-weight: 500;
-      line-height: 1.5;
-      letter-spacing: .08em;
-      text-transform: uppercase;
+      line-height: .7;
     }
 
     .loader__meta { text-align: right; color: var(--alloy); }
@@ -207,16 +251,14 @@
       padding-top: 22px;
     }
 
-    .loader__track,
-    .telemetry__track {
+    .loader__track, .telemetry__track {
       position: relative;
       height: 1px;
       overflow: hidden;
       background: rgba(244, 241, 248, .24);
     }
 
-    .loader__fill,
-    .telemetry__fill {
+    .loader__fill, .telemetry__fill {
       position: absolute;
       inset: 0;
       background: var(--violet);
@@ -224,44 +266,110 @@
       transform-origin: left;
     }
 
-    /* ---------- Cabeçalho ---------- */
+    /* ---------- Navegação ---------- */
 
-    .site-header {
+    .nav {
       position: fixed;
       inset: 0 0 auto;
-      z-index: 90;
+      z-index: 400;
+      transition: background 300ms ease, border-color 300ms ease, backdrop-filter 300ms ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav.is-solid {
+      background: rgba(11, 8, 18, .86);
+      backdrop-filter: blur(14px);
+      border-bottom-color: var(--line);
+    }
+
+    .nav__inner {
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-columns: auto 1fr auto;
       align-items: center;
-      gap: 20px;
-      min-height: 70px;
-      padding: max(16px, env(safe-area-inset-top)) var(--gutter) 12px;
-      pointer-events: none;
-      text-shadow: 0 1px 14px rgba(11, 8, 18, .92), 0 0 34px rgba(11, 8, 18, .7);
-      transition: opacity 400ms ease, visibility 400ms;
+      gap: 24px;
+      min-height: 68px;
+      padding: 0 var(--gutter);
+      width: 100%;
+      max-width: var(--maxw);
+      margin: 0 auto;
     }
 
-    /* O cabeçalho pertence ao filme: sai de cena quando o fundo claro chega. */
-    .site-header.is-hidden { opacity: 0; visibility: hidden; }
+    .nav__brand {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 7px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -.035em;
+      text-decoration: none;
+      text-shadow: 0 1px 12px rgba(11, 8, 18, .9);
+    }
 
-    .site-header__brand {
-      justify-self: start;
-      font-size: 13px;
-      font-weight: 720;
-      letter-spacing: -.02em;
+    .nav__brand span { color: var(--lilac); font-weight: 600; }
+
+    .nav__links {
+      display: flex;
+      justify-content: center;
+      gap: clamp(14px, 2.2vw, 34px);
+    }
+
+    .nav__links a {
+      font-family: var(--data);
+      font-size: 11px;
+      letter-spacing: .06em;
       text-transform: uppercase;
+      text-decoration: none;
+      color: var(--alloy);
+      text-shadow: 0 1px 12px rgba(11, 8, 18, .9);
+      transition: color 200ms ease;
     }
 
-    .site-header__center { color: rgba(244, 241, 248, .8); }
-    .site-header__end { justify-self: end; text-align: right; color: rgba(244, 241, 248, .8); }
+    .nav__links a:hover { color: var(--star); }
+    /* O CTA dentro do menu existe só para o painel mobile. */
+    .nav__links .btn { display: none; }
+    .nav__end { display: flex; align-items: center; gap: 10px; justify-self: end; }
+
+    .nav__toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 1px solid var(--line-strong);
+      background: rgba(11, 8, 18, .5);
+      color: var(--star);
+      cursor: pointer;
+    }
+
+    .nav__toggle span {
+      position: relative;
+      display: block;
+      width: 17px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .nav__toggle span::before,
+    .nav__toggle span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 17px;
+      height: 1px;
+      background: currentColor;
+      transition: transform 240ms var(--ease-out);
+    }
+
+    .nav__toggle span::before { top: -6px; }
+    .nav__toggle span::after { top: 6px; }
+    .nav__toggle[aria-expanded="true"] span { background: transparent; }
+    .nav__toggle[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
+    .nav__toggle[aria-expanded="true"] span::after { transform: translateY(-6px) rotate(-45deg); }
 
     /* ---------- Palco da sequência ---------- */
 
-    .sequence {
-      position: relative;
-      height: 700vh;
-      background: var(--void);
-    }
+    .sequence { position: relative; height: 600vh; background: var(--void); }
 
     .stage {
       position: sticky;
@@ -273,54 +381,25 @@
       isolation: isolate;
     }
 
-    #film-canvas {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      width: 100%;
-      height: 100%;
-    }
+    #film-canvas { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; }
 
-    /* Escurece só as bordas: o assunto fica sempre no claro. */
     .stage__scrim {
       position: absolute;
       inset: 0;
       z-index: 1;
       background:
-        linear-gradient(90deg, rgba(11, 8, 18, .76) 0%, rgba(11, 8, 18, .14) 36%, transparent 57%),
-        linear-gradient(270deg, rgba(11, 8, 18, .62) 0%, rgba(11, 8, 18, .08) 28%, transparent 46%),
-        linear-gradient(0deg, rgba(11, 8, 18, .72) 0%, transparent 33%);
-      opacity: var(--scrim-opacity, .78);
+        linear-gradient(90deg, rgba(11, 8, 18, .82) 0%, rgba(11, 8, 18, .2) 38%, transparent 60%),
+        linear-gradient(270deg, rgba(11, 8, 18, .6) 0%, rgba(11, 8, 18, .08) 28%, transparent 46%),
+        linear-gradient(0deg, rgba(11, 8, 18, .78) 0%, transparent 34%),
+        linear-gradient(180deg, rgba(11, 8, 18, .6) 0%, transparent 16%);
+      opacity: var(--scrim-opacity, .8);
       transition: opacity 500ms ease;
-      pointer-events: none;
-    }
-
-    .stage__grid {
-      position: absolute;
-      inset: 0 var(--gutter);
-      z-index: 2;
-      background-image: repeating-linear-gradient(
-        90deg,
-        transparent 0,
-        transparent calc(8.333% - 1px),
-        rgba(244, 241, 248, .07) calc(8.333% - 1px),
-        rgba(244, 241, 248, .07) 8.333%
-      );
-      mask-image: linear-gradient(180deg, transparent, black 14%, black 82%, transparent);
-      opacity: .5;
       pointer-events: none;
     }
 
     .mobile-aperture { display: none; }
 
-    /* ---------- Capítulos ---------- */
-
-    .chapters {
-      position: absolute;
-      inset: 0;
-      z-index: 4;
-      pointer-events: none;
-    }
+    .chapters { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
 
     .chapter {
       position: absolute;
@@ -329,28 +408,27 @@
       grid-template-columns: repeat(12, minmax(0, 1fr));
       align-content: center;
       column-gap: clamp(10px, 1.2vw, 20px);
-      padding: 96px var(--gutter) 104px;
+      width: 100%;
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 92px var(--gutter) 92px;
       visibility: hidden;
     }
 
     .chapter.is-visible { visibility: visible; }
-
-    .chapter__copy {
-      position: relative;
-      align-self: center;
-    }
+    .chapter__copy { position: relative; align-self: center; }
 
     .chapter__eyebrow {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin: 0 0 22px;
+      margin-bottom: 20px;
       color: var(--star);
     }
 
     .chapter__eyebrow::before {
       content: "";
-      width: 26px;
+      width: 24px;
       height: 2px;
       background: var(--ignition);
       transform: scaleX(0);
@@ -360,106 +438,60 @@
 
     .chapter.is-visible .chapter__eyebrow::before { transform: scaleX(1); }
 
-    .reveal {
-      overflow: hidden;
-      padding-bottom: .08em;
-    }
-
-    .reveal > span {
-      display: block;
-      transform: translateY(112%);
-      transition: transform 760ms var(--ease-out);
-    }
-
-    .reveal:nth-child(3) > span { transition-delay: 90ms; }
-    .reveal:nth-child(4) > span { transition-delay: 160ms; }
+    .reveal { overflow: hidden; padding-bottom: .08em; }
+    .reveal > span { display: block; transform: translateY(112%); transition: transform 760ms var(--ease-out); }
     .chapter.is-visible .reveal > span { transform: translateY(0); }
 
     .chapter__title {
-      margin: 0;
-      font-size: clamp(50px, 7.4vw, 118px);
+      font-size: clamp(40px, 5.6vw, 88px);
       font-weight: 760;
       font-variation-settings: "wdth" var(--title-wdth);
-      letter-spacing: -.062em;
-      line-height: .84;
+      letter-spacing: -.055em;
+      line-height: .92;
       text-transform: uppercase;
       text-wrap: balance;
-      text-shadow: 0 2px 30px rgba(11, 8, 18, .72);
+      text-shadow: 0 2px 30px rgba(11, 8, 18, .8);
     }
 
     .chapter__deck {
       max-width: 30rem;
-      margin: 26px 0 0;
-      font-size: clamp(17px, 1.5vw, 23px);
+      margin-top: 20px;
+      font-size: clamp(16px, 1.35vw, 21px);
       font-weight: 450;
-      line-height: 1.28;
-      letter-spacing: -.025em;
+      line-height: 1.35;
+      letter-spacing: -.02em;
       text-wrap: balance;
-      text-shadow: 0 1px 18px rgba(11, 8, 18, .8);
+      text-shadow: 0 1px 18px rgba(11, 8, 18, .9);
     }
 
-    .chapter__fact {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 14px;
-      align-items: baseline;
-      margin-top: 32px;
-      padding-top: 12px;
-      border-top: 1px solid var(--line);
-      color: var(--alloy);
-      max-width: 26rem;
-    }
-
-    /* A — Masthead: criador à direita do centro, texto no canto inferior esquerdo. */
+    /* Hero: o criador ocupa o centro-direita, a oferta vive na coluna esquerda. */
     .chapter--hero { align-content: end; }
-    .chapter--hero .chapter__copy { grid-column: 1 / 7; padding-bottom: 5vh; }
-    .chapter--hero .chapter__title { font-size: clamp(76px, 11.2vw, 172px); line-height: .74; }
-    .chapter--hero .chapter__deck { max-width: 23rem; }
-
-    .chapter--left .chapter__copy { grid-column: 1 / 6; }
-
-    /* C — Índice: numeral do estágio à esquerda, texto na abertura à direita. */
-    .chapter--index .chapter__copy { grid-column: 7 / 13; z-index: 2; }
-    .chapter--index .chapter__title { font-size: clamp(44px, 5.4vw, 86px); }
-    .chapter__giant-index {
-      position: absolute;
-      z-index: -1;
-      left: var(--gutter);
-      top: 50%;
-      color: transparent;
-      font-size: clamp(150px, 23vw, 330px);
-      font-weight: 800;
-      font-variation-settings: "wdth" 78;
-      letter-spacing: -.09em;
-      line-height: .7;
-      -webkit-text-stroke: 1px rgba(244, 241, 248, .38);
-      transform: translateY(-48%);
-      opacity: 0;
-      transition: opacity 600ms ease, font-variation-settings 1000ms var(--ease-out);
+    .chapter--hero .chapter__copy { grid-column: 1 / 7; padding-bottom: 2vh; }
+    .chapter--hero .chapter__title {
+      font-size: clamp(32px, 3.9vw, 60px);
+      line-height: .96;
+      letter-spacing: -.045em;
     }
+    .chapter--hero .chapter__deck { max-width: 27rem; margin-top: 18px; font-size: clamp(15px, 1.2vw, 19px); }
 
-    .chapter.is-visible .chapter__giant-index {
-      opacity: 1;
-      font-variation-settings: "wdth" 104;
-    }
+    .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 26px; pointer-events: auto; }
+    .hero__micro { margin-top: 16px; max-width: 30rem; color: var(--alloy); }
 
-    /* D — Declaração dividida: o aparelho fica no centro, as palavras o contornam. */
+    .chapter--left .chapter__copy { grid-column: 1 / 7; }
+    .chapter--right .chapter__copy { grid-column: 7 / 13; }
+
     .chapter--split .chapter__copy {
       grid-column: 1 / 13;
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: clamp(10px, 1.2vw, 20px);
-      row-gap: 22vh;
       align-items: start;
     }
 
-    /* As palavras descem em diagonal, acompanhando a inclinação do aparelho. */
     .chapter--split .split-start { grid-column: 1 / 6; }
-    .chapter--split .split-end { grid-column: 8 / 13; margin-top: 17vh; text-align: right; justify-self: end; }
-    .chapter--split .chapter__title { font-size: clamp(46px, 6.6vw, 104px); }
+    .chapter--split .split-end { grid-column: 8 / 13; margin-top: 16vh; text-align: right; justify-self: end; }
     .chapter--split .chapter__deck { margin-left: auto; }
 
-    /* E — Ação final: o foguete ocupa o centro, o texto e a ação o flanqueiam. */
     .chapter--final { align-content: center; }
     .chapter--final .chapter__copy {
       grid-column: 1 / 13;
@@ -471,374 +503,349 @@
 
     .chapter--final .final-lead { grid-column: 1 / 6; }
     .chapter--final .final-act { grid-column: 8 / 13; justify-self: end; text-align: right; }
-    .chapter--final .chapter__title { font-size: clamp(38px, 4.4vw, 70px); }
-    .chapter--final .final-act .chapter__deck { max-width: 20rem; margin: 0 0 24px auto; font-size: clamp(15px, 1.2vw, 18px); }
-
-    .cta {
-      pointer-events: auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 34px;
-      min-width: min(100%, 280px);
-      min-height: 54px;
-      padding: 0 18px;
-      border: 1px solid rgba(244, 241, 248, .56);
-      background: rgba(11, 8, 18, .28);
-      color: var(--star);
-      font-family: var(--data);
-      font-size: 11px;
-      letter-spacing: .08em;
-      text-align: left;
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color 250ms ease, background 250ms ease, border-color 250ms ease;
-    }
-
-    .cta::after { content: "↗"; font-size: 16px; }
-    .cta:hover { background: var(--violet); border-color: var(--violet); color: var(--star); }
+    .chapter--final .chapter__title { font-size: clamp(32px, 3.6vw, 56px); }
+    .chapter--final .chapter__deck { max-width: 20rem; margin: 0 0 22px auto; font-size: clamp(15px, 1.15vw, 18px); }
+    .chapter--final .btn { pointer-events: auto; }
 
     /* ---------- Console de lançamento ---------- */
 
     .telemetry {
       position: absolute;
-      inset: auto var(--gutter) max(18px, env(safe-area-inset-bottom));
+      inset: auto 0 max(16px, env(safe-area-inset-bottom));
       z-index: 8;
       display: grid;
-      grid-template-columns: auto minmax(80px, 1fr) auto auto auto;
+      grid-template-columns: auto minmax(60px, 1fr) auto auto;
       align-items: center;
-      gap: 18px;
+      gap: 16px;
+      width: 100%;
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
       pointer-events: none;
     }
 
-    .telemetry__fill {
-      transform: scaleX(var(--frame-progress));
-      will-change: transform;
-    }
-
-    .telemetry__chapter { min-width: 17ch; }
+    .telemetry__fill { transform: scaleX(var(--frame-progress)); will-change: transform; }
+    .telemetry__chapter { min-width: 16ch; }
     .telemetry__clock { min-width: 11ch; color: var(--star); }
     .telemetry__frame { color: var(--alloy); }
-
-    /* A ignição é o único momento em que a interface muda de cor. */
     .stage.is-ignited .telemetry__fill { background: var(--ignition); }
     .stage.is-ignited .telemetry__clock { color: var(--ignition); }
 
-    .scroll-cue {
-      display: inline-grid;
-      grid-template-columns: auto 18px;
-      align-items: center;
-      gap: 9px;
-      color: var(--star);
-    }
+    /* ---------- Seções ---------- */
 
-    .scroll-cue::after {
-      content: "";
-      width: 18px;
-      height: 18px;
-      border-right: 1px solid currentColor;
-      border-bottom: 1px solid currentColor;
-      transform: rotate(45deg) translate(-3px, 3px);
-      animation: cue 1.8s ease-in-out infinite;
-    }
+    .section { position: relative; z-index: 10; padding: clamp(76px, 9vw, 132px) var(--gutter); background: var(--void); }
+    .section--alt { background: var(--void-2); }
+    .section__head { max-width: 46rem; margin-bottom: clamp(40px, 5vw, 66px); }
+    .section__eyebrow { display: block; margin-bottom: 18px; color: var(--lilac); }
 
-    @keyframes cue {
-      0%, 100% { transform: rotate(45deg) translate(-3px, 3px); opacity: .35; }
-      50% { transform: rotate(45deg) translate(1px, 7px); opacity: 1; }
-    }
-
-    /* ---------- Segundo ato: folha de contato ---------- */
-
-    .editorial {
-      position: relative;
-      z-index: 10;
-      padding: clamp(100px, 13vw, 190px) var(--gutter);
-      background: var(--paper);
-      color: var(--void);
-    }
-
-    .editorial__head {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      align-items: end;
-      gap: 40px;
-      padding-bottom: 28px;
-      border-bottom: 1px solid rgba(11, 8, 18, .26);
-    }
-
-    .editorial__title {
-      max-width: 10ch;
-      margin: 0;
-      font-size: clamp(54px, 8.8vw, 140px);
-      font-weight: 790;
-      font-variation-settings: "wdth" 86;
-      letter-spacing: -.072em;
-      line-height: .84;
-      text-transform: uppercase;
-    }
-
-    .editorial__aside {
-      justify-self: end;
-      max-width: 28rem;
-      margin: 0;
-      font-size: clamp(17px, 1.5vw, 22px);
-      line-height: 1.38;
-      letter-spacing: -.025em;
-    }
-
-    .contact-sheet {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: clamp(10px, 1.2vw, 20px);
-      margin-top: clamp(48px, 7vw, 104px);
-    }
-
-    .shot {
-      position: relative;
-      margin: 0;
-      overflow: hidden;
-      background: var(--void-soft);
-    }
-
-    .shot--lead { grid-column: 1 / 9; }
-    .shot--top { grid-column: 9 / 13; align-self: start; margin-top: 10vw; }
-    .shot--low { grid-column: 3 / 7; margin-top: 2vw; }
-    .shot--end { grid-column: 7 / 13; margin-top: 8vw; }
-
-    .shot img {
-      display: block;
-      width: 100%;
-      height: auto;
-      filter: saturate(.86) contrast(1.03);
-      transition: transform 900ms var(--ease-out), filter 500ms ease;
-    }
-
-    .shot:hover img { transform: scale(1.018); filter: saturate(1); }
-
-    .shot figcaption {
-      position: absolute;
-      inset: auto 0 0;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 12px;
-      background: rgba(11, 8, 18, .78);
-      color: var(--star);
-    }
-
-    /* ---------- Sequência do programa ---------- */
-
-    .protocol {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: clamp(20px, 3vw, 48px);
-      margin-top: clamp(80px, 12vw, 160px);
-      padding-top: 24px;
-      border-top: 1px solid rgba(11, 8, 18, .26);
-    }
-
-    .protocol__step { margin: 0; }
-    .protocol__step dt {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      font-family: var(--data);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: rgba(11, 8, 18, .6);
-    }
-
-    .protocol__step strong {
-      display: block;
-      margin: 16px 0 10px;
-      font-size: clamp(24px, 2.6vw, 38px);
-      font-weight: 740;
-      font-variation-settings: "wdth" 92;
-      letter-spacing: -.045em;
+    .section__title {
+      font-size: clamp(32px, 4.4vw, 62px);
+      font-weight: 780;
+      font-variation-settings: "wdth" 88;
+      letter-spacing: -.055em;
       line-height: 1;
       text-transform: uppercase;
+      text-wrap: balance;
     }
 
-    .protocol__step dd {
-      max-width: 24rem;
-      margin: 0;
-      font-size: 17px;
+    .section__lead {
+      max-width: 40rem;
+      margin-top: 22px;
+      font-size: clamp(17px, 1.4vw, 21px);
       line-height: 1.5;
-      color: rgba(11, 8, 18, .78);
-    }
-
-    .editorial__note {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: end;
-      gap: 40px;
-      margin-top: clamp(80px, 12vw, 170px);
-      padding-top: 24px;
-      border-top: 1px solid rgba(11, 8, 18, .26);
-    }
-
-    .editorial__note strong {
-      max-width: 11ch;
-      font-size: clamp(34px, 4.6vw, 70px);
-      font-weight: 730;
-      font-variation-settings: "wdth" 90;
-      letter-spacing: -.055em;
-      line-height: .94;
-      text-transform: uppercase;
-    }
-
-    .editorial__note div { justify-self: end; max-width: 32rem; }
-    .editorial__note p { margin: 0 0 24px; font-size: 18px; line-height: 1.55; }
-
-    .cta--dark {
-      border-color: rgba(11, 8, 18, .5);
-      background: transparent;
-      color: var(--void);
-    }
-
-    .cta--dark:hover { background: var(--violet); border-color: var(--violet); color: var(--star); }
-
-    .site-footer {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 28px;
-      padding: 44px var(--gutter) max(44px, env(safe-area-inset-bottom));
-      border-top: 1px solid rgba(244, 241, 248, .14);
-      background: var(--void);
       color: var(--alloy);
     }
 
-    .site-footer p { margin: 0; max-width: 50rem; }
-    .site-footer a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 44px;
-      text-underline-offset: 4px;
+    .gradient-text {
+      background: var(--value-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    /* ---------- Direção de arte para toque ---------- */
+    /* Etapas */
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 2vw, 28px); counter-reset: step; }
+
+    .step {
+      position: relative;
+      padding: 28px 22px 26px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: "0" counter(step);
+      display: block;
+      margin-bottom: 18px;
+      font-family: var(--data);
+      font-size: 11px;
+      letter-spacing: .1em;
+      color: var(--ignition);
+    }
+
+    .step h3 { font-size: clamp(18px, 1.5vw, 23px); font-weight: 720; letter-spacing: -.03em; line-height: 1.1; }
+    .step p { margin-top: 12px; font-size: 15px; line-height: 1.5; color: var(--alloy); }
+
+    /* Lista do que a TDigital faz */
+    .duties { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .duties li { display: flex; align-items: center; gap: 12px; padding: 20px 22px; background: var(--void); font-size: 16px; }
+    .duties li::before { content: ""; flex: none; width: 6px; height: 6px; background: var(--ignition); }
+
+    /* Faixas de comissão */
+    .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 28px); }
+
+    .tier {
+      display: flex;
+      flex-direction: column;
+      padding: 32px 26px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .tier__pct {
+      /* Encolhe até o texto para o gradiente percorrer os glifos, não a coluna. */
+      align-self: flex-start;
+      font-size: clamp(54px, 7vw, 92px);
+      font-weight: 800;
+      font-variation-settings: "wdth" 86;
+      letter-spacing: -.06em;
+      line-height: .86;
+    }
+
+    .tier__range { margin-top: 16px; font-size: 17px; font-weight: 600; letter-spacing: -.02em; }
+    .tier__note { margin-top: 8px; font-size: 14px; line-height: 1.5; color: var(--alloy); }
+
+    .highlight-note {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      align-items: start;
+      margin-top: clamp(28px, 3vw, 40px);
+      padding: 24px 26px;
+      border: 1px solid rgba(242, 180, 92, .42);
+      background: rgba(242, 180, 92, .07);
+    }
+
+    .highlight-note__mark { color: var(--ignition); }
+    .highlight-note p { font-size: clamp(17px, 1.5vw, 22px); font-weight: 600; line-height: 1.35; letter-spacing: -.025em; }
+    .highlight-note small { display: block; margin-top: 10px; font-size: 14px; font-weight: 400; line-height: 1.5; color: var(--alloy); }
+
+    .subblock { margin-top: clamp(40px, 5vw, 64px); padding-top: 32px; border-top: 1px solid var(--line); }
+    .subblock h3 { font-size: clamp(20px, 2vw, 28px); font-weight: 740; letter-spacing: -.035em; }
+    .subblock p { max-width: 46rem; margin-top: 14px; font-size: 16px; line-height: 1.55; color: var(--alloy); }
+
+    /* Simulador */
+    .sim { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 48px); align-items: start; }
+    .sim__controls { display: grid; gap: 28px; padding: 30px; border: 1px solid var(--line); background: var(--surface); }
+    .sim__field label { display: block; margin-bottom: 12px; font-size: 15px; font-weight: 600; }
+    .sim__value { font-family: var(--data); font-size: 13px; color: var(--ignition); }
+
+    .sim__field input[type="range"] { width: 100%; accent-color: var(--violet); height: 28px; }
+
+    .sim__money { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line-strong); background: rgba(11, 8, 18, .5); padding: 0 14px; }
+    .sim__money span { font-family: var(--data); font-size: 13px; color: var(--alloy); }
+    .sim__money input {
+      flex: 1;
+      min-width: 0;
+      min-height: 48px;
+      border: 0;
+      background: transparent;
+      color: var(--star);
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .sim__money input:focus { outline: none; }
+    .sim__money:focus-within { border-color: var(--ignition); }
+
+    .sim__out { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .sim__row { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: baseline; padding: 22px 26px; background: var(--void); }
+    .sim__row dt { font-size: 15px; color: var(--alloy); }
+    .sim__row dd { font-size: clamp(20px, 2.2vw, 30px); font-weight: 740; letter-spacing: -.04em; }
+    .sim__row--total { background: var(--surface-2); }
+    .sim__row--total dd { font-size: clamp(26px, 3.2vw, 44px); }
+    .sim__disclaimer { margin-top: 20px; font-size: 13px; line-height: 1.6; color: var(--alloy); }
+
+    /* Benefícios / Para quem */
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 26px); }
+    .card { padding: 26px 24px; border: 1px solid var(--line); background: var(--surface); }
+    .card h3 { font-size: clamp(17px, 1.4vw, 21px); font-weight: 720; letter-spacing: -.03em; line-height: 1.15; }
+    .card p { margin-top: 12px; font-size: 15px; line-height: 1.55; color: var(--alloy); }
+
+    /* Transparência */
+    .ledger { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(16px, 2vw, 28px); }
+    .ledger__col { padding: 28px 26px; border: 1px solid var(--line); background: var(--surface); }
+    .ledger__col h3 { margin-bottom: 20px; font-size: clamp(18px, 1.6vw, 24px); font-weight: 740; letter-spacing: -.035em; }
+    .ledger__col li { display: grid; grid-template-columns: auto 1fr; gap: 12px; padding: 11px 0; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.45; }
+    .ledger__col li:first-of-type { border-top: 0; }
+    .ledger__col li b { font-weight: 700; }
+    .yes::before { content: "+"; color: var(--ignition); font-family: var(--data); }
+    .no::before { content: "−"; color: var(--alloy); font-family: var(--data); }
+
+    /* FAQ */
+    .faq { border-top: 1px solid var(--line); }
+    .faq details { border-bottom: 1px solid var(--line); }
+
+    .faq summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 22px 0;
+      min-height: 44px;
+      font-size: clamp(16px, 1.4vw, 20px);
+      font-weight: 620;
+      letter-spacing: -.025em;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; flex: none; font-family: var(--data); font-size: 20px; color: var(--ignition); }
+    .faq details[open] summary::after { content: "−"; }
+    .faq p { max-width: 52rem; padding-bottom: 24px; font-size: 16px; line-height: 1.6; color: var(--alloy); }
+
+    /* Candidatura */
+    .apply { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1fr); gap: clamp(30px, 4vw, 64px); align-items: start; }
+    .apply__pitch .section__title { font-size: clamp(30px, 3.6vw, 52px); }
+
+    .form { display: grid; gap: 18px; padding: clamp(24px, 3vw, 36px); border: 1px solid var(--line); background: var(--surface); }
+    .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .field { display: grid; gap: 8px; }
+    .field label { font-size: 14px; font-weight: 600; }
+    .field .opt { color: var(--alloy); font-weight: 400; }
+
+    .field input,
+    .field select,
+    .field textarea {
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: rgba(11, 8, 18, .55);
+      color: var(--star);
+      font-family: var(--display);
+      font-size: 16px;
+    }
+
+    .field textarea { min-height: 84px; resize: vertical; }
+    .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--ignition); outline-offset: 1px; border-color: transparent; }
+    .field .err { display: none; font-size: 13px; color: #ff9d8a; }
+    .field.is-invalid input, .field.is-invalid select { border-color: #ff9d8a; }
+    .field.is-invalid .err { display: block; }
+
+    .check { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; font-size: 14px; line-height: 1.5; color: var(--alloy); }
+    .check input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--violet); }
+    .check a { color: var(--star); }
+    .check.is-invalid { color: #ff9d8a; }
+
+    .form__status { display: none; padding: 16px 18px; border: 1px solid rgba(242, 180, 92, .45); background: rgba(242, 180, 92, .08); font-size: 15px; line-height: 1.5; }
+    .form__status.is-shown { display: block; }
+
+    /* Rodapé */
+    .site-footer { padding: 44px var(--gutter); border-top: 1px solid var(--line); background: var(--void); color: var(--alloy); }
+    .site-footer__inner { display: grid; grid-template-columns: 1fr auto; gap: 26px; align-items: start; width: 100%; max-width: var(--maxw); margin: 0 auto; }
+    .site-footer p { max-width: 46rem; font-size: 13px; line-height: 1.6; }
+    .site-footer a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 4px; }
+
+    /* ---------- Mobile ---------- */
+
+    @media (max-width: 900px) {
+      .steps, .duties, .tiers, .cards { grid-template-columns: repeat(2, 1fr); }
+      .sim, .apply, .ledger { grid-template-columns: 1fr; }
+    }
 
     @media (max-width: 780px) {
       :root { --gutter: 20px; }
 
-      .site-header {
-        grid-template-columns: 1fr auto;
-        min-height: 58px;
+      .nav__inner { grid-template-columns: auto auto; min-height: 60px; }
+      .nav__links { display: none; }
+      .nav__end .btn { display: none; }
+      .nav__toggle { display: inline-flex; }
+
+      .nav__links.is-open {
+        position: fixed;
+        inset: 60px 0 auto;
+        display: grid;
+        justify-content: stretch;
+        justify-items: start;
+        gap: 4px;
+        padding: 18px var(--gutter) 26px;
+        background: rgba(11, 8, 18, .97);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--line);
       }
 
-      .site-header__center { display: none; }
-      .sequence { height: 620vh; }
+      .nav__links.is-open a { padding: 14px 0; font-size: 13px; color: var(--star); }
+      .nav__links.is-open .btn { display: inline-flex; margin-top: 10px; }
+
+      .sequence { height: 520vh; }
 
       .stage__scrim {
         background:
-          linear-gradient(180deg, rgba(11, 8, 18, .5), transparent 20%),
-          linear-gradient(0deg, rgba(11, 8, 18, .9), transparent 32%);
+          linear-gradient(180deg, rgba(11, 8, 18, .72), transparent 22%),
+          linear-gradient(0deg, rgba(11, 8, 18, .92), transparent 34%);
       }
 
-      .stage__grid { opacity: .28; }
-
-      /* Espelha MOBILE_FOCAL (38%) e MOBILE_ZOOM: 56.25vw × 1.28 = 72vw de altura. */
+      /* Espelha MOBILE_FOCAL (28%) e MOBILE_ZOOM: 56.25vw × 1.3 = 73.1vw. */
       .mobile-aperture {
         position: absolute;
         z-index: 3;
-        top: calc(38% - 36vw);
+        top: calc(28% - 36.56vw);
         left: 0;
         display: block;
         width: 100%;
-        height: 72vw;
-        border-top: 1px solid rgba(244, 241, 248, .22);
-        border-bottom: 1px solid rgba(244, 241, 248, .22);
+        height: 73.13vw;
+        border-top: 1px solid rgba(244, 241, 248, .2);
+        border-bottom: 1px solid rgba(244, 241, 248, .2);
         pointer-events: none;
       }
 
-      .chapter {
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-        align-content: end;
-        padding: 76px var(--gutter) 96px;
-      }
+      .chapter { grid-template-columns: repeat(6, minmax(0, 1fr)); align-content: end; padding: 72px var(--gutter) 88px; }
 
       .chapter__copy,
       .chapter--hero .chapter__copy,
       .chapter--left .chapter__copy,
-      .chapter--index .chapter__copy,
+      .chapter--right .chapter__copy,
       .chapter--split .chapter__copy,
-      .chapter--final .chapter__copy {
-        grid-column: 1 / 7;
-        display: block;
-      }
+      .chapter--final .chapter__copy { grid-column: 1 / 7; display: block; }
 
-      .chapter__eyebrow { margin-bottom: 14px; }
-      .chapter__title { font-size: clamp(48px, 14vw, 76px); line-height: .88; }
-      .chapter__deck { max-width: 24rem; margin-top: 14px; font-size: 17px; }
-      .chapter__fact { margin-top: 16px; }
-
+      .chapter__title { font-size: clamp(34px, 9.6vw, 54px); line-height: .98; }
+      .chapter__deck { max-width: 26rem; margin-top: 12px; font-size: 16px; }
       .chapter--hero .chapter__copy { padding-bottom: 0; }
-      .chapter--hero .chapter__title { font-size: clamp(64px, 21vw, 108px); }
-      .chapter--hero .chapter__deck { max-width: 19rem; }
+      .chapter--hero .chapter__title { font-size: clamp(28px, 7.6vw, 42px); }
+      .chapter--hero .chapter__deck { font-size: 15px; }
+      .hero__actions { margin-top: 20px; }
+      .hero__actions .btn { flex: 1 1 100%; }
+      /* No retrato a página inteira já é o "como funciona": um CTA basta. */
+      .hero__actions .btn--ghost { display: none; }
 
-      .chapter--split .split-start,
-      .chapter--split .split-end {
-        grid-column: auto;
-        text-align: left;
-        justify-self: start;
-      }
-
-      .chapter--split .split-end { margin-top: 4px; }
-      .chapter--split .chapter__title { font-size: clamp(44px, 13vw, 72px); }
+      .chapter--split .split-start, .chapter--split .split-end { grid-column: auto; margin-top: 0; text-align: left; justify-self: start; }
       .chapter--split .chapter__deck { margin-left: 0; }
+      .chapter--final .final-lead, .chapter--final .final-act { grid-column: auto; justify-self: start; text-align: left; }
+      .chapter--final .chapter__deck { margin: 14px 0 18px; }
+      .chapter--final .btn { width: 100%; }
 
-      .chapter__giant-index {
-        left: auto;
-        right: -6vw;
-        top: 9vh;
-        font-size: 58vw;
-        transform: none;
-      }
-
-      .chapter--final .final-lead,
-      .chapter--final .final-act {
-        grid-column: auto;
-        justify-self: start;
-        text-align: left;
-      }
-
-      .chapter--final .chapter__title { font-size: clamp(40px, 11.5vw, 62px); }
-      .chapter--final .final-act .chapter__deck { margin: 14px 0 20px; }
-      .chapter--final .cta { margin-top: 4px; }
-
-      .telemetry {
-        grid-template-columns: auto 1fr auto;
-        gap: 12px;
-      }
-
-      .telemetry__chapter { min-width: 0; max-width: 20ch; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-      .telemetry__frame,
-      .scroll-cue { display: none; }
+      .telemetry { grid-template-columns: auto minmax(40px, 1fr) auto; gap: 12px; }
+      .telemetry__chapter { min-width: 0; max-width: 24ch; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+      .telemetry__clock { min-width: 0; }
+      .telemetry__frame { display: none; }
 
       .loader__mark { display: block; }
-      .loader__number { font-size: 36vw; }
-      .loader__meta { margin-top: 22px; text-align: left; }
+      .loader__number { font-size: 34vw; }
+      .loader__meta { margin-top: 20px; text-align: left; }
 
-      .editorial { padding-top: 100px; padding-bottom: 100px; }
-      .editorial__head { grid-template-columns: 1fr; }
-      .editorial__title { font-size: 17vw; }
-      .editorial__aside { justify-self: start; }
-      .contact-sheet { grid-template-columns: repeat(6, 1fr); gap: 10px; }
-      .shot--lead { grid-column: 1 / 7; }
-      .shot--top { grid-column: 3 / 7; margin-top: 12vw; }
-      .shot--low { grid-column: 1 / 5; margin-top: 0; }
-      .shot--end { grid-column: 1 / 7; margin-top: 12vw; }
-      .protocol { grid-template-columns: 1fr; gap: 40px; }
-      .editorial__note { grid-template-columns: 1fr; gap: 32px; }
-      .editorial__note div { justify-self: start; }
-      .site-footer { grid-template-columns: 1fr; }
+      .steps, .duties, .tiers, .cards { grid-template-columns: 1fr; }
+      .duties { gap: 0; }
+      .duties li { border-bottom: 1px solid var(--line); }
+      .form__row { grid-template-columns: 1fr; }
+      .site-footer__inner { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
       *, *::before, *::after {
-        scroll-behavior: auto !important;
         animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
@@ -853,12 +860,12 @@
   </style>
 </head>
 <body class="is-loading">
-  <a class="skip-link" href="#editorial-title">Pular a animação e ir para o programa</a>
+  <a class="skip-link" href="#como-funciona">Pular a animação e ir para o conteúdo</a>
 
   <div class="loader" id="loader" aria-label="Carregando a sequência de lançamento">
     <div class="loader__mark">
       <p class="loader__number" aria-hidden="true">T−9</p>
-      <div class="loader__meta">TDigital Partners<br>Sequência de lançamento<br>9,17 segundos · 120 quadros</div>
+      <div class="loader__meta micro">TDigital Partners<br>Sequência de lançamento<br>9,17 segundos · 120 quadros</div>
     </div>
     <div class="loader__foot">
       <span class="micro" id="loader-label">Preparando sequência</span>
@@ -867,155 +874,680 @@
     </div>
   </div>
 
-  <header class="site-header" aria-label="Informações do projeto">
-    <div class="site-header__brand">TDigital / Parceiros</div>
-    <div class="site-header__center micro">Programa de parceiros para criadores</div>
-    <div class="site-header__end micro">9,17 s<br>120 quadros</div>
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <!-- Placeholder tipográfico: substituir pelo arquivo oficial da logo TDigital. -->
+      <a class="nav__brand" href="#top">TDigital <span>Partners</span></a>
+
+      <nav class="nav__links" id="nav-links" aria-label="Navegação principal">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#comissoes">Comissões</a>
+        <a href="#beneficios">Benefícios</a>
+        <a href="#duvidas">Dúvidas</a>
+        <a class="btn btn--primary btn--sm" href="#candidatura" data-cta="menu">Quero fazer parte</a>
+      </nav>
+
+      <div class="nav__end">
+        <a class="btn btn--primary btn--sm" href="#candidatura" data-cta="nav">Quero fazer parte</a>
+        <button class="nav__toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menu">
+          <span></span>
+        </button>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <section class="sequence" id="sequence" aria-label="Filme controlado pelo scroll">
+  <main id="top">
+    <section class="sequence" id="sequence" aria-label="Apresentação do programa em filme controlado pela rolagem">
       <div class="stage" id="stage">
         <canvas id="film-canvas" role="img" aria-label="Um criador de conteúdo lança o próprio celular ao ar; o aparelho atravessa o espaço e um foguete da TDigital decola da tela."></canvas>
         <div class="stage__scrim" aria-hidden="true"></div>
-        <div class="stage__grid" aria-hidden="true"></div>
         <div class="mobile-aperture" aria-hidden="true"></div>
 
-        <div class="chapters" aria-live="off">
-          <article class="chapter chapter--hero" data-center="0.045" data-window="0.085" data-label="01 · Decolagem">
+        <div class="chapters">
+          <article class="chapter chapter--hero" data-center="0.045" data-window="0.09" data-label="01 · Oportunidade">
             <div class="chapter__copy">
-              <p class="chapter__eyebrow micro">TDigital · Programa de Parceiros</p>
-              <h1 class="chapter__title reveal"><span>Decole</span></h1>
-              <p class="chapter__deck reveal"><span>O programa de parceiros da TDigital para influenciadores e criadores de conteúdo.</span></p>
+              <p class="chapter__eyebrow micro">TDigital Partners</p>
+              <h1 class="chapter__title reveal"><span>Você já influencia pessoas.<br>Agora comece a lucrar com isso.</span></h1>
+              <p class="chapter__deck reveal"><span>Indique empresas. Nós fazemos toda a venda. Você recebe comissões recorrentes todos os meses.</span></p>
+              <div class="hero__actions">
+                <a class="btn btn--primary" href="#candidatura" data-cta="hero">Quero fazer parte</a>
+                <a class="btn btn--ghost" href="#como-funciona">Ver como funciona</a>
+              </div>
+              <p class="hero__micro micro">Cadastro sujeito à análise. Comissão vinculada a vendas reais e clientes ativos.</p>
             </div>
           </article>
 
-          <article class="chapter chapter--left" data-center="0.205" data-window="0.066" data-label="02 · O impulso">
+          <article class="chapter chapter--left" data-center="0.225" data-window="0.062" data-label="02 · Você conecta">
             <div class="chapter__copy">
-              <p class="chapter__eyebrow micro">Estágio 02 · O impulso</p>
-              <h2 class="chapter__title reveal"><span>O primeiro impulso é seu</span></h2>
-              <p class="chapter__deck reveal"><span>Você já tem o único equipamento que importa: o celular na sua mão e as pessoas que confiam em você.</span></p>
+              <p class="chapter__eyebrow micro">Etapa 01 · Você conecta</p>
+              <h2 class="chapter__title reveal"><span>Você conecta</span></h2>
+              <p class="chapter__deck reveal"><span>Indique uma empresa com quem você já tem relação. Sem reunião, sem proposta, sem precisar vender.</span></p>
             </div>
           </article>
 
-          <article class="chapter chapter--index" data-center="0.345" data-window="0.062" data-label="03 · A ferramenta">
-            <div class="chapter__giant-index" aria-hidden="true">03</div>
+          <article class="chapter chapter--right" data-center="0.375" data-window="0.062" data-label="03 · Nós vendemos">
             <div class="chapter__copy">
-              <p class="chapter__eyebrow micro">Estágio 03 · A ferramenta</p>
-              <h2 class="chapter__title reveal"><span>Um aparelho basta</span></h2>
-              <p class="chapter__deck reveal"><span>Você publica do jeito que já publica. A estrutura de mídia fica com a gente.</span></p>
-              <div class="chapter__fact micro"><span>Seq 03</span><span>Quadros 036 – 050</span></div>
+              <p class="chapter__eyebrow micro">Etapa 02 · Nós vendemos</p>
+              <h2 class="chapter__title reveal"><span>Nós vendemos</span></h2>
+              <p class="chapter__deck reveal"><span>A TDigital assume contato, diagnóstico, apresentação, proposta, negociação e fechamento.</span></p>
             </div>
           </article>
 
-          <article class="chapter chapter--split" data-center="0.555" data-window="0.062" data-label="04 · A travessia">
+          <article class="chapter chapter--split" data-center="0.565" data-window="0.062" data-label="04 · Recorrência">
             <div class="chapter__copy">
               <div class="split-start">
-                <p class="chapter__eyebrow micro">Estágio 04 · A travessia</p>
-                <h2 class="chapter__title reveal"><span>Do local</span></h2>
+                <p class="chapter__eyebrow micro">Etapa 03 · A recorrência</p>
+                <h2 class="chapter__title reveal"><span>Você continua</span></h2>
               </div>
               <div class="split-end">
-                <h2 class="chapter__title reveal"><span>ao ilimitado</span></h2>
-                <p class="chapter__deck reveal"><span>O mesmo conteúdo, com investimento por trás. É o que muda a escala do seu alcance.</span></p>
+                <h2 class="chapter__title reveal"><span>ganhando</span></h2>
+                <p class="chapter__deck reveal"><span>A comissão acompanha o cliente enquanto ele estiver ativo e adimplente.</span></p>
               </div>
             </div>
           </article>
 
-          <article class="chapter chapter--left" data-center="0.745" data-window="0.060" data-label="05 · Ignição">
+          <article class="chapter chapter--left" data-center="0.745" data-window="0.06" data-label="05 · Comissão">
             <div class="chapter__copy">
-              <p class="chapter__eyebrow micro">Estágio 05 · Ignição</p>
-              <h2 class="chapter__title reveal"><span>Ignição</span></h2>
-              <p class="chapter__deck reveal"><span>Tráfego pago, criativo e mensuração ligados por trás daquilo que você publica.</span></p>
-              <div class="chapter__fact micro"><span>Seq 05</span><span>Quadros 084 – 098</span></div>
+              <p class="chapter__eyebrow micro">A comissão</p>
+              <h2 class="chapter__title reveal"><span>Até 12 meses de comissão</span></h2>
+              <p class="chapter__deck reveal"><span>Você continua ganhando comissões por até 12 meses, enquanto o cliente estiver ativo.</span></p>
             </div>
           </article>
 
-          <article class="chapter chapter--final" data-center="0.935" data-window="0.075" data-label="06 · Lançamento">
+          <article class="chapter chapter--final" data-center="0.935" data-window="0.075" data-label="06 · Faça parte">
             <div class="chapter__copy">
               <div class="final-lead">
-                <p class="chapter__eyebrow micro">Estágio 06 · Lançamento</p>
-                <h2 class="chapter__title reveal"><span>Seu lançamento começa aqui</span></h2>
+                <p class="chapter__eyebrow micro">TDigital Partners</p>
+                <h2 class="chapter__title reveal"><span>Você faz a conexão. A TDigital cuida do restante.</span></h2>
               </div>
               <div class="final-act">
-                <p class="chapter__deck">Conte pra gente onde você publica e quem te acompanha.</p>
-                <a class="cta" href="mailto:comercial@tdigitalsocialmedia.com?subject=Programa%20de%20Parceiros%20TDigital" aria-label="Candidatar-se ao Programa de Parceiros TDigital por e-mail">Candidatar-se ao programa</a>
+                <p class="chapter__deck">Cadastro sujeito à análise. Comissão vinculada a vendas reais e clientes ativos.</p>
+                <a class="btn btn--primary" href="#candidatura" data-cta="sequencia">Quero fazer parte</a>
               </div>
             </div>
           </article>
         </div>
 
         <div class="telemetry" aria-hidden="true">
-          <span class="telemetry__chapter micro" id="telemetry-chapter">01 · Decolagem</span>
+          <span class="telemetry__chapter micro" id="telemetry-chapter">01 · Oportunidade</span>
           <div class="telemetry__track"><span class="telemetry__fill"></span></div>
           <span class="telemetry__clock micro" id="telemetry-clock">T−00:07,3</span>
           <span class="telemetry__frame micro" id="telemetry-frame">Q 0001 / 0120</span>
-          <span class="scroll-cue micro">Role para pilotar</span>
         </div>
       </div>
     </section>
 
-    <section class="editorial" aria-labelledby="editorial-title">
-      <div class="editorial__head">
-        <h2 class="editorial__title" id="editorial-title">Do bolso à órbita.</h2>
-        <p class="editorial__aside">A sequência inteira dura 9,17 segundos. Aqui ela virou 120 quadros que você controla com o scroll — do chão da academia até a decolagem.</p>
+    <!-- 8.3 — Identificação do problema -->
+    <section class="section" aria-labelledby="problema-title">
+      <div class="shell">
+        <div class="section__head">
+          <span class="section__eyebrow micro">O que acontece hoje</span>
+          <h2 class="section__title" id="problema-title">Você já conecta empresas todos os dias.</h2>
+          <p class="section__lead">Indicar um fornecedor, apresentar um contato, recomendar quem resolve. Essas conexões movimentam negócios reais — e quase nunca voltam para quem construiu a ponte. O TDigital Partners existe para que a sua indicação tenha um lugar formal, registrado e remunerado.</p>
+        </div>
       </div>
+    </section>
 
-      <div class="contact-sheet">
-        <figure class="shot shot--lead">
-          <img src="frames/desktop/frame-0006.webp" alt="Criador de conteúdo segurando o celular em uma academia iluminada de roxo." loading="lazy" width="1280" height="720">
-          <figcaption class="micro"><span>O criador</span><span>Q 0006</span></figcaption>
-        </figure>
-        <figure class="shot shot--top">
-          <img src="frames/desktop/frame-0042.webp" alt="O celular girando no ar com a academia desfocada ao fundo." loading="lazy" width="1280" height="720">
-          <figcaption class="micro"><span>O impulso</span><span>Q 0042</span></figcaption>
-        </figure>
-        <figure class="shot shot--low">
-          <img src="frames/desktop/frame-0076.webp" alt="O celular suspenso em uma nebulosa violeta." loading="lazy" width="1280" height="720">
-          <figcaption class="micro"><span>A travessia</span><span>Q 0076</span></figcaption>
-        </figure>
-        <figure class="shot shot--end">
-          <img src="frames/desktop/frame-0114.webp" alt="Um foguete roxo com a marca TDigital decolando da tela do celular." loading="lazy" width="1280" height="720">
-          <figcaption class="micro"><span>O lançamento</span><span>Q 0114</span></figcaption>
-        </figure>
+    <!-- 8.4 — Como funciona -->
+    <section class="section section--alt" id="como-funciona" aria-labelledby="como-title">
+      <div class="shell">
+        <div class="section__head">
+          <span class="section__eyebrow micro">Como funciona</span>
+          <h2 class="section__title" id="como-title">Quatro etapas, e só a primeira depende de você.</h2>
+        </div>
+        <ol class="steps">
+          <li class="step">
+            <h3>Cadastre-se e passe pela validação</h3>
+            <p>Você preenche o formulário e a TDigital analisa o seu perfil antes de aprovar a participação.</p>
+          </li>
+          <li class="step">
+            <h3>Indique uma empresa</h3>
+            <p>A indicação é registrada com data, origem e responsável, para que a autoria da conexão fique clara.</p>
+          </li>
+          <li class="step">
+            <h3>A TDigital assume o processo comercial</h3>
+            <p>Contato, diagnóstico, apresentação, proposta, negociação e fechamento ficam por nossa conta.</p>
+          </li>
+          <li class="step">
+            <h3>Com a venda ativa e paga, você recebe</h3>
+            <p>A comissão nasce quando existe venda real e o cliente paga a mensalidade do serviço.</p>
+          </li>
+        </ol>
       </div>
+    </section>
 
-      <dl class="protocol">
-        <div class="protocol__step">
-          <dt>Estágio 01</dt>
-          <strong>Candidatura</strong>
-          <dd>Você conta onde publica, sobre o que fala e quem te acompanha.</dd>
+    <!-- 8.5 — O que a TDigital faz -->
+    <section class="section" aria-labelledby="tdigital-title">
+      <div class="shell">
+        <div class="section__head">
+          <span class="section__eyebrow micro">Do nosso lado</span>
+          <h2 class="section__title" id="tdigital-title">Você não vende, não atende e não executa.</h2>
+          <p class="section__lead">Depois que a indicação entra, todo o processo comercial e operacional é responsabilidade da TDigital.</p>
         </div>
-        <div class="protocol__step">
-          <dt>Estágio 02</dt>
-          <strong>Ativação</strong>
-          <dd>A gente alinha o formato da parceria com o seu canal e o seu público.</dd>
-        </div>
-        <div class="protocol__step">
-          <dt>Estágio 03</dt>
-          <strong>Lançamento</strong>
-          <dd>Você publica. A TDigital cuida de mídia, criativo e mensuração.</dd>
-        </div>
-      </dl>
+        <ul class="duties">
+          <li>Contato</li>
+          <li>Diagnóstico</li>
+          <li>Apresentação</li>
+          <li>Proposta</li>
+          <li>Negociação</li>
+          <li>Fechamento</li>
+          <li>Implantação</li>
+          <li>Operação</li>
+          <li>Atendimento e suporte</li>
+        </ul>
+      </div>
+    </section>
 
-      <div class="editorial__note">
-        <strong>Feito para quem já tem audiência.</strong>
-        <div>
-          <p>Se você cria conteúdo e quer transformar audiência em parceria, o próximo passo é uma conversa. Fale com o time comercial da TDigital e a gente explica como funciona.</p>
-          <a class="cta cta--dark" href="mailto:comercial@tdigitalsocialmedia.com?subject=Programa%20de%20Parceiros%20TDigital">Falar com o time</a>
+    <!-- 8.6 — Comissões recorrentes -->
+    <section class="section section--alt" id="comissoes" aria-labelledby="comissoes-title">
+      <div class="shell">
+        <div class="section__head">
+          <span class="section__eyebrow micro">Comissões</span>
+          <h2 class="section__title" id="comissoes-title">Quanto mais clientes ativos, <span class="gradient-text">maior o seu percentual</span>.</h2>
+          <p class="section__lead">O percentual acompanha a quantidade de clientes ativos que vieram das suas indicações.</p>
+        </div>
+
+        <div class="tiers">
+          <div class="tier">
+            <span class="tier__pct gradient-text">5%</span>
+            <span class="tier__range">Até 5 clientes ativos</span>
+            <span class="tier__note">Faixa inicial do programa, a partir da sua primeira venda confirmada.</span>
+          </div>
+          <div class="tier">
+            <span class="tier__pct gradient-text">10%</span>
+            <span class="tier__range">De 6 a 10 clientes ativos</span>
+            <span class="tier__note">O percentual sobe conforme a sua carteira de indicações se consolida.</span>
+          </div>
+          <div class="tier">
+            <span class="tier__pct gradient-text">15%</span>
+            <span class="tier__range">De 11 a 15 clientes ativos</span>
+            <span class="tier__note">Faixa máxima atualmente definida no regulamento do programa.</span>
+          </div>
+        </div>
+
+        <div class="highlight-note">
+          <span class="highlight-note__mark micro" aria-hidden="true">12M</span>
+          <div>
+            <p>Você continua ganhando comissões por até 12 meses, enquanto o cliente estiver ativo.</p>
+            <small>Todas as faixas dependem de clientes ativos e adimplentes e das regras finais do regulamento do programa. Cancelamento, inadimplência, estorno ou ausência de pagamento suspendem a comissão da competência correspondente.</small>
+          </div>
+        </div>
+
+        <div class="subblock">
+          <h3>Indicou outro parceiro? Existe um único nível.</h3>
+          <p>Se você indicar outro parceiro para o programa, recebe 5% sobre a comissão efetivamente gerada por ele — e apenas quando essa comissão vier de uma venda real, ativa e paga. Não existe pagamento por cadastro, por recrutamento, nem qualquer nível adicional acima desse.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8.7 — Simulador de potencial -->
+    <section class="section" id="simulador" aria-labelledby="sim-title">
+      <div class="shell">
+        <div class="section__head">
+          <span class="section__eyebrow micro">Simulador</span>
+          <h2 class="section__title" id="sim-title">Faça as contas com os seus próprios números.</h2>
+          <p class="section__lead">Ajuste a quantidade de clientes ativos e o ticket médio que você considera realista. O percentual da faixa é aplicado automaticamente.</p>
+        </div>
+
+        <div class="sim">
+          <div class="sim__controls">
+            <div class="sim__field">
+              <label for="sim-clients">Clientes ativos indicados <span class="sim__value" id="sim-clients-out">3</span></label>
+              <input type="range" id="sim-clients" min="1" max="15" step="1" value="3">
+            </div>
+            <div class="sim__field">
+              <label for="sim-ticket">Ticket médio mensal estimado por cliente</label>
+              <div class="sim__money">
+                <span>R$</span>
+                <input type="number" id="sim-ticket" min="0" step="100" value="1000" inputmode="numeric">
+              </div>
+              <p class="sim__disclaimer">Use o valor que fizer sentido para a sua estimativa. Os planos da TDigital variam por escopo e não são divulgados nesta página.</p>
+            </div>
+          </div>
+
+          <div>
+            <dl class="sim__out">
+              <div class="sim__row">
+                <dt>Faixa aplicada</dt>
+                <dd id="sim-pct" class="gradient-text">5%</dd>
+              </div>
+              <div class="sim__row">
+                <dt>Comissão mensal estimada</dt>
+                <dd id="sim-month">R$ 150</dd>
+              </div>
+              <div class="sim__row sim__row--total">
+                <dt>Acumulado em até 12 meses</dt>
+                <dd id="sim-year" class="gradient-text">R$ 1.800</dd>
+              </div>
+            </dl>
+            <p class="sim__disclaimer">Simulação ilustrativa. Não representa promessa ou garantia de ganhos. O pagamento depende das vendas efetivadas, da adimplência dos clientes e do regulamento do programa.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8.8 — Benefícios -->
+    <section class="section section--alt" id="beneficios" aria-labelledby="beneficios-title">
+      <div class="shell">
+        <div class="section__head">
+          <span class="section__eyebrow micro">Benefícios</span>
+          <h2 class="section__title" id="beneficios-title">O que sai da sua conta.</h2>
+        </div>
+        <div class="cards">
+          <div class="card"><h3>Você não precisa vender</h3><p>A condução comercial é inteiramente da TDigital, do primeiro contato ao fechamento.</p></div>
+          <div class="card"><h3>Sem reuniões comerciais</h3><p>Você não participa de call, apresentação ou negociação com a empresa indicada.</p></div>
+          <div class="card"><h3>Sem criar propostas</h3><p>Diagnóstico, escopo e proposta são montados pelo nosso time.</p></div>
+          <div class="card"><h3>Sem executar o serviço</h3><p>Implantação, operação e atendimento continuam com a TDigital depois da venda.</p></div>
+          <div class="card"><h3>Acompanhamento transparente</h3><p>Você vê o status de cada indicação e de cada comissão na área do parceiro.</p></div>
+          <div class="card"><h3>Percentual progressivo</h3><p>Sua faixa pode subir conforme você gera mais clientes ativos e adimplentes.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8.9 — Transparência e segurança -->
+    <section class="section" id="transparencia" aria-labelledby="transp-title">
+      <div class="shell">
+        <div class="section__head">
+          <span class="section__eyebrow micro">Transparência</span>
+          <h2 class="section__title" id="transp-title">O que gera comissão — e o que não gera.</h2>
+          <p class="section__lead">Sem letra miúda: estas são as condições que definem quando você recebe.</p>
+        </div>
+
+        <div class="ledger">
+          <div class="ledger__col">
+            <h3>Gera comissão</h3>
+            <ul>
+              <li class="yes"><span></span><span>Venda real de um serviço da TDigital originada da sua indicação</span></li>
+              <li class="yes"><span></span><span>Cliente <b>ativo e adimplente</b>, com a mensalidade paga</span></li>
+              <li class="yes"><span></span><span>Cada competência em que o cliente segue ativo, por até 12 meses</span></li>
+              <li class="yes"><span></span><span>Comissão gerada por parceiro que você indicou, em nível único de 5%</span></li>
+            </ul>
+          </div>
+          <div class="ledger__col">
+            <h3>Não gera comissão</h3>
+            <ul>
+              <li class="no"><span></span><span>Cadastro de influenciador, por si só</span></li>
+              <li class="no"><span></span><span>Enviar uma indicação que ainda não virou venda</span></li>
+              <li class="no"><span></span><span>Reunião realizada ou proposta enviada sem fechamento</span></li>
+              <li class="no"><span></span><span>Competência com cancelamento, inadimplência ou estorno</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="subblock">
+          <h3>Situação de cada comissão</h3>
+          <p><b>Pendente:</b> a venda foi registrada e a comissão aguarda a confirmação do pagamento do cliente. <b>Aprovada:</b> o pagamento foi confirmado e a comissão entra na competência. <b>Suspensa:</b> houve cancelamento, atraso, estorno ou ausência de pagamento — a comissão daquela competência fica retida enquanto a pendência existir. Indicações duplicadas ou empresas que já estejam em negociação com a TDigital seguem o critério definido no regulamento, apresentado no seu cadastro.</p>
+        </div>
+
+        <div class="subblock">
+          <h3>Seus dados</h3>
+          <p>Os dados informados são usados para analisar a sua candidatura, operar o programa e viabilizar pagamentos. Não vendemos seus dados e não os enviamos para ferramentas de análise. Você pode solicitar acesso, correção ou exclusão conforme a Lei Geral de Proteção de Dados. Ao indicar uma empresa, você confirma que possui relação ou base legítima para compartilhar aquele contato.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8.10 — Para quem é -->
+    <section class="section section--alt" id="para-quem" aria-labelledby="paraquem-title">
+      <div class="shell">
+        <div class="section__head">
+          <span class="section__eyebrow micro">Para quem é</span>
+          <h2 class="section__title" id="paraquem-title">Não é sobre tamanho de audiência. É sobre confiança.</h2>
+          <p class="section__lead">O valor está no relacionamento e na capacidade de gerar conexões comerciais qualificadas.</p>
+        </div>
+        <div class="cards">
+          <div class="card"><h3>Influenciadores e criadores</h3><p>Quem produz conteúdo e já é procurado por empresas que querem aparecer.</p></div>
+          <div class="card"><h3>Criadores locais</h3><p>Quem tem autoridade em uma cidade ou região e conhece os negócios de perto.</p></div>
+          <div class="card"><h3>Micro e nano influenciadores</h3><p>Audiências menores e muito engajadas costumam converter melhor do que números grandes.</p></div>
+          <div class="card"><h3>Especialistas de nicho</h3><p>Quem é referência em um segmento específico e conversa com empresários daquele meio.</p></div>
+          <div class="card"><h3>Profissionais com networking</h3><p>Quem circula entre empresas e é chamado para indicar fornecedores e parceiros.</p></div>
+          <div class="card"><h3>Quem já conecta marcas</h3><p>Quem faz publicidade para empresas e quer participar do resultado comercial da conexão.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8.11 — Institucional. Depoimentos e provas entram só com autorização. -->
+    <section class="section" aria-labelledby="sobre-title">
+      <div class="shell">
+        <div class="section__head">
+          <span class="section__eyebrow micro">Sobre a TDigital</span>
+          <h2 class="section__title" id="sobre-title">Quem assume a venda depois da sua indicação.</h2>
+          <p class="section__lead">A TDigital atua no crescimento de empresas dentro do ecossistema digital, com estratégia, tráfego pago, mídias sociais e soluções de desenvolvimento de negócios. É essa estrutura comercial e operacional que passa a atender a empresa que você indicar.</p>
+        </div>
+        <!--
+          PENDENTE DE APROVAÇÃO DA TDIGITAL:
+          prova institucional ("Mais de R$ 100 milhões em negócios entregues"),
+          depoimentos de parceiros, logos de clientes e cases.
+          Só publicar com confirmação e material comprobatório.
+        -->
+      </div>
+    </section>
+
+    <!-- 8.12 — FAQ -->
+    <section class="section section--alt" id="duvidas" aria-labelledby="faq-title">
+      <div class="shell">
+        <div class="section__head">
+          <span class="section__eyebrow micro">Dúvidas</span>
+          <h2 class="section__title" id="faq-title">Perguntas frequentes</h2>
+        </div>
+        <div class="faq">
+          <details><summary>Preciso vender?</summary><p>Não. Você faz a indicação e a TDigital conduz contato, diagnóstico, apresentação, proposta, negociação e fechamento.</p></details>
+          <details><summary>Preciso participar de reunião?</summary><p>Não. Nenhuma etapa comercial depende da sua presença. Se você quiser acompanhar, isso é opcional e combinado caso a caso.</p></details>
+          <details><summary>Existe taxa para participar?</summary><p>Não. Não há taxa de entrada, mensalidade ou qualquer cobrança para se cadastrar no programa.</p></details>
+          <details><summary>Quando uma indicação começa a gerar comissão?</summary><p>Quando ela se transforma em venda real e o cliente paga a mensalidade do serviço. Indicação registrada, contato iniciado ou proposta enviada ainda não geram comissão.</p></details>
+          <details><summary>Por quanto tempo eu recebo?</summary><p>Você continua ganhando comissões por até 12 meses, enquanto o cliente estiver ativo.</p></details>
+          <details><summary>O que acontece se o cliente cancelar ou atrasar?</summary><p>Cancelamento, inadimplência, estorno ou ausência de pagamento suspendem a comissão da competência correspondente enquanto a pendência existir.</p></details>
+          <details><summary>Como acompanho minhas indicações?</summary><p>Pela área do parceiro, com o status de cada indicação e o histórico de comissões pendentes, aprovadas e pagas.</p></details>
+          <details><summary>Posso indicar qualquer empresa?</summary><p>Você pode indicar empresas com as quais tenha relação ou base legítima para compartilhar o contato. Essa confirmação é feita no momento do registro da indicação.</p></details>
+          <details><summary>E se a empresa já estiver em negociação com a TDigital?</summary><p>Casos de indicação duplicada ou de empresa já em negociação seguem o critério definido no regulamento do programa, apresentado a você no cadastro.</p></details>
+          <details><summary>Posso indicar outro influenciador?</summary><p>Pode. Existe um único nível: você recebe 5% sobre a comissão efetivamente gerada pelo parceiro indicado, quando ela vier de uma venda real, ativa e paga. Não há pagamento por recrutamento nem níveis adicionais.</p></details>
+          <details><summary>Como meus dados serão usados?</summary><p>Para analisar a sua candidatura, operar o programa e viabilizar pagamentos. Você pode solicitar acesso, correção ou exclusão conforme a LGPD.</p></details>
+          <details><summary>O cadastro garante aprovação?</summary><p>Não. Todo cadastro passa por análise da TDigital antes da aprovação.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8.13 + 8.14 — CTA final e formulário -->
+    <section class="section" id="candidatura" aria-labelledby="candidatura-title">
+      <div class="shell">
+        <div class="apply">
+          <div class="apply__pitch">
+            <span class="section__eyebrow micro">Candidatura</span>
+            <h2 class="section__title" id="candidatura-title">Você faz a conexão. A TDigital cuida do restante.</h2>
+            <p class="section__lead">Preencha o formulário para se candidatar. O cadastro passa por análise e, se aprovado, você recebe o acesso à área do parceiro e o regulamento completo do programa.</p>
+            <p class="hero__micro micro" style="margin-top:24px">Cadastro sujeito à análise. Comissão vinculada a vendas reais e clientes ativos.</p>
+          </div>
+
+          <form class="form" id="apply-form" novalidate>
+            <div class="form__row">
+              <div class="field">
+                <label for="f-nome">Nome completo</label>
+                <input type="text" id="f-nome" name="nome" autocomplete="name" required>
+                <span class="err">Informe o seu nome completo.</span>
+              </div>
+              <div class="field">
+                <label for="f-whats">WhatsApp</label>
+                <input type="tel" id="f-whats" name="whatsapp" autocomplete="tel" placeholder="(00) 00000-0000" required>
+                <span class="err">Informe um WhatsApp com DDD.</span>
+              </div>
+            </div>
+
+            <div class="form__row">
+              <div class="field">
+                <label for="f-email">E-mail</label>
+                <input type="email" id="f-email" name="email" autocomplete="email" required>
+                <span class="err">Informe um e-mail válido.</span>
+              </div>
+              <div class="field">
+                <label for="f-canal">@Instagram ou canal principal</label>
+                <input type="text" id="f-canal" name="canal" placeholder="@seuperfil" required>
+                <span class="err">Informe o seu principal canal.</span>
+              </div>
+            </div>
+
+            <div class="form__row">
+              <div class="field">
+                <label for="f-cidade">Cidade e estado</label>
+                <input type="text" id="f-cidade" name="cidade" placeholder="Cidade / UF" required>
+                <span class="err">Informe cidade e estado.</span>
+              </div>
+              <div class="field">
+                <label for="f-atuacao">Tipo de atuação</label>
+                <select id="f-atuacao" name="atuacao" required>
+                  <option value="">Selecione</option>
+                  <option>Influenciador ou criador de conteúdo</option>
+                  <option>Criador local ou regional</option>
+                  <option>Especialista de nicho</option>
+                  <option>Profissional com networking empresarial</option>
+                  <option>Outro</option>
+                </select>
+                <span class="err">Selecione o seu tipo de atuação.</span>
+              </div>
+            </div>
+
+            <div class="form__row">
+              <div class="field">
+                <label for="f-audiencia">Faixa de audiência <span class="opt">(opcional)</span></label>
+                <select id="f-audiencia" name="audiencia">
+                  <option value="">Prefiro não informar</option>
+                  <option>Até 5 mil</option>
+                  <option>5 mil a 20 mil</option>
+                  <option>20 mil a 100 mil</option>
+                  <option>Acima de 100 mil</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="f-origem">Como conheceu o programa?</label>
+                <select id="f-origem" name="origem" required>
+                  <option value="">Selecione</option>
+                  <option>Instagram</option>
+                  <option>Indicação de outro parceiro</option>
+                  <option>Contato da TDigital</option>
+                  <option>Busca no Google</option>
+                  <option>Outro</option>
+                </select>
+                <span class="err">Conte como você chegou até aqui.</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="f-nichos">Nichos em que atua</label>
+              <textarea id="f-nichos" name="nichos" placeholder="Ex.: fitness, gastronomia, negócios locais" required></textarea>
+              <span class="err">Descreva os nichos em que você atua.</span>
+            </div>
+
+            <label class="check" for="f-consent">
+              <input type="checkbox" id="f-consent" name="consent" required>
+              <span>Autorizo o uso dos meus dados para análise desta candidatura e operação do programa, e declaro estar ciente da política de privacidade. <b>(obrigatório)</b></span>
+            </label>
+
+            <label class="check" for="f-analise">
+              <input type="checkbox" id="f-analise" name="analise" required>
+              <span>Estou ciente de que o cadastro passará por análise e que a aprovação não é automática. <b>(obrigatório)</b></span>
+            </label>
+
+            <label class="check" for="f-mkt">
+              <input type="checkbox" id="f-mkt" name="marketing">
+              <span>Quero receber comunicações da TDigital sobre o programa. (opcional)</span>
+            </label>
+
+            <button class="btn btn--primary" type="submit">Quero fazer parte</button>
+            <p class="form__status" id="form-status" role="status"></p>
+          </form>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer micro">
-    <p>TDigital Social Media · Programa de Parceiros. Sequência construída a partir do filme institucional da marca.</p>
-    <a href="mailto:comercial@tdigitalsocialmedia.com">comercial@tdigitalsocialmedia.com ↗</a>
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p>
+        <b>TDigital Partners</b> — programa de parceiros comerciais baseado em venda real.
+        As comissões dependem de vendas efetivadas, de clientes ativos e adimplentes e do regulamento do programa.
+        Esta página não promete ganhos garantidos. Percentuais, prazos e condições podem ser revistos e prevalecem
+        conforme o regulamento aceito no cadastro.
+      </p>
+      <a href="mailto:comercial@tdigitalsocialmedia.com">comercial@tdigitalsocialmedia.com ↗</a>
+    </div>
   </footer>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "TDigital",
+        "url": "https://www.tdigitalsocialmedia.com.br/",
+        "email": "comercial@tdigitalsocialmedia.com",
+        "description": "Empresa focada no aumento de faturamento e no desenvolvimento de negócios dentro do ecossistema digital."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          { "@type": "Question", "name": "Preciso vender?", "acceptedAnswer": { "@type": "Answer", "text": "Não. Você faz a indicação e a TDigital conduz contato, diagnóstico, apresentação, proposta, negociação e fechamento." } },
+          { "@type": "Question", "name": "Existe taxa para participar?", "acceptedAnswer": { "@type": "Answer", "text": "Não. Não há taxa de entrada, mensalidade ou qualquer cobrança para se cadastrar no programa." } },
+          { "@type": "Question", "name": "Quando uma indicação começa a gerar comissão?", "acceptedAnswer": { "@type": "Answer", "text": "Quando ela se transforma em venda real e o cliente paga a mensalidade do serviço. Indicação registrada, contato iniciado ou proposta enviada ainda não geram comissão." } },
+          { "@type": "Question", "name": "Por quanto tempo eu recebo?", "acceptedAnswer": { "@type": "Answer", "text": "Você continua ganhando comissões por até 12 meses, enquanto o cliente estiver ativo." } },
+          { "@type": "Question", "name": "O cadastro garante aprovação?", "acceptedAnswer": { "@type": "Answer", "text": "Não. Todo cadastro passa por análise da TDigital antes da aprovação." } }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <script>
     (() => {
       "use strict";
 
+      /* ------------------------------------------------------------------
+         Analytics: só empurra eventos para o dataLayer. Nenhuma ferramenta
+         de terceiros é carregada aqui e nenhum dado pessoal é enviado.
+         ------------------------------------------------------------------ */
+      window.dataLayer = window.dataLayer || [];
+      const track = (event, params) => window.dataLayer.push(Object.assign({ event }, params || {}));
+      track("page_view");
+
+      /* ---------------- Navegação ---------------- */
+      const nav = document.getElementById("nav");
+      const navLinks = document.getElementById("nav-links");
+      const navToggle = document.getElementById("nav-toggle");
+
+      const closeMenu = () => {
+        navLinks.classList.remove("is-open");
+        navToggle.setAttribute("aria-expanded", "false");
+        navToggle.setAttribute("aria-label", "Abrir menu");
+        document.body.classList.remove("menu-open");
+      };
+
+      navToggle.addEventListener("click", () => {
+        const open = navToggle.getAttribute("aria-expanded") === "true";
+        if (open) return closeMenu();
+        navLinks.classList.add("is-open");
+        navToggle.setAttribute("aria-expanded", "true");
+        navToggle.setAttribute("aria-label", "Fechar menu");
+        document.body.classList.add("menu-open");
+      });
+
+      navLinks.addEventListener("click", (e) => { if (e.target.closest("a")) closeMenu(); });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
+
+      const solidFrom = () => window.scrollY > window.innerHeight * 0.6;
+      const syncNav = () => nav.classList.toggle("is-solid", solidFrom());
+      window.addEventListener("scroll", syncNav, { passive: true });
+      syncNav();
+
+      document.querySelectorAll("[data-cta]").forEach((el) => {
+        el.addEventListener("click", () => track("hero_cta_click", { cta_location: el.dataset.cta }));
+      });
+
+      /* ---------------- Simulador ----------------
+         As faixas ficam aqui apenas para a projeção ilustrativa da página.
+         O cálculo que vale é o do back-end, com registro auditável. */
+      const TIERS = [
+        { max: 5, pct: 5 },
+        { max: 10, pct: 10 },
+        { max: 15, pct: 15 }
+      ];
+      const tierFor = (clients) => (TIERS.find((t) => clients <= t.max) || TIERS[TIERS.length - 1]).pct;
+
+      const clientsInput = document.getElementById("sim-clients");
+      const ticketInput = document.getElementById("sim-ticket");
+      const clientsOut = document.getElementById("sim-clients-out");
+      const pctOut = document.getElementById("sim-pct");
+      const monthOut = document.getElementById("sim-month");
+      const yearOut = document.getElementById("sim-year");
+      const brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+      let simStarted = false;
+
+      function runSim() {
+        const clients = Number(clientsInput.value) || 0;
+        const ticket = Math.max(0, Number(ticketInput.value) || 0);
+        const pct = tierFor(clients);
+        const monthly = clients * ticket * (pct / 100);
+        clientsOut.textContent = clients;
+        pctOut.textContent = pct + "%";
+        monthOut.textContent = brl.format(monthly);
+        yearOut.textContent = brl.format(monthly * 12);
+      }
+
+      [clientsInput, ticketInput].forEach((input) => {
+        input.addEventListener("input", () => {
+          if (!simStarted) { simStarted = true; track("calculator_start"); }
+          runSim();
+        });
+        input.addEventListener("change", () => track("calculator_complete"));
+      });
+      runSim();
+
+      /* ---------------- Formulário ----------------
+         Sem back-end ainda: defina FORM_ENDPOINT para receber os envios.
+         Enquanto estiver vazio, a candidatura é entregue por e-mail para não
+         se perder silenciosamente. Nenhum dado do formulário vai para analytics. */
+      const FORM_ENDPOINT = "";
+      const CONTACT_EMAIL = "comercial@tdigitalsocialmedia.com";
+
+      const form = document.getElementById("apply-form");
+      const status = document.getElementById("form-status");
+      let formStarted = false;
+
+      form.addEventListener("input", () => {
+        if (formStarted) return;
+        formStarted = true;
+        track("form_start");
+      });
+
+      const fieldOf = (el) => el.closest(".field") || el.closest(".check");
+
+      function validate() {
+        let firstBad = null;
+        form.querySelectorAll("[required]").forEach((el) => {
+          const ok = el.type === "checkbox" ? el.checked : el.value.trim() !== "" && el.checkValidity();
+          const wrap = fieldOf(el);
+          if (wrap) wrap.classList.toggle("is-invalid", !ok);
+          if (!ok && !firstBad) firstBad = el;
+        });
+        return firstBad;
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const firstBad = validate();
+        if (firstBad) {
+          status.classList.remove("is-shown");
+          firstBad.focus();
+          return;
+        }
+
+        const data = new FormData(form);
+        track("partner_application_submit");
+
+        if (FORM_ENDPOINT) {
+          fetch(FORM_ENDPOINT, { method: "POST", body: data })
+            .then((r) => {
+              if (!r.ok) throw new Error("falha");
+              form.reset();
+              status.textContent = "Candidatura enviada. Nosso time entra em contato depois da análise.";
+              status.classList.add("is-shown");
+            })
+            .catch(() => {
+              status.textContent = "Não foi possível enviar agora. Escreva para " + CONTACT_EMAIL + " que a gente segue por lá.";
+              status.classList.add("is-shown");
+            });
+          return;
+        }
+
+        const lines = [];
+        data.forEach((value, key) => { if (key !== "consent" && key !== "analise" && key !== "marketing") lines.push(key + ": " + value); });
+        lines.push("consentimento: sim", "ciente da analise: sim", "marketing: " + (data.get("marketing") ? "sim" : "nao"));
+        const href = "mailto:" + CONTACT_EMAIL
+          + "?subject=" + encodeURIComponent("Candidatura — TDigital Partners")
+          + "&body=" + encodeURIComponent(lines.join("\n"));
+        window.location.href = href;
+        status.textContent = "Abrimos o seu e-mail com a candidatura preenchida. Confira os dados e envie para concluir.";
+        status.classList.add("is-shown");
+      });
+
+      /* ---------------- Sequência em canvas ---------------- */
       const FRAME_COUNT = 120;
       const FRAME_PAD = 4;
       const LERP_FACTOR = 0.115;
@@ -1023,10 +1555,10 @@
       const DWELL_PEAK = 2.7;
       const LUT_SIZE = 2400;
       const MOBILE_QUERY = "(max-width: 780px)";
-      const MOBILE_ZOOM = 1.28;
-      const MOBILE_FOCAL = 0.38;
       const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
-      const DWELL_CENTERS = [0.045, 0.205, 0.345, 0.555, 0.745, 0.935];
+      const MOBILE_ZOOM = 1.3;
+      const MOBILE_FOCAL = 0.28;
+      const DWELL_CENTERS = [0.045, 0.225, 0.375, 0.565, 0.745, 0.935];
 
       // Relógio de missão: o feixe irrompe da tela do celular por volta deste ponto.
       const CLIP_SECONDS = 9.17;
@@ -1064,45 +1596,31 @@
       let sequenceDistance = 1;
 
       function createFrameStore(directory) {
-        return {
-          directory,
-          images: new Array(FRAME_COUNT),
-          loaded: new Uint8Array(FRAME_COUNT),
-          promises: new Array(FRAME_COUNT)
-        };
+        return { directory, images: new Array(FRAME_COUNT), loaded: new Uint8Array(FRAME_COUNT), promises: new Array(FRAME_COUNT) };
       }
 
-      function frameUrl(index, store = activeStore) {
+      function frameUrl(index, store) {
         return `${store.directory}/frame-${String(index + 1).padStart(FRAME_PAD, "0")}.webp`;
       }
 
       function setLoaderProgress(ratio) {
-        const safeRatio = Math.max(0, Math.min(1, ratio));
-        loaderFill.style.transform = `scaleX(${safeRatio})`;
-        loaderCount.textContent = `${String(Math.round(safeRatio * 100)).padStart(3, "0")}%`;
+        const safe = Math.max(0, Math.min(1, ratio));
+        loaderFill.style.transform = `scaleX(${safe})`;
+        loaderCount.textContent = `${String(Math.round(safe * 100)).padStart(3, "0")}%`;
       }
 
       function loadFrame(index, store = activeStore, retries = 1) {
         if (store.loaded[index]) return Promise.resolve(store.images[index]);
         if (store.promises[index]) return store.promises[index];
-
         store.promises[index] = new Promise((resolve) => {
           const attempt = (remaining) => {
             const image = new Image();
             store.images[index] = image;
             image.decoding = "async";
-            image.onload = () => {
-              store.loaded[index] = 1;
-              resolve(image);
-            };
+            image.onload = () => { store.loaded[index] = 1; resolve(image); };
             image.onerror = () => {
-              if (remaining > 0) {
-                window.setTimeout(() => attempt(remaining - 1), 140);
-              } else {
-                store.images[index] = null;
-                store.promises[index] = null;
-                resolve(null);
-              }
+              if (remaining > 0) window.setTimeout(() => attempt(remaining - 1), 140);
+              else { store.images[index] = null; store.promises[index] = null; resolve(null); }
             };
             image.src = frameUrl(index, store);
           };
@@ -1113,18 +1631,15 @@
 
       async function loadInBatches(indices, size = 8, store = activeStore) {
         for (let start = 0; start < indices.length; start += size) {
-          const batch = indices.slice(start, start + size);
-          await Promise.all(batch.map((index) => loadFrame(index, store)));
+          await Promise.all(indices.slice(start, start + size).map((i) => loadFrame(i, store)));
         }
       }
 
       function nearestLoaded(index, store = activeStore) {
         if (store.loaded[index]) return index;
-        for (let distance = 1; distance < FRAME_COUNT; distance += 1) {
-          const before = index - distance;
-          const after = index + distance;
-          if (before >= 0 && store.loaded[before]) return before;
-          if (after < FRAME_COUNT && store.loaded[after]) return after;
+        for (let d = 1; d < FRAME_COUNT; d += 1) {
+          if (index - d >= 0 && store.loaded[index - d]) return index - d;
+          if (index + d < FRAME_COUNT && store.loaded[index + d]) return index + d;
         }
         return -1;
       }
@@ -1157,17 +1672,11 @@
         ctx.fillStyle = "#0b0812";
         ctx.fillRect(0, 0, width, height);
 
-        let scale;
-        let drawWidth;
-        let drawHeight;
-        let x;
-        let y;
-
+        let scale, drawWidth, drawHeight, x, y;
         if (useMobileFrames) {
-          // Faixa acima do centro, abrindo o rodapé para o texto. O zoom corta as
-          // laterais (o assunto fica sempre no centro do quadro) para a faixa não
-          // ficar franzina no retrato. MOBILE_ZOOM e MOBILE_FOCAL precisam
-          // acompanhar a altura e o topo de .mobile-aperture.
+          // Faixa acima do centro, abrindo o rodapé para o texto. O zoom corta
+          // as laterais (o assunto fica sempre no centro do quadro).
+          // MOBILE_ZOOM e MOBILE_FOCAL espelham .mobile-aperture no CSS.
           scale = (width / image.naturalWidth) * MOBILE_ZOOM;
           drawWidth = image.naturalWidth * scale;
           drawHeight = image.naturalHeight * scale;
@@ -1214,10 +1723,8 @@
         }
         const index = Math.max(1, low);
         const leftRaw = rawAtEffective[index - 1];
-        const rightRaw = rawAtEffective[index];
-        const span = rightRaw - leftRaw || 1;
-        const mix = (raw - leftRaw) / span;
-        return Math.max(0, Math.min(1, (index - 1 + mix) / LUT_SIZE));
+        const span = rawAtEffective[index] - leftRaw || 1;
+        return Math.max(0, Math.min(1, (index - 1 + (raw - leftRaw) / span) / LUT_SIZE));
       }
 
       function rawScrollProgress() {
@@ -1227,10 +1734,9 @@
       function missionClock(effective) {
         const offset = (effective - IGNITION_AT) * CLIP_SECONDS;
         const sign = offset < 0 ? "−" : "+";
-        const absolute = Math.abs(offset);
-        const seconds = Math.floor(absolute);
-        const tenths = Math.floor((absolute - seconds) * 10);
-        return `T${sign}00:${String(seconds).padStart(2, "0")},${tenths}`;
+        const abs = Math.abs(offset);
+        const seconds = Math.floor(abs);
+        return `T${sign}00:${String(seconds).padStart(2, "0")},${Math.floor((abs - seconds) * 10)}`;
       }
 
       function updateChapters(effective) {
@@ -1238,18 +1744,14 @@
         let nearest = Infinity;
         for (const chapter of chapters) {
           const center = Number(chapter.dataset.center);
-          const windowSize = Number(chapter.dataset.window);
           const distance = Math.abs(effective - center);
-          const visible = distance <= windowSize;
+          const visible = distance <= Number(chapter.dataset.window);
           if (chapterVisibility.get(chapter) !== visible) {
             chapterVisibility.set(chapter, visible);
             chapter.classList.toggle("is-visible", visible);
             chapter.setAttribute("aria-hidden", String(!visible));
           }
-          if (distance < nearest) {
-            nearest = distance;
-            active = chapter;
-          }
+          if (distance < nearest) { nearest = distance; active = chapter; }
         }
         if (telemetryChapter.textContent !== active.dataset.label) {
           telemetryChapter.textContent = active.dataset.label;
@@ -1258,23 +1760,17 @@
 
       function updateInterface(raw, effective, frame) {
         document.documentElement.style.setProperty("--frame-progress", raw.toFixed(4));
-        document.documentElement.style.setProperty("--title-wdth", String(Math.round(80 + effective * 28)));
+        document.documentElement.style.setProperty("--title-wdth", String(Math.round(80 + effective * 26)));
         telemetryFrame.textContent = `Q ${String(frame + 1).padStart(4, "0")} / ${String(FRAME_COUNT).padStart(4, "0")}`;
 
         const clock = missionClock(effective);
-        if (clock !== lastClock) {
-          telemetryClock.textContent = clock;
-          lastClock = clock;
-        }
+        if (clock !== lastClock) { telemetryClock.textContent = clock; lastClock = clock; }
 
         const nowIgnited = effective >= IGNITION_AT;
-        if (nowIgnited !== ignited) {
-          ignited = nowIgnited;
-          stage.classList.toggle("is-ignited", ignited);
-        }
+        if (nowIgnited !== ignited) { ignited = nowIgnited; stage.classList.toggle("is-ignited", ignited); }
 
         const edge = Math.min(effective, 1 - effective) / 0.08;
-        stage.style.setProperty("--scrim-opacity", String(Math.min(0.82, 0.5 + edge * 0.23)));
+        stage.style.setProperty("--scrim-opacity", String(Math.min(0.85, 0.55 + edge * 0.22)));
       }
 
       function dismissLoader() {
@@ -1288,7 +1784,6 @@
         loaderLabel.textContent = "Não foi possível carregar os quadros — recarregue a página";
         loaderCount.textContent = "ERRO";
         loaderCount.style.color = "var(--ignition)";
-        loader.setAttribute("aria-label", "Os quadros do filme não puderam ser carregados. Recarregue a página para tentar de novo.");
       }
 
       function renderReducedPoster(frame) {
@@ -1324,11 +1819,7 @@
 
         if (reducedMotion) {
           const posterFrame = Math.round(0.92 * (FRAME_COUNT - 1));
-          const poster = await loadFrame(posterFrame);
-          if (!poster) {
-            showLoadError();
-            return;
-          }
+          if (!(await loadFrame(posterFrame))) return showLoadError();
           renderReducedPoster(posterFrame);
           dismissLoader();
           return;
@@ -1336,37 +1827,27 @@
 
         const critical = Array.from(new Set([
           0,
-          ...DWELL_CENTERS.map((center) => Math.round(center * (FRAME_COUNT - 1))),
+          ...DWELL_CENTERS.map((c) => Math.round(c * (FRAME_COUNT - 1))),
           FRAME_COUNT - 1
         ])).sort((a, b) => a - b);
 
-        const firstFrame = await loadFrame(0);
-        if (firstFrame) {
-          drawFrame(0);
-          setLoaderProgress(0.28);
-        }
+        if (await loadFrame(0)) { drawFrame(0); setLoaderProgress(0.28); }
 
-        const criticalTail = critical.filter((index) => index !== 0);
+        const tail = critical.filter((i) => i !== 0);
         let prepared = 0;
-        await Promise.all(criticalTail.map(async (index) => {
+        await Promise.all(tail.map(async (index) => {
           const image = await loadFrame(index);
           prepared += 1;
-          setLoaderProgress(0.28 + 0.68 * (prepared / criticalTail.length));
+          setLoaderProgress(0.28 + 0.68 * (prepared / tail.length));
           return image;
         }));
 
-        const readyFrame = nearestLoaded(0);
-        if (readyFrame < 0) {
-          showLoadError();
-          return;
-        }
-        drawFrame(readyFrame);
+        if (nearestLoaded(0) < 0) return showLoadError();
+        drawFrame(nearestLoaded(0));
         dismissLoader();
         tick();
 
-        const remaining = Array.from({ length: FRAME_COUNT }, (_, index) => index)
-          .filter((index) => !critical.includes(index));
-        loadInBatches(remaining);
+        loadInBatches(Array.from({ length: FRAME_COUNT }, (_, i) => i).filter((i) => !critical.includes(i)));
       }
 
       async function swapFrameSet(event) {
@@ -1375,36 +1856,33 @@
         lastDrawn = -1;
         resizeCanvas();
         updateSequenceMetrics();
-
         const frame = Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(currentFrame)));
-        const image = await loadFrame(frame, activeStore);
-        if (!image) return;
+        if (!(await loadFrame(frame, activeStore))) return;
         drawFrame(frame);
-
-        const byDistance = Array.from({ length: FRAME_COUNT }, (_, index) => index)
-          .sort((a, b) => Math.abs(a - frame) - Math.abs(b - frame));
-        loadInBatches(byDistance, 8, activeStore);
+        loadInBatches(
+          Array.from({ length: FRAME_COUNT }, (_, i) => i).sort((a, b) => Math.abs(a - frame) - Math.abs(b - frame)),
+          8,
+          activeStore
+        );
       }
 
-      const header = document.querySelector(".site-header");
-      const editorial = document.querySelector(".editorial");
-      if (window.IntersectionObserver && header && editorial) {
-        new IntersectionObserver((entries) => {
-          for (const entry of entries) header.classList.toggle("is-hidden", entry.isIntersecting);
-        }, { rootMargin: "-64px 0px 0px 0px" }).observe(editorial);
+      const howSection = document.getElementById("como-funciona");
+      if (window.IntersectionObserver && howSection) {
+        const once = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            track("how_it_works_view");
+            once.disconnect();
+          }
+        }, { threshold: 0.35 });
+        once.observe(howSection);
       }
 
-      window.addEventListener("resize", () => {
-        resizeCanvas();
-        updateSequenceMetrics();
-      }, { passive: true });
+      window.addEventListener("resize", () => { resizeCanvas(); updateSequenceMetrics(); }, { passive: true });
       mobileMedia.addEventListener("change", swapFrameSet);
       document.addEventListener("visibilitychange", () => {
         pageVisible = !document.hidden;
-        if (pageVisible && !reducedMotion) {
-          cancelAnimationFrame(rafId);
-          tick();
-        }
+        if (pageVisible && !reducedMotion) { cancelAnimationFrame(rafId); tick(); }
       });
 
       init();

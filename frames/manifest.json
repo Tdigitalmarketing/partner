@@ -1,11 +1,11 @@
 {
   "source": {
-    "filename": "3edc71f8-hero.mp4",
-    "duration": 9.19,
-    "resolution": "1280x720",
-    "fps": 24.0,
+    "filename": "105e58fd-hero.mp4",
+    "duration": 9.17,
+    "resolution": "2560x1440",
+    "fps": 30.0,
     "codec": "h264",
-    "total_source_frames": 221
+    "total_source_frames": 275
   },
   "frames": {
     "target_count": 120,
@@ -14,12 +14,12 @@
     "naming_pattern": "frame-{NNNN}.webp"
   },
   "recommended_scroll_height": "400vh",
-  "created": "2026-07-30T14:19:52",
+  "created": "2026-07-31T17:45:34",
   "mobile": {
-    "resolution": "768x432",
+    "resolution": "900x506",
     "actual_count": 120,
-    "total_bytes": 1992800,
-    "avg_frame_bytes": 16606,
-    "total_mb": 1.9
+    "total_bytes": 2886916,
+    "avg_frame_bytes": 24057,
+    "total_mb": 2.75
   }
 }
