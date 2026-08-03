@@ -23,6 +23,7 @@
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/plexmono-500-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script>document.documentElement.classList.add("js");</script>
   <style>
     @font-face {
       font-family: "Archivo";
@@ -858,6 +859,9 @@
       .telemetry { display: none; }
     }
   </style>
+
+  <!-- Camada de imagens: carrega depois do CSS embutido para vencer a cascata. -->
+  <link rel="stylesheet" href="assets/css/images.css">
 </head>
 <body class="is-loading">
   <a class="skip-link" href="#como-funciona">Pular a animação e ir para o conteúdo</a>
@@ -978,18 +982,23 @@
     </section>
 
     <!-- 8.3 — Identificação do problema -->
-    <section class="section" aria-labelledby="problema-title">
+    <section class="section section--split" id="problema" aria-labelledby="problema-title">
       <div class="shell">
         <div class="section__head">
           <span class="section__eyebrow micro">O que acontece hoje</span>
           <h2 class="section__title" id="problema-title">Você já conecta empresas todos os dias.</h2>
           <p class="section__lead">Indicar um fornecedor, apresentar um contato, recomendar quem resolve. Essas conexões movimentam negócios reais — e quase nunca voltam para quem construiu a ponte. O TDigital Partners existe para que a sua indicação tenha um lugar formal, registrado e remunerado.</p>
         </div>
+        <figure class="media">
+          <img src="assets/images/01_problema_networking.webp"
+               alt="Criador de conteúdo segurando o celular, conectado a uma rede luminosa de empresas e apertos de mão."
+               loading="lazy" width="2560" height="1440">
+        </figure>
       </div>
     </section>
 
     <!-- 8.4 — Como funciona -->
-    <section class="section section--alt" id="como-funciona" aria-labelledby="como-title">
+    <section class="section section--alt has-bg" id="como-funciona" aria-labelledby="como-title">
       <div class="shell">
         <div class="section__head">
           <span class="section__eyebrow micro">Como funciona</span>
@@ -1017,8 +1026,13 @@
     </section>
 
     <!-- 8.5 — O que a TDigital faz -->
-    <section class="section" aria-labelledby="tdigital-title">
+    <section class="section section--split section--split--left" id="o-que-fazemos" aria-labelledby="tdigital-title">
       <div class="shell">
+        <figure class="media">
+          <img src="assets/images/03_tdigital_team.webp"
+               alt="Equipe da TDigital reunida diante de dashboards de marketing digital."
+               loading="lazy" width="2560" height="1440">
+        </figure>
         <div class="section__head">
           <span class="section__eyebrow micro">Do nosso lado</span>
           <h2 class="section__title" id="tdigital-title">Você não vende, não atende e não executa.</h2>
@@ -1039,7 +1053,7 @@
     </section>
 
     <!-- 8.6 — Comissões recorrentes -->
-    <section class="section section--alt" id="comissoes" aria-labelledby="comissoes-title">
+    <section class="section section--alt has-bg" id="comissoes" aria-labelledby="comissoes-title">
       <div class="shell">
         <div class="section__head">
           <span class="section__eyebrow micro">Comissões</span>
@@ -1090,6 +1104,9 @@
         </div>
 
         <div class="sim">
+          <figure class="media media--gold simulador__imagem" aria-hidden="true">
+            <img src="assets/images/10_simulador_banner.webp" alt="" loading="lazy" width="2560" height="1440">
+          </figure>
           <div class="sim__controls">
             <div class="sim__field">
               <label for="sim-clients">Clientes ativos indicados <span class="sim__value" id="sim-clients-out">3</span></label>
@@ -1127,12 +1144,17 @@
     </section>
 
     <!-- 8.8 — Benefícios -->
-    <section class="section section--alt" id="beneficios" aria-labelledby="beneficios-title">
+    <section class="section section--alt section--split" id="beneficios" aria-labelledby="beneficios-title">
       <div class="shell">
         <div class="section__head">
           <span class="section__eyebrow micro">Benefícios</span>
           <h2 class="section__title" id="beneficios-title">O que sai da sua conta.</h2>
         </div>
+        <figure class="media media--gold">
+          <img src="assets/images/05_beneficios_banner.webp"
+               alt="Parceiro da TDigital acompanhando indicações e comissões pelo celular."
+               loading="lazy" width="2560" height="1440">
+        </figure>
         <div class="cards">
           <div class="card"><h3>Você não precisa vender</h3><p>A condução comercial é inteiramente da TDigital, do primeiro contato ao fechamento.</p></div>
           <div class="card"><h3>Sem reuniões comerciais</h3><p>Você não participa de call, apresentação ou negociação com a empresa indicada.</p></div>
@@ -1145,7 +1167,7 @@
     </section>
 
     <!-- 8.9 — Transparência e segurança -->
-    <section class="section" id="transparencia" aria-labelledby="transp-title">
+    <section class="section has-bg" id="transparencia" aria-labelledby="transp-title">
       <div class="shell">
         <div class="section__head">
           <span class="section__eyebrow micro">Transparência</span>
@@ -1187,7 +1209,7 @@
     </section>
 
     <!-- 8.10 — Para quem é -->
-    <section class="section section--alt" id="para-quem" aria-labelledby="paraquem-title">
+    <section class="section section--alt has-bg" id="para-quem" aria-labelledby="paraquem-title">
       <div class="shell">
         <div class="section__head">
           <span class="section__eyebrow micro">Para quem é</span>
@@ -1195,10 +1217,10 @@
           <p class="section__lead">O valor está no relacionamento e na capacidade de gerar conexões comerciais qualificadas.</p>
         </div>
         <div class="cards">
-          <div class="card"><h3>Influenciadores e criadores</h3><p>Quem produz conteúdo e já é procurado por empresas que querem aparecer.</p></div>
+          <div class="card card--foto" style="background-image:url('assets/images/07_perfil_influenciador.webp')"><h3>Influenciadores e criadores</h3><p>Quem produz conteúdo e já é procurado por empresas que querem aparecer.</p></div>
           <div class="card"><h3>Criadores locais</h3><p>Quem tem autoridade em uma cidade ou região e conhece os negócios de perto.</p></div>
           <div class="card"><h3>Micro e nano influenciadores</h3><p>Audiências menores e muito engajadas costumam converter melhor do que números grandes.</p></div>
-          <div class="card"><h3>Especialistas de nicho</h3><p>Quem é referência em um segmento específico e conversa com empresários daquele meio.</p></div>
+          <div class="card card--foto" style="background-image:url('assets/images/08_perfil_especialista.webp')"><h3>Especialistas de nicho</h3><p>Quem é referência em um segmento específico e conversa com empresários daquele meio.</p></div>
           <div class="card"><h3>Profissionais com networking</h3><p>Quem circula entre empresas e é chamado para indicar fornecedores e parceiros.</p></div>
           <div class="card"><h3>Quem já conecta marcas</h3><p>Quem faz publicidade para empresas e quer participar do resultado comercial da conexão.</p></div>
         </div>
@@ -1247,7 +1269,7 @@
     </section>
 
     <!-- 8.13 + 8.14 — CTA final e formulário -->
-    <section class="section" id="candidatura" aria-labelledby="candidatura-title">
+    <section class="section has-bg" id="candidatura" aria-labelledby="candidatura-title">
       <div class="shell">
         <div class="apply">
           <div class="apply__pitch">
@@ -1886,6 +1908,41 @@
       });
 
       init();
+    })();
+  </script>
+
+  <script>
+    /* Fade-in das imagens ao entrar em cena. Se um arquivo faltar, o bloco de
+       mídia é escondido em vez de mostrar ícone de imagem quebrada — assim a
+       página nunca fica com buraco enquanto os arquivos não chegam. */
+    (() => {
+      "use strict";
+      const media = Array.from(document.querySelectorAll(".media img"));
+      const cards = Array.from(document.querySelectorAll(".card--foto"));
+
+      const reveal = (el) => el.classList.add("is-loaded");
+      const drop = (img) => {
+        const holder = img.closest(".media");
+        if (holder) holder.hidden = true;
+      };
+
+      media.forEach((img) => {
+        if (img.complete) return img.naturalWidth ? reveal(img) : drop(img);
+        img.addEventListener("load", () => reveal(img), { once: true });
+        img.addEventListener("error", () => drop(img), { once: true });
+      });
+
+      // Cards de perfil usam background-image: testamos o arquivo à parte para
+      // saber se a foto existe antes de acender o card.
+      cards.forEach((card) => {
+        const raw = getComputedStyle(card).backgroundImage;
+        const match = raw && raw.match(/url\(["']?(.+?)["']?\)/);
+        if (!match) return reveal(card);
+        const probe = new Image();
+        probe.onload = () => reveal(card);
+        probe.onerror = () => { card.classList.remove("card--foto"); reveal(card); };
+        probe.src = match[1];
+      });
     })();
   </script>
 </body>

@@ -1,0 +1,249 @@
+/* ============================================
+   TDigital Partners — Camada de imagens
+   Carregado depois do CSS embutido no index.html.
+   Só adiciona imagens: não altera texto, estrutura nem animações.
+   ============================================ */
+
+:root {
+  /* Base dos overlays. Usa o preto-roxo do site (--void, #0b0812) em vez do
+     #0F172A do guia, que é azulado e criaria uma emenda visível entre as
+     seções com imagem e as sem imagem. As opacidades seguem o guia. */
+  --img-scrim: 11, 8, 18;
+  --img-radius: 16px;
+}
+
+/* Fade-in só quando há JS. Sem a classe .js as imagens nascem visíveis,
+   para que uma falha de script nunca deixe a página sem imagem alguma. */
+.js .media img,
+.js .card--foto {
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+
+.js .media img.is-loaded,
+.js .card--foto.is-loaded { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .media img,
+  .js .card--foto { opacity: 1; transition: none; }
+}
+
+/* ---------- Bloco de mídia ---------- */
+
+.media {
+  position: relative;
+  margin: 0;
+  border: 1px solid rgba(124, 75, 173, .3);
+  border-radius: var(--img-radius);
+  overflow: hidden;
+  background: rgba(var(--img-scrim), 1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, .4), 0 0 60px rgba(124, 75, 173, .25);
+}
+
+.media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--img-radius);
+}
+
+/* Véu leve para a imagem não competir com o texto ao lado. */
+.media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--img-radius);
+  background: linear-gradient(180deg, rgba(var(--img-scrim), .12), rgba(var(--img-scrim), .38));
+  pointer-events: none;
+}
+
+.media--gold { box-shadow: 0 4px 24px rgba(0, 0, 0, .4), 0 0 80px rgba(242, 180, 92, .16), 0 0 40px rgba(124, 75, 173, .2); }
+
+/* ---------- Seções em duas colunas ---------- */
+
+.section--split .shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+}
+
+.section--split .section__head { margin-bottom: 0; }
+.section--split .media { order: 2; }
+.section--split--left .media { order: -1; }
+
+/* Listas e cards continuam ocupando a largura toda, abaixo do par texto+imagem. */
+.section--split .cards,
+.section--split .duties { grid-column: 1 / -1; margin-top: clamp(28px, 3.5vw, 52px); }
+
+/* ---------- Seções com imagem de fundo ---------- */
+
+.has-bg { position: relative; background-size: cover; background-repeat: no-repeat; }
+
+.has-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.has-bg > .shell { position: relative; z-index: 1; }
+
+/* 02 — Como funciona */
+#como-funciona {
+  background-image: url("../images/02_como_funciona_banner.webp");
+  background-position: center top;
+}
+
+#como-funciona::before {
+  background: linear-gradient(
+    180deg,
+    rgba(var(--img-scrim), .93) 0%,
+    rgba(var(--img-scrim), .76) 50%,
+    rgba(var(--img-scrim), .93) 100%
+  );
+}
+
+/* 04 — Comissões */
+#comissoes {
+  background-image: url("../images/04_comissoes_infografico.webp");
+  background-position: center;
+}
+
+#comissoes::before {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--img-scrim), .91) 0%,
+    rgba(var(--img-scrim), .82) 50%,
+    rgba(var(--img-scrim), .91) 100%
+  );
+}
+
+/* 06 — Transparência */
+#transparencia {
+  background-image: url("../images/06_transparencia_banner.webp");
+  background-position: center;
+}
+
+#transparencia::before {
+  background: linear-gradient(
+    100deg,
+    rgba(var(--img-scrim), .9) 0%,
+    rgba(var(--img-scrim), .74) 100%
+  );
+}
+
+/* 09 — Para quem é */
+#para-quem {
+  background-image: url("../images/09_parceiros_grupo.webp");
+  background-position: center 30%;
+}
+
+#para-quem::before {
+  background: linear-gradient(
+    180deg,
+    rgba(var(--img-scrim), .95) 0%,
+    rgba(var(--img-scrim), .74) 40%,
+    rgba(var(--img-scrim), .95) 100%
+  );
+}
+
+/* 11 — CTA final. Overlay mais forte: o formulário precisa continuar legível. */
+#candidatura {
+  background-image: url("../images/11_cta_final_banner.webp");
+  background-position: center;
+}
+
+#candidatura::before {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--img-scrim), .94) 0%,
+    rgba(124, 75, 173, .16) 50%,
+    rgba(var(--img-scrim), .94) 100%
+  );
+}
+
+/* Parallax só onde é seguro: em toque, background-attachment: fixed causa
+   repaint pesado e é ignorado pelo iOS Safari. */
+@media (min-width: 1024px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  #como-funciona { background-attachment: fixed; }
+}
+
+/* ---------- 07 e 08 — Cards de perfil com foto ---------- */
+
+.card--foto {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 400px;
+  padding: 24px;
+  border-color: rgba(124, 75, 173, .38);
+  /* A URL vem do atributo style no HTML: dentro deste arquivo, um url()
+     relativo resolveria a partir de assets/css/ e apontaria para o lugar errado. */
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.card--foto::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    to top,
+    rgba(var(--img-scrim), .96) 0%,
+    rgba(var(--img-scrim), .55) 55%,
+    rgba(var(--img-scrim), .18) 100%
+  );
+  pointer-events: none;
+}
+
+.card--foto > * { position: relative; z-index: 1; }
+
+/* ---------- 10 — Simulador ---------- */
+
+/* A imagem entra na coluna da esquerda, acima dos controles; o painel de
+   resultado ocupa a coluna da direita inteira. */
+#simulador .sim { align-items: start; }
+/* Faixa decorativa: recortada para não empurrar os controles para baixo. */
+#simulador .simulador__imagem { grid-column: 1; grid-row: 1; margin-bottom: clamp(18px, 2vw, 26px); opacity: .9; }
+#simulador .simulador__imagem img { aspect-ratio: 16 / 6; object-fit: cover; }
+#simulador .sim__controls { grid-column: 1; grid-row: 2; }
+#simulador .sim > div:last-child { grid-column: 2; grid-row: 1 / 3; }
+
+@media (max-width: 900px) {
+  .simulador__imagem { display: none; }
+  #simulador .sim__controls,
+  #simulador .sim > div:last-child { grid-column: auto; grid-row: auto; }
+}
+
+/* ---------- Responsivo ---------- */
+
+@media (max-width: 900px) {
+  .section--split .shell { grid-template-columns: 1fr; }
+  /* No retrato a imagem vem antes do texto nas seções 01 e 05, como no guia. */
+  .section--split .media { order: -1; }
+  #beneficios .cards { margin-top: 0; }
+  .card--foto { min-height: 320px; }
+}
+
+@media (max-width: 780px) {
+  .has-bg { background-attachment: scroll; }
+  /* Fundo mais discreto no celular: menos peso visual atrás do texto. */
+  #como-funciona::before,
+  #comissoes::before,
+  #transparencia::before,
+  #para-quem::before,
+  #candidatura::before {
+    background: linear-gradient(
+      180deg,
+      rgba(var(--img-scrim), .93) 0%,
+      rgba(var(--img-scrim), .88) 50%,
+      rgba(var(--img-scrim), .95) 100%
+    );
+  }
+}

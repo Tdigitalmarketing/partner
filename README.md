@@ -27,11 +27,36 @@ Netlify, Vercel, S3).
 
 ```
 index.html              página inteira (HTML, CSS e JS embutidos)
+assets/css/images.css   camada de imagens das seções
+assets/images/          as 11 imagens das seções (ver README de lá)
 frames/desktop/         120 quadros WebP 1920×1080  (6,2 MB)
 frames/mobile/          120 quadros WebP  900×506   (2,8 MB)
 frames/manifest.json    metadados da extração
 fonts/                  Archivo + IBM Plex Mono (WOFF2, self-hosted)
 ```
+
+## Imagens das seções
+
+A camada de imagens vive em `assets/css/images.css`, carregado **depois** do
+`<style>` embutido — se vier antes, o CSS inline vence a cascata e as imagens
+não aparecem. Os pontos de inserção já estão no HTML; falta só colocar os
+arquivos em `assets/images/` (nomes e proporções no README daquela pasta).
+
+Enquanto os arquivos não existirem a página continua correta: os fundos ficam
+escuros como antes, os blocos `<figure class="media">` se escondem sozinhos e
+os cards de perfil voltam ao estilo comum. Nada de ícone de imagem quebrada.
+
+Três adaptações em relação ao guia original, todas deliberadas:
+
+- **Overlays no preto-roxo do site** (`--void`, #0b0812) em vez de #0F172A. O
+  tom do guia é azulado e criaria uma emenda visível entre as seções com e sem
+  imagem. As opacidades seguem o guia.
+- **`background-attachment: fixed`** só em telas ≥1024px com ponteiro fino e
+  sem `prefers-reduced-motion`. Em toque ele causa repaint pesado e o iOS
+  Safari ignora.
+- **Fade-in condicionado à classe `.js`** no `<html>`. O guia deixava
+  `img[loading="lazy"]` em `opacity: 0` no CSS, o que esconderia todas as
+  imagens para sempre se o script falhasse.
 
 ## Seções
 
