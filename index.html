@@ -1247,10 +1247,10 @@
         </div>
         <div class="cards">
           <div class="card card--foto" style="background-image:url('assets/images/07_perfil_influenciador.webp')"><h3>Influenciadores e criadores</h3><p>Quem produz conteúdo e já é procurado por empresas que querem aparecer.</p></div>
-          <div class="card"><h3>Criadores locais</h3><p>Quem tem autoridade em uma cidade ou região e conhece os negócios de perto.</p></div>
-          <div class="card"><h3>Micro e nano influenciadores</h3><p>Audiências menores e muito engajadas costumam converter melhor do que números grandes.</p></div>
+          <div class="card card--foto" style="background-image:url('assets/images/12_perfil_criador_local.webp')"><h3>Criadores locais</h3><p>Quem tem autoridade em uma cidade ou região e conhece os negócios de perto.</p></div>
+          <div class="card card--foto" style="background-image:url('assets/images/13_perfil_micro_influenciador.webp')"><h3>Micro e nano influenciadores</h3><p>Audiências menores e muito engajadas costumam converter melhor do que números grandes.</p></div>
           <div class="card card--foto" style="background-image:url('assets/images/08_perfil_especialista.webp')"><h3>Especialistas de nicho</h3><p>Quem é referência em um segmento específico e conversa com empresários daquele meio.</p></div>
-          <div class="card"><h3>Profissionais com networking</h3><p>Quem circula entre empresas e é chamado para indicar fornecedores e parceiros.</p></div>
+          <div class="card card--foto" style="background-image:url('assets/images/14_perfil_networking.webp')"><h3>Profissionais com networking</h3><p>Quem circula entre empresas e é chamado para indicar fornecedores e parceiros.</p></div>
           <div class="card"><h3>Quem já conecta marcas</h3><p>Quem faz publicidade para empresas e quer participar do resultado comercial da conexão.</p></div>
         </div>
       </div>
@@ -1993,6 +1993,17 @@
 
       init();
     })();
+  </script>
+
+  <script>
+    /* Menu do botão direito desabilitado a pedido da TDigital.
+       Campos de formulário ficam de fora: colar, corrigir ortografia e
+       preenchimento automático dependem do menu de contexto, e travá-los
+       atrapalharia justamente quem está se candidatando. */
+    document.addEventListener("contextmenu", (e) => {
+      if (e.target.closest("input, textarea, select")) return;
+      e.preventDefault();
+    });
   </script>
 
   <script>
