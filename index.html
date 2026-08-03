@@ -239,7 +239,8 @@
       font-size: clamp(72px, 17vw, 260px);
       font-weight: 780;
       font-variation-settings: "wdth" 78;
-      letter-spacing: -.075em;
+      /* Duas maiúsculas largas: um tracking muito negativo faz o T e o D se tocarem. */
+      letter-spacing: -.015em;
       line-height: .7;
     }
 
@@ -874,7 +875,7 @@
 
   <div class="loader" id="loader" aria-label="Carregando a sequência de lançamento">
     <div class="loader__mark">
-      <p class="loader__number" aria-hidden="true">T−9</p>
+      <p class="loader__number" aria-hidden="true">TD</p>
       <div class="loader__meta micro">TDigital Partners<br>Sequência de lançamento<br>9,17 segundos · 120 quadros</div>
     </div>
     <div class="loader__foot">
