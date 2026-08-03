@@ -28,6 +28,7 @@ Netlify, Vercel, S3).
 ```
 index.html              página inteira (HTML, CSS e JS embutidos)
 assets/css/images.css   camada de imagens das seções
+assets/favicon/         ícones do navegador e do atalho no celular
 assets/images/          as 11 imagens das seções (ver README de lá)
 frames/desktop/         120 quadros WebP 1920×1080  (6,2 MB)
 frames/mobile/          120 quadros WebP  900×506   (2,8 MB)
@@ -156,6 +157,26 @@ python3 extract_frames.py --input hero.mp4 --output frames \
 
 Os quadros nunca devem passar da resolução do vídeo original.
 
+## Favicon
+
+Gerado a partir de `Favicon.png` (510×510, enviado pela TDigital) sem alterar
+a arte. Regerar com outro arquivo é repetir estes comandos:
+
+```bash
+for s in 32 48 192 512; do
+  ffmpeg -y -i Favicon.png -vf "scale=$s:$s:flags=lanczos" assets/favicon/icon-$s.png
+done
+# O iOS pinta de preto qualquer transparência: este precisa de fundo sólido.
+ffmpeg -y -f lavfi -i "color=c=0x7c4bad:s=180x180" -i Favicon.png \
+  -filter_complex "[1]scale=164:164:flags=lanczos[i];[0][i]overlay=8:8" \
+  -frames:v 1 assets/favicon/apple-touch-icon.png
+```
+
+Na aba do navegador o ícone aparece com cerca de 16px, e nesse tamanho a
+palavra "Partners" some — vira uma mancha escura na base do círculo. Se um dia
+quiserem ganhar legibilidade, a saída é uma versão só com o foguete, sem os
+textos.
+
 ## Acessibilidade
 
 - `prefers-reduced-motion` troca a sequência por um quadro fixo da decolagem,
@@ -178,9 +199,9 @@ Itens que dependem de decisão ou material da TDigital:
    depoimentos, logos de clientes e cases estão fora da página até haver
    confirmação e material comprobatório. O ponto de inserção está marcado por
    comentário no HTML, na seção institucional.
-3. **Imagens com homens e mulheres.** O filme enviado tem um único criador
-   homem. A direção pede representação de ambos e, de preferência, uma dupla
-   de influenciadores.
+3. **Imagens com homens e mulheres.** Resolvido nas fotos de seção: os seis
+   cards de "Para quem é" e o banner do grupo trazem homens e mulheres. O filme
+   do hero continua com um único criador homem.
 4. **Regras financeiras em aberto** (listadas na seção 5 do Prompt Mestre):
    comportamento acima de 15 clientes ativos, mudança de faixa retroativa ou
    não, datas de fechamento e pagamento, valor mínimo de saque, documentação
@@ -189,7 +210,8 @@ Itens que dependem de decisão ou material da TDigital:
    parceiro indicado e a partir de quando contam os 12 meses.
 5. **Textos jurídicos.** Política de privacidade, termos de uso e regulamento
    ainda não existem; os links do formulário precisam apontar para eles depois
-   da revisão jurídica.
-6. **Domínio.** As tags canonical e Open Graph usam
-   `partners.tdigitalsocialmedia.com.br` como suposição — ajustar para o
-   domínio real.
+   da revisão jurídica. A política precisa citar o FormSubmit como processador
+   dos dados enviados pelo formulário.
+6. **Ativação do formulário.** A primeira candidatura dispara um e-mail de
+   confirmação do FormSubmit para a caixa comercial; enquanto ninguém clicar
+   no link, nada é entregue.
