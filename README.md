@@ -37,16 +37,16 @@ fonts/                  Archivo + IBM Plex Mono (WOFF2, self-hosted)
 
 ## Imagens das seções
 
-A camada de imagens vive em `assets/css/images.css`, carregado **depois** do
-`<style>` embutido — se vier antes, o CSS inline vence a cascata e as imagens
-não aparecem. Os pontos de inserção já estão no HTML; falta só colocar os
-arquivos em `assets/images/` (nomes e proporções no README daquela pasta).
+As 11 imagens estão em `assets/images/`, em WebP (848 KB no total, convertidas
+dos JPG originais de 2560×1440 e 1632×2176). A camada de estilo vive em
+`assets/css/images.css`, carregado **depois** do `<style>` embutido — se vier
+antes, o CSS inline vence a cascata e as imagens somem.
 
-Enquanto os arquivos não existirem a página continua correta: os fundos ficam
-escuros como antes, os blocos `<figure class="media">` se escondem sozinhos e
-os cards de perfil voltam ao estilo comum. Nada de ícone de imagem quebrada.
+Se algum arquivo faltar, a página continua correta: o fundo fica escuro como
+antes, os blocos `<figure class="media">` se escondem sozinhos e os cards de
+perfil voltam ao estilo comum. Nada de ícone de imagem quebrada.
 
-Três adaptações em relação ao guia original, todas deliberadas:
+Quatro adaptações em relação ao guia original, todas deliberadas:
 
 - **Overlays no preto-roxo do site** (`--void`, #0b0812) em vez de #0F172A. O
   tom do guia é azulado e criaria uma emenda visível entre as seções com e sem
@@ -57,6 +57,9 @@ Três adaptações em relação ao guia original, todas deliberadas:
 - **Fade-in condicionado à classe `.js`** no `<html>`. O guia deixava
   `img[loading="lazy"]` em `opacity: 0` no CSS, o que esconderia todas as
   imagens para sempre se o script falhasse.
+- **Painéis sobre imagem ganham fundo próprio** (`rgba` do `--void` entre 74% e
+  88%). A superfície padrão do site tem 4,5% de opacidade: sem isso a foto
+  atravessava cards, listas e — no CTA final — os campos do formulário.
 
 ## Seções
 

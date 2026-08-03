@@ -132,6 +132,7 @@
     :focus-visible { outline: 2px solid var(--ignition); outline-offset: 4px; }
 
     h1, h2, h3, p, dl, dd, figure, ul { margin: 0; }
+    img { max-width: 100%; height: auto; }
     ul { padding: 0; list-style: none; }
 
     .sr-only {
@@ -639,6 +640,8 @@
     /* Simulador */
     .sim { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 48px); align-items: start; }
     .sim__controls { display: grid; gap: 28px; padding: 30px; border: 1px solid var(--line); background: var(--surface); }
+    /* Item de grid sem min-width: 0 não encolhe abaixo do min-content do campo. */
+    .sim__field { min-width: 0; }
     .sim__field label { display: block; margin-bottom: 12px; font-size: 15px; font-weight: 600; }
     .sim__value { font-family: var(--data); font-size: 13px; color: var(--ignition); }
 
@@ -647,7 +650,7 @@
     .sim__money { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line-strong); background: rgba(11, 8, 18, .5); padding: 0 14px; }
     .sim__money span { font-family: var(--data); font-size: 13px; color: var(--alloy); }
     .sim__money input {
-      flex: 1;
+      flex: 1 1 0;
       min-width: 0;
       min-height: 48px;
       border: 0;
@@ -712,7 +715,7 @@
     .apply__pitch .section__title { font-size: clamp(30px, 3.6vw, 52px); }
 
     .form { display: grid; gap: 18px; padding: clamp(24px, 3vw, 36px); border: 1px solid var(--line); background: var(--surface); }
-    .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
     .field { display: grid; gap: 8px; }
     .field label { font-size: 14px; font-weight: 600; }
     .field .opt { color: var(--alloy); font-weight: 400; }
@@ -720,6 +723,8 @@
     .field input,
     .field select,
     .field textarea {
+      min-width: 0;
+      width: 100%;
       min-height: 48px;
       padding: 12px 14px;
       border: 1px solid var(--line-strong);
@@ -753,8 +758,8 @@
     /* ---------- Mobile ---------- */
 
     @media (max-width: 900px) {
-      .steps, .duties, .tiers, .cards { grid-template-columns: repeat(2, 1fr); }
-      .sim, .apply, .ledger { grid-template-columns: 1fr; }
+      .steps, .duties, .tiers, .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sim, .apply, .ledger { grid-template-columns: minmax(0, 1fr); }
     }
 
     @media (max-width: 780px) {
@@ -837,10 +842,11 @@
       .loader__number { font-size: 34vw; }
       .loader__meta { margin-top: 20px; text-align: left; }
 
-      .steps, .duties, .tiers, .cards { grid-template-columns: 1fr; }
+      .steps, .duties, .tiers, .cards { grid-template-columns: minmax(0, 1fr); }
       .duties { gap: 0; }
       .duties li { border-bottom: 1px solid var(--line); }
-      .form__row { grid-template-columns: 1fr; }
+      .form__row { grid-template-columns: minmax(0, 1fr); }
+      .sim__controls { padding: 22px 18px; }
       .site-footer__inner { grid-template-columns: 1fr; }
     }
 

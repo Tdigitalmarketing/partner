@@ -144,12 +144,13 @@
   background: linear-gradient(
     180deg,
     rgba(var(--img-scrim), .95) 0%,
-    rgba(var(--img-scrim), .74) 40%,
+    rgba(var(--img-scrim), .84) 40%,
     rgba(var(--img-scrim), .95) 100%
   );
 }
 
-/* 11 — CTA final. Overlay mais forte: o formulário precisa continuar legível. */
+/* 11 — CTA final. Gradiente horizontal: a dupla continua visível à esquerda,
+   atrás do texto, e o lado do formulário fica escuro. */
 #candidatura {
   background-image: url("../images/11_cta_final_banner.webp");
   background-position: center;
@@ -157,12 +158,25 @@
 
 #candidatura::before {
   background: linear-gradient(
-    135deg,
-    rgba(var(--img-scrim), .94) 0%,
-    rgba(124, 75, 173, .16) 50%,
-    rgba(var(--img-scrim), .94) 100%
+    90deg,
+    rgba(var(--img-scrim), .88) 0%,
+    rgba(var(--img-scrim), .72) 36%,
+    rgba(var(--img-scrim), .93) 66%,
+    rgba(var(--img-scrim), .96) 100%
   );
 }
+
+/* Painéis sobre imagem precisam de fundo próprio: a superfície padrão do site
+   tem 4,5% de opacidade e deixaria a foto atravessar cards, listas e campos.
+   Só background-color, para não apagar a foto dos cards de perfil. */
+.has-bg .step,
+.has-bg .tier,
+.has-bg .ledger__col,
+.has-bg .card:not(.card--foto) { background-color: rgba(var(--img-scrim), .74); }
+
+.has-bg .duties li { background-color: rgba(var(--img-scrim), .82); }
+
+#candidatura .form { background-color: rgba(var(--img-scrim), .88); }
 
 /* Parallax só onde é seguro: em toque, background-attachment: fixed causa
    repaint pesado e é ignorado pelo iOS Safari. */
@@ -224,7 +238,7 @@
 /* ---------- Responsivo ---------- */
 
 @media (max-width: 900px) {
-  .section--split .shell { grid-template-columns: 1fr; }
+  .section--split .shell { grid-template-columns: minmax(0, 1fr); }
   /* No retrato a imagem vem antes do texto nas seções 01 e 05, como no guia. */
   .section--split .media { order: -1; }
   #beneficios .cards { margin-top: 0; }
