@@ -85,14 +85,32 @@ Tudo no `<script>` do fim do `index.html`.
 ### Formulário
 
 ```js
-const FORM_ENDPOINT = "";   // vazio => entrega por e-mail
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/comercial@tdigitalsocialmedia.com";
 const CONTACT_EMAIL = "comercial@tdigitalsocialmedia.com";
+const WHATSAPP_URL  = "https://wa.me/552126952086";
 ```
 
-Sem back-end, o formulário valida os campos e abre o e-mail do visitante já
-preenchido, para que nenhuma candidatura se perca em silêncio. Assim que o
-endpoint existir, preencha `FORM_ENDPOINT` e o envio passa a ser um `POST`
-`multipart/form-data`. Nenhum dado do formulário é enviado para analytics.
+A candidatura vai por `POST` (`multipart/form-data`) para o FormSubmit, que
+encaminha para o e-mail comercial. O endpoint `/ajax/` responde em JSON, então
+o candidato recebe a confirmação sem sair da página.
+
+**Ativação:** a primeira candidatura enviada dispara um e-mail de confirmação
+do FormSubmit para `comercial@tdigitalsocialmedia.com`. Enquanto ninguém
+clicar naquele link, os envios não são entregues. É uma vez só.
+
+Campos de controle no HTML: `_subject`, `_template=table`, `_captcha=false`
+(a validação é nossa) e `_honey`, um campo escondido que funciona como
+armadilha de spam — robôs preenchem, gente não.
+
+Se o envio falhar, os dados digitados são preservados e a página oferece o
+WhatsApp como saída. Nenhum dado do formulário vai para analytics.
+
+**Trocar para endpoint próprio** é só substituir `FORM_ENDPOINT`; o resto do
+fluxo continua igual. Com a string vazia, volta a abrir o e-mail do visitante.
+
+**Opcional:** depois de ativar, o FormSubmit fornece um código aleatório que
+pode substituir o e-mail na URL (`https://formsubmit.co/ajax/<código>`), para
+o endereço não ficar exposto no HTML contra coletores de spam.
 
 ### Simulador
 

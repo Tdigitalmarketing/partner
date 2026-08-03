@@ -760,6 +760,10 @@
 
     .form__status { display: none; padding: 16px 18px; border: 1px solid rgba(242, 180, 92, .45); background: rgba(242, 180, 92, .08); font-size: 15px; line-height: 1.5; }
     .form__status.is-shown { display: block; }
+    .form__status.is-error { border-color: rgba(255, 157, 138, .5); background: rgba(255, 157, 138, .08); }
+    /* Bloco próprio: como inline-flex o botão caía no meio da frase. */
+    .form__status .btn { display: flex; width: fit-content; margin-top: 14px; }
+    .form button[type="submit"][disabled] { opacity: .6; cursor: progress; }
 
     /* Rodapé */
     .site-footer { padding: 44px var(--gutter); border-top: 1px solid var(--line); background: var(--void); color: var(--alloy); }
@@ -1228,7 +1232,7 @@
 
         <div class="subblock">
           <h3>Seus dados</h3>
-          <p>Os dados informados são usados para analisar a sua candidatura, operar o programa e viabilizar pagamentos. Não vendemos seus dados e não os enviamos para ferramentas de análise. Você pode solicitar acesso, correção ou exclusão conforme a Lei Geral de Proteção de Dados. Ao indicar uma empresa, você confirma que possui relação ou base legítima para compartilhar aquele contato.</p>
+          <p>Os dados informados são usados para analisar a sua candidatura, operar o programa e viabilizar pagamentos. O envio do formulário é processado por um serviço de entrega de formulários, que apenas encaminha a mensagem para o e-mail comercial da TDigital. Não vendemos seus dados e não os enviamos para ferramentas de análise. Você pode solicitar acesso, correção ou exclusão conforme a Lei Geral de Proteção de Dados. Ao indicar uma empresa, você confirma que possui relação ou base legítima para compartilhar aquele contato.</p>
         </div>
       </div>
     </section>
@@ -1305,6 +1309,13 @@
           </div>
 
           <form class="form" id="apply-form" novalidate>
+            <!-- Controles do FormSubmit: assunto, formato do e-mail e captcha desligado
+                 (a validação é nossa). _honey é a armadilha de spam. -->
+            <input type="hidden" name="_subject" value="Nova candidatura — TDigital Partners">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="sr-only">
+
             <div class="form__row">
               <div class="field">
                 <label for="f-nome">Nome completo</label>
@@ -1530,15 +1541,25 @@
       runSim();
 
       /* ---------------- Formulário ----------------
-         Sem back-end ainda: defina FORM_ENDPOINT para receber os envios.
-         Enquanto estiver vazio, a candidatura é entregue por e-mail para não
-         se perder silenciosamente. Nenhum dado do formulário vai para analytics. */
-      const FORM_ENDPOINT = "";
+         A candidatura vai por POST para o FormSubmit, que entrega no e-mail
+         comercial. O endpoint /ajax/ responde em JSON, então o candidato
+         recebe a confirmação sem sair da página.
+
+         Trocar para um endpoint próprio depois é só substituir FORM_ENDPOINT —
+         o resto do fluxo continua igual. Com a string vazia, a candidatura cai
+         no e-mail do próprio visitante, para nunca se perder em silêncio.
+
+         Nenhum dado do formulário vai para analytics. */
+      const FORM_ENDPOINT = "https://formsubmit.co/ajax/comercial@tdigitalsocialmedia.com";
       const CONTACT_EMAIL = "comercial@tdigitalsocialmedia.com";
+      const WHATSAPP_URL = "https://wa.me/552126952086";
 
       const form = document.getElementById("apply-form");
       const status = document.getElementById("form-status");
+      const submitBtn = form.querySelector("button[type=submit]");
+      const submitLabel = submitBtn.textContent;
       let formStarted = false;
+      let sending = false;
 
       form.addEventListener("input", () => {
         if (formStarted) return;
@@ -1559,8 +1580,34 @@
         return firstBad;
       }
 
-      form.addEventListener("submit", (e) => {
+      function showStatus(text, kind) {
+        status.textContent = text;
+        status.classList.remove("is-error");
+        if (kind === "error") status.classList.add("is-error");
+        status.classList.add("is-shown");
+      }
+
+      function setSending(on) {
+        sending = on;
+        submitBtn.disabled = on;
+        submitBtn.textContent = on ? "Enviando…" : submitLabel;
+      }
+
+      function mailtoFallback(data) {
+        const skip = ["consent", "analise", "marketing", "_subject", "_captcha", "_template", "_honey"];
+        const lines = [];
+        data.forEach((value, key) => { if (!skip.includes(key)) lines.push(key + ": " + value); });
+        lines.push("consentimento: sim", "ciente da analise: sim", "marketing: " + (data.get("marketing") ? "sim" : "nao"));
+        window.location.href = "mailto:" + CONTACT_EMAIL
+          + "?subject=" + encodeURIComponent("Candidatura — TDigital Partners")
+          + "&body=" + encodeURIComponent(lines.join("\n"));
+        showStatus("Abrimos o seu e-mail com a candidatura preenchida. Confira os dados e envie para concluir.");
+      }
+
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        if (sending) return;
+
         const firstBad = validate();
         if (firstBad) {
           status.classList.remove("is-shown");
@@ -1569,32 +1616,41 @@
         }
 
         const data = new FormData(form);
+
+        // Armadilha de spam: robôs preenchem o campo escondido, gente não.
+        if (data.get("_honey")) return;
+
         track("partner_application_submit");
 
-        if (FORM_ENDPOINT) {
-          fetch(FORM_ENDPOINT, { method: "POST", body: data })
-            .then((r) => {
-              if (!r.ok) throw new Error("falha");
-              form.reset();
-              status.textContent = "Candidatura enviada. Nosso time entra em contato depois da análise.";
-              status.classList.add("is-shown");
-            })
-            .catch(() => {
-              status.textContent = "Não foi possível enviar agora. Escreva para " + CONTACT_EMAIL + " que a gente segue por lá.";
-              status.classList.add("is-shown");
-            });
-          return;
-        }
+        if (!FORM_ENDPOINT) return mailtoFallback(data);
 
-        const lines = [];
-        data.forEach((value, key) => { if (key !== "consent" && key !== "analise" && key !== "marketing") lines.push(key + ": " + value); });
-        lines.push("consentimento: sim", "ciente da analise: sim", "marketing: " + (data.get("marketing") ? "sim" : "nao"));
-        const href = "mailto:" + CONTACT_EMAIL
-          + "?subject=" + encodeURIComponent("Candidatura — TDigital Partners")
-          + "&body=" + encodeURIComponent(lines.join("\n"));
-        window.location.href = href;
-        status.textContent = "Abrimos o seu e-mail com a candidatura preenchida. Confira os dados e envie para concluir.";
-        status.classList.add("is-shown");
+        setSending(true);
+        try {
+          const res = await fetch(FORM_ENDPOINT, {
+            method: "POST",
+            body: data,
+            headers: { Accept: "application/json" }
+          });
+          const body = await res.json().catch(() => ({}));
+          if (!res.ok || String(body.success) !== "true") throw new Error(body.message || "falha");
+
+          form.reset();
+          showStatus("Candidatura enviada. Nosso time analisa o seu perfil e entra em contato.");
+        } catch (err) {
+          showStatus(
+            "Não conseguimos enviar agora. Fale com a gente no WhatsApp ou escreva para " + CONTACT_EMAIL + ".",
+            "error"
+          );
+          const link = document.createElement("a");
+          link.href = WHATSAPP_URL;
+          link.target = "_blank";
+          link.rel = "noopener";
+          link.className = "btn btn--wa btn--sm";
+          link.textContent = "Falar no WhatsApp";
+          status.appendChild(link);
+        } finally {
+          setSending(false);
+        }
       });
 
       /* ---------------- Sequência em canvas ---------------- */
