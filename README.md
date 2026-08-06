@@ -157,6 +157,20 @@ python3 extract_frames.py --input hero.mp4 --output frames \
 
 Os quadros nunca devem passar da resolução do vídeo original.
 
+## Carregamento
+
+Não há tela de abertura: a página aparece de imediato e a sequência preenche
+o canvas conforme os quadros chegam. O `<link rel="preload">` do quadro 1
+(uma versão para desktop, outra para retrato, escolhidas por `media`) faz o
+primeiro desenho vir quase junto com o hero, e o canvas acende com um fade
+quando pinta.
+
+A rolagem responde desde o primeiro instante — `tick()` roda antes de qualquer
+quadro existir e simplesmente não desenha até o primeiro chegar.
+
+Tempo até a chamada principal ficar legível, medido em banda de 1,5 Mb/s:
+**7,9 s com a tela de abertura, 0,9 s sem ela**.
+
 ## Favicon
 
 Gerado a partir de `Favicon.png` (510×510, enviado pela TDigital) sem alterar

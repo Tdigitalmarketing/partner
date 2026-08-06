@@ -24,6 +24,8 @@
   <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon/icon-48.png">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/icon-192.png">
   <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png">
+  <link rel="preload" as="image" href="frames/desktop/frame-0001.webp" media="(min-width: 781px)">
+  <link rel="preload" as="image" href="frames/mobile/frame-0001.webp" media="(max-width: 780px)">
   <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/plexmono-500-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script>document.documentElement.classList.add("js");</script>
@@ -127,7 +129,11 @@
       overflow-x: clip;
     }
 
-    body.is-loading { overflow: hidden; }
+    /* O canvas nasce transparente e acende quando o primeiro quadro é
+       desenhado, para a sequência não dar um salto ao aparecer. */
+    #film-canvas { opacity: 0; transition: opacity 500ms ease; }
+    #film-canvas.is-ready { opacity: 1; }
+    @media (prefers-reduced-motion: reduce) { #film-canvas { transition: none; } }
     body.menu-open { overflow: hidden; }
 
     a { color: inherit; }
@@ -223,59 +229,14 @@
 
     .skip-link:focus { transform: translateY(0); }
 
-    /* ---------- Pré-lançamento ---------- */
-
-    .loader {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      display: grid;
-      grid-template-rows: 1fr auto;
-      padding: max(24px, env(safe-area-inset-top)) var(--gutter) max(24px, env(safe-area-inset-bottom));
-      background: var(--void);
-      transition: clip-path 900ms var(--ease-out), visibility 900ms;
-      clip-path: inset(0 0 0 0);
-    }
-
-    .loader.is-done { clip-path: inset(0 0 100% 0); visibility: hidden; }
-
-    .loader__mark {
-      align-self: center;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: end;
-      gap: 24px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .loader__number {
-      font-size: clamp(72px, 17vw, 260px);
-      font-weight: 780;
-      font-variation-settings: "wdth" 78;
-      /* Duas maiúsculas largas: um tracking muito negativo faz o T e o D se tocarem. */
-      letter-spacing: -.015em;
-      line-height: .7;
-    }
-
-    .loader__meta { text-align: right; color: var(--alloy); }
-
-    .loader__foot {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 18px;
-      padding-top: 22px;
-    }
-
-    .loader__track, .telemetry__track {
+    .telemetry__track {
       position: relative;
       height: 1px;
       overflow: hidden;
       background: rgba(244, 241, 248, .24);
     }
 
-    .loader__fill, .telemetry__fill {
+    .telemetry__fill {
       position: absolute;
       inset: 0;
       background: var(--violet);
@@ -859,10 +820,6 @@
       .telemetry__clock { min-width: 0; }
       .telemetry__frame { display: none; }
 
-      .loader__mark { display: block; }
-      .loader__number { font-size: 34vw; }
-      .loader__meta { margin-top: 20px; text-align: left; }
-
       .steps, .duties, .tiers, .cards { grid-template-columns: minmax(0, 1fr); }
       .duties { gap: 0; }
       .duties li { border-bottom: 1px solid var(--line); }
@@ -890,20 +847,8 @@
   <!-- Camada de imagens: carrega depois do CSS embutido para vencer a cascata. -->
   <link rel="stylesheet" href="assets/css/images.css">
 </head>
-<body class="is-loading">
+<body>
   <a class="skip-link" href="#como-funciona">Pular a animação e ir para o conteúdo</a>
-
-  <div class="loader" id="loader" aria-label="Carregando a sequência de lançamento">
-    <div class="loader__mark">
-      <p class="loader__number" aria-hidden="true">TD</p>
-      <div class="loader__meta micro">TDigital Partners<br>Sequência de lançamento<br>9,17 segundos · 120 quadros</div>
-    </div>
-    <div class="loader__foot">
-      <span class="micro" id="loader-label">Preparando sequência</span>
-      <div class="loader__track" aria-hidden="true"><span class="loader__fill" id="loader-fill"></span></div>
-      <span class="micro" id="loader-count">000%</span>
-    </div>
-  </div>
 
   <header class="nav" id="nav">
     <div class="nav__inner">
@@ -1677,10 +1622,6 @@
       const stage = document.getElementById("stage");
       const canvas = document.getElementById("film-canvas");
       const ctx = canvas.getContext("2d", { alpha: false, desynchronized: true });
-      const loader = document.getElementById("loader");
-      const loaderFill = document.getElementById("loader-fill");
-      const loaderCount = document.getElementById("loader-count");
-      const loaderLabel = document.getElementById("loader-label");
       const telemetryChapter = document.getElementById("telemetry-chapter");
       const telemetryClock = document.getElementById("telemetry-clock");
       const telemetryFrame = document.getElementById("telemetry-frame");
@@ -1710,12 +1651,6 @@
 
       function frameUrl(index, store) {
         return `${store.directory}/frame-${String(index + 1).padStart(FRAME_PAD, "0")}.webp`;
-      }
-
-      function setLoaderProgress(ratio) {
-        const safe = Math.max(0, Math.min(1, ratio));
-        loaderFill.style.transform = `scaleX(${safe})`;
-        loaderCount.textContent = `${String(Math.round(safe * 100)).padStart(3, "0")}%`;
       }
 
       function loadFrame(index, store = activeStore, retries = 1) {
@@ -1801,6 +1736,7 @@
 
         ctx.drawImage(image, x, y, drawWidth, drawHeight);
         lastDrawn = resolved;
+        canvas.classList.add("is-ready");
       }
 
       const rawAtEffective = new Float64Array(LUT_SIZE + 1);
@@ -1882,19 +1818,6 @@
         stage.style.setProperty("--scrim-opacity", String(Math.min(0.85, 0.55 + edge * 0.22)));
       }
 
-      function dismissLoader() {
-        setLoaderProgress(1);
-        loader.classList.add("is-done");
-        document.body.classList.remove("is-loading");
-        window.setTimeout(() => loader.remove(), 1000);
-      }
-
-      function showLoadError() {
-        loaderLabel.textContent = "Não foi possível carregar os quadros — recarregue a página";
-        loaderCount.textContent = "ERRO";
-        loaderCount.style.color = "var(--ignition)";
-      }
-
       function renderReducedPoster(frame) {
         currentFrame = frame;
         targetFrame = frame;
@@ -1924,15 +1847,16 @@
         buildDwellLut();
         resizeCanvas();
         updateSequenceMetrics();
-        setLoaderProgress(0.06);
 
         if (reducedMotion) {
           const posterFrame = Math.round(0.92 * (FRAME_COUNT - 1));
-          if (!(await loadFrame(posterFrame))) return showLoadError();
-          renderReducedPoster(posterFrame);
-          dismissLoader();
+          if (await loadFrame(posterFrame)) renderReducedPoster(posterFrame);
           return;
         }
+
+        // O scroll já responde: o canvas fica vazio até o primeiro quadro chegar
+        // e vai ganhando definição conforme o resto carrega em segundo plano.
+        tick();
 
         const critical = Array.from(new Set([
           0,
@@ -1940,22 +1864,10 @@
           FRAME_COUNT - 1
         ])).sort((a, b) => a - b);
 
-        if (await loadFrame(0)) { drawFrame(0); setLoaderProgress(0.28); }
+        // O quadro 1 tem <link rel="preload">, então costuma vir do cache.
+        if (await loadFrame(0)) drawFrame(0);
 
-        const tail = critical.filter((i) => i !== 0);
-        let prepared = 0;
-        await Promise.all(tail.map(async (index) => {
-          const image = await loadFrame(index);
-          prepared += 1;
-          setLoaderProgress(0.28 + 0.68 * (prepared / tail.length));
-          return image;
-        }));
-
-        if (nearestLoaded(0) < 0) return showLoadError();
-        drawFrame(nearestLoaded(0));
-        dismissLoader();
-        tick();
-
+        await loadInBatches(critical.filter((i) => i !== 0), 4);
         loadInBatches(Array.from({ length: FRAME_COUNT }, (_, i) => i).filter((i) => !critical.includes(i)));
       }
 
