@@ -86,7 +86,7 @@ Tudo no `<script>` do fim do `index.html`.
 ### Formulário
 
 ```js
-const FORM_ENDPOINT = "https://formsubmit.co/ajax/comercial@tdigitalsocialmedia.com";
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/fd52f94cdd97a83ec9945d3967aa6dc5";
 const CONTACT_EMAIL = "comercial@tdigitalsocialmedia.com";
 const WHATSAPP_URL  = "https://wa.me/552126952086";
 ```
@@ -95,9 +95,16 @@ A candidatura vai por `POST` (`multipart/form-data`) para o FormSubmit, que
 encaminha para o e-mail comercial. O endpoint `/ajax/` responde em JSON, então
 o candidato recebe a confirmação sem sair da página.
 
-**Ativação:** a primeira candidatura enviada dispara um e-mail de confirmação
-do FormSubmit para `comercial@tdigitalsocialmedia.com`. Enquanto ninguém
-clicar naquele link, os envios não são entregues. É uma vez só.
+**Ativação: já feita.** O formulário está ativo e entrega em
+`comercial@tdigitalsocialmedia.com`. Não se repete.
+
+O código na URL é o identificador que o FormSubmit devolve depois da ativação,
+no lugar do e-mail — aponta para a mesma caixa e evita que o endereço fique no
+`action` do formulário, que é o alvo preferido de coletores de spam.
+
+Uma nova ativação só é pedida se o formulário passar a ser enviado de **outra
+origem** (o domínio `github.io`, `localhost`, ou o domínio sem o `www`). Por
+isso, teste sempre por `https://www.tdigitalpartners.com`.
 
 Campos de controle no HTML: `_subject`, `_template=table`, `_captcha=false`
 (a validação é nossa) e `_honey`, um campo escondido que funciona como
@@ -226,6 +233,6 @@ Itens que dependem de decisão ou material da TDigital:
    ainda não existem; os links do formulário precisam apontar para eles depois
    da revisão jurídica. A política precisa citar o FormSubmit como processador
    dos dados enviados pelo formulário.
-6. **Ativação do formulário.** A primeira candidatura dispara um e-mail de
-   confirmação do FormSubmit para a caixa comercial; enquanto ninguém clicar
-   no link, nada é entregue.
+6. **Logo no favicon.** A arte enviada inclui "Partners" e o nome na vertical,
+   que somem nos 16px da aba do navegador. Uma versão só com o foguete daria
+   mais legibilidade — decisão de marca, não de código.
