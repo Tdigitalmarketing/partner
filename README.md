@@ -116,10 +116,6 @@ WhatsApp como saída. Nenhum dado do formulário vai para analytics.
 **Trocar para endpoint próprio** é só substituir `FORM_ENDPOINT`; o resto do
 fluxo continua igual. Com a string vazia, volta a abrir o e-mail do visitante.
 
-**Opcional:** depois de ativar, o FormSubmit fornece um código aleatório que
-pode substituir o e-mail na URL (`https://formsubmit.co/ajax/<código>`), para
-o endereço não ficar exposto no HTML contra coletores de spam.
-
 ### Simulador
 
 ```js
