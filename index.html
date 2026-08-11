@@ -1498,7 +1498,10 @@
          no e-mail do próprio visitante, para nunca se perder em silêncio.
 
          Nenhum dado do formulário vai para analytics. */
-      const FORM_ENDPOINT = "https://formsubmit.co/ajax/comercial@tdigitalsocialmedia.com";
+      // Código do formulário já ativado no FormSubmit. Substitui o e-mail na URL
+      // para o endereço não ficar exposto no código-fonte a coletores de spam.
+      // Aponta para a mesma caixa de sempre: comercial@tdigitalsocialmedia.com.
+      const FORM_ENDPOINT = "https://formsubmit.co/ajax/fd52f94cdd97a83ec9945d3967aa6dc5";
       const CONTACT_EMAIL = "comercial@tdigitalsocialmedia.com";
       const WHATSAPP_URL = "https://wa.me/552126952086";
 
