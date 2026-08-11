@@ -116,6 +116,46 @@ WhatsApp como saída. Nenhum dado do formulário vai para analytics.
 **Trocar para endpoint próprio** é só substituir `FORM_ENDPOINT`; o resto do
 fluxo continua igual. Com a string vazia, volta a abrir o e-mail do visitante.
 
+### Termos de Uso e aceite
+
+O documento completo mora num `<dialog>` nativo no fim do `index.html`, aberto
+pelo link dentro do texto do aceite. Nativo porque já traz de graça o Escape,
+o foco preso dentro do modal e o fundo inerte para leitores de tela.
+
+O botão que abre vive **dentro** do `<label>` do checkbox, então o handler
+chama `stopPropagation()` — sem isso, ler os termos marcaria o aceite sozinho,
+o que contraria a seção 36 (a caixa precisa ser marcada por ação do próprio
+participante).
+
+Cada envio carrega dois campos ocultos para o registro previsto na seção 37:
+
+| Campo | Conteúdo |
+|---|---|
+| `termos_versao` | `TERMOS_INFLUENCIADORES_TDIGITAL_V1.0_2026-08-11` |
+| `termos_aceite_em` | horário ISO 8601 do momento em que a caixa foi marcada |
+
+O IP e o horário de servidor ficam por conta do FormSubmit. **Ao publicar uma
+nova versão dos Termos, atualize `termos_versao` junto com o texto** — é ele
+que identifica qual versão cada parceiro aceitou.
+
+Fora do modal, o documento não é servido como página própria. Se precisarem de
+uma URL fixa para citar em contrato ou anúncio, dá para extrair o conteúdo
+para um `termos.html` e apontar o link para lá.
+
+### Anti-spam
+
+Duas barreiras, ambas invisíveis e sem serviço de terceiros:
+
+- `_honey`, campo escondido que robôs preenchem e pessoas não. Envio descartado.
+- `TEMPO_MINIMO_MS` (1500 ms entre a primeira digitação e o envio). Rápido
+  demais **não descarta** — pede uma confirmação e libera no clique seguinte,
+  para quem usa preenchimento automático nunca perder a candidatura.
+
+Não há captcha visível. Se aparecer spam de verdade, o próximo passo é o
+Cloudflare Turnstile: gratuito, invisível na maioria dos casos e sem enviar
+dados para a Google, ao contrário do reCAPTCHA — o que importa aqui pela LGPD.
+Exige criar uma chave de site.
+
 ### Simulador
 
 ```js

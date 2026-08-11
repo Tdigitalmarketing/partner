@@ -729,6 +729,114 @@
     .form__status .btn { display: flex; width: fit-content; margin-top: 14px; }
     .form button[type="submit"][disabled] { opacity: .6; cursor: progress; }
 
+    /* ---------- Modal dos Termos ---------- */
+
+    .terms {
+      width: min(820px, calc(100vw - 32px));
+      max-height: min(86vh, 900px);
+      padding: 0;
+      border: 1px solid var(--line-strong);
+      border-radius: 4px;
+      background: var(--void-2);
+      color: var(--star);
+      overflow: hidden;
+    }
+
+    .terms::backdrop { background: rgba(4, 2, 8, .82); backdrop-filter: blur(3px); }
+    .terms[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+
+    .terms__bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 16px 14px 24px;
+      border-bottom: 1px solid var(--line);
+      background: var(--void);
+    }
+
+    .terms__eyebrow { color: var(--lilac); }
+
+    .terms__close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      flex: none;
+      padding: 0;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: transparent;
+      color: var(--star);
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+    }
+
+    .terms__close:hover { background: var(--star); border-color: var(--star); color: var(--void); }
+
+    .terms__body { overflow-y: auto; padding: 28px clamp(20px, 3vw, 34px) 32px; overscroll-behavior: contain; }
+    .terms__body:focus-visible { outline: 2px solid var(--ignition); outline-offset: -4px; }
+
+    .terms__title { font-size: clamp(20px, 2.2vw, 27px); font-weight: 780; letter-spacing: -.035em; line-height: 1.15; }
+    .terms__meta { margin-top: 8px; font-size: 13px; color: var(--alloy); }
+
+    .terms__body h3 {
+      margin-top: 38px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: clamp(17px, 1.7vw, 21px);
+      font-weight: 740;
+      letter-spacing: -.03em;
+      color: var(--lilac);
+    }
+
+    .terms__body h4 { margin-top: 26px; font-size: 16px; font-weight: 700; letter-spacing: -.02em; }
+    .terms__body p { margin-top: 10px; font-size: 15px; line-height: 1.6; color: rgba(244, 241, 248, .84); }
+    .terms__body ul, .terms__body ol { margin: 10px 0 0; padding-left: 22px; }
+    .terms__body ul { list-style: disc; }
+    .terms__body ol { list-style: lower-alpha; }
+    .terms__body ol[type="I"] { list-style: upper-roman; }
+    .terms__body li { margin-top: 6px; font-size: 15px; line-height: 1.55; color: rgba(244, 241, 248, .84); }
+    .terms__body a { color: var(--lilac); text-underline-offset: 3px; }
+
+    .terms__declaration {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-left: 2px solid var(--ignition);
+      background: rgba(242, 180, 92, .07);
+      font-style: italic;
+    }
+
+    .terms__copy { margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--alloy); }
+
+    .terms__foot {
+      display: flex;
+      justify-content: flex-end;
+      padding: 14px 20px;
+      border-top: 1px solid var(--line);
+      background: var(--void);
+    }
+
+    /* Abre os Termos de dentro do texto do aceite. */
+    .terms-link {
+      color: var(--star);
+      font-weight: 600;
+      text-underline-offset: 3px;
+      text-decoration-color: var(--lilac);
+      cursor: pointer;
+    }
+
+    .terms-link:hover { color: var(--lilac); }
+
+    @media (max-width: 780px) {
+      .terms { width: 100vw; max-width: 100vw; max-height: 100dvh; height: 100dvh; border: 0; border-radius: 0; }
+      .terms__bar { padding-left: 18px; }
+      .terms__body { padding: 22px 18px 28px; }
+    }
+
     /* Rodapé */
     .site-footer { padding: 44px var(--gutter); border-top: 1px solid var(--line); background: var(--void); color: var(--alloy); }
     .site-footer__inner { display: grid; grid-template-columns: 1fr auto; gap: 26px; align-items: start; width: 100%; max-width: var(--maxw); margin: 0 auto; }
@@ -1260,6 +1368,10 @@
             <!-- Controles do FormSubmit: assunto, formato do e-mail e captcha desligado
                  (a validação é nossa). _honey é a armadilha de spam. -->
             <input type="hidden" name="_subject" value="Nova candidatura — TDigital Partners">
+            <!-- Registro do aceite, conforme a seção 37 dos Termos. O IP e o horário
+                 do servidor são anotados pelo próprio FormSubmit. -->
+            <input type="hidden" name="termos_versao" value="TERMOS_INFLUENCIADORES_TDIGITAL_V1.0_2026-08-11">
+            <input type="hidden" name="termos_aceite_em" id="f-aceite-em" value="">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
             <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="sr-only">
@@ -1343,7 +1455,7 @@
 
             <label class="check" for="f-consent">
               <input type="checkbox" id="f-consent" name="consent" required>
-              <span>Autorizo o uso dos meus dados para análise desta candidatura e operação do programa, e declaro estar ciente da política de privacidade. <b>(obrigatório)</b></span>
+              <span>Li e aceito os <button type="button" class="terms-link" data-terms-open>Termos de Uso e a Política de Privacidade do Programa de Influenciadores Parceiros TDigital</button>, incluindo as regras de cadastro, indicações e comissionamento. <b>(obrigatório)</b></span>
             </label>
 
             <label class="check" for="f-analise">
@@ -1363,6 +1475,376 @@
       </div>
     </section>
   </main>
+
+<dialog class="terms" id="terms-dialog" aria-labelledby="terms-title">
+  <div class="terms__bar">
+    <p class="terms__eyebrow micro">Versão 1.0 · 11 de agosto de 2026</p>
+    <button class="terms__close" type="button" id="terms-close" aria-label="Fechar os termos">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="terms__body" tabindex="0">
+    <h2 class="terms__title" id="terms-title">Termos de Uso, Adesão ao Programa de Influenciadores Parceiros e Política de Privacidade — TDigital</h2>
+    <p class="terms__meta">Última atualização: 11 de agosto de 2026</p>
+
+    <p>Este documento estabelece os Termos de Uso, as condições de adesão ao Programa de Influenciadores Parceiros TDigital e a Política de Privacidade aplicável aos participantes.</p>
+    <p>O Programa é administrado por TDIGITAL TRAFEGO E MIDIAS SOCIAIS LTDA, inscrita no CNPJ sob o nº 27.835.742/0001-93, doravante denominada simplesmente “TDigital”.</p>
+    <p>Ao realizar seu cadastro e marcar voluntariamente a opção de aceite disponibilizada no site, o participante declara que teve acesso a este documento, pôde lê-lo e concorda com suas condições.</p>
+
+    <h3>Parte I — Termos de Uso e Adesão</h3>
+
+    <h4>1. Identificação da responsável pelo Programa</h4>
+    <p>Razão Social: TDIGITAL TRAFEGO E MIDIAS SOCIAIS LTDA<br>
+    CNPJ: 27.835.742/0001-93<br>
+    Endereço: Rua do Trabalho, nº 51, Nova Iguaçu – RJ<br>
+    E-mail: <a href="mailto:comercial@tdigitalsocialmedia.com">comercial@tdigitalsocialmedia.com</a></p>
+    <p>Para fins deste documento, a pessoa cadastrada e admitida no Programa será denominada “Parceiro”.</p>
+
+    <h4>2. Objeto do Programa</h4>
+    <p>O Programa tem como objetivo estabelecer uma rede de Parceiros aptos a indicar potenciais clientes interessados nos produtos e serviços comercializados pela TDigital.</p>
+    <p>O Parceiro poderá receber comissões decorrentes das indicações que efetivamente resultarem em negócios elegíveis, contratados e pagos à TDigital, de acordo com as regras comerciais vigentes.</p>
+    <p>A remuneração está relacionada à geração de negócios reais envolvendo produtos ou serviços da TDigital.</p>
+    <p>O simples cadastro no Programa, envio de indicação, apresentação de contato, geração de lead, agendamento de reunião, envio de proposta ou indicação de outro Parceiro não gera, isoladamente, direito ao recebimento de comissão.</p>
+
+    <h4>3. Participação e aprovação</h4>
+    <p>O preenchimento do cadastro não representa aprovação automática no Programa.</p>
+    <p>A TDigital poderá analisar as informações fornecidas e aprovar, recusar, suspender ou solicitar informações complementares, observados critérios legítimos relacionados à operação, segurança e finalidade do Programa.</p>
+    <p>O participante declara que as informações fornecidas são verdadeiras, completas e atualizadas.</p>
+    <p>Informações falsas, fraudulentas ou fornecidas em nome de terceiros sem autorização poderão resultar no cancelamento do cadastro.</p>
+
+    <h4>4. Natureza da relação</h4>
+    <p>A participação possui natureza comercial, autônoma e independente.</p>
+    <p>A adesão ao Programa não estabelece, por si só:</p>
+    <ul>
+      <li>vínculo empregatício;</li>
+      <li>sociedade;</li>
+      <li>associação;</li>
+      <li>franquia;</li>
+      <li>mandato;</li>
+      <li>exclusividade;</li>
+      <li>subordinação;</li>
+      <li>obrigação de cumprimento de jornada;</li>
+      <li>remuneração fixa;</li>
+      <li>representação legal da TDigital.</li>
+    </ul>
+    <p>O Parceiro administra livremente suas atividades, respeitando as regras deste Programa e a legislação aplicável.</p>
+    <p>Nada neste documento autoriza o Parceiro a assumir obrigações em nome da TDigital.</p>
+
+    <h4>5. Limites de atuação</h4>
+    <p>Sem autorização expressa da TDigital, o Parceiro não poderá:</p>
+    <ol type="a">
+      <li>assinar contratos em nome da TDigital;</li>
+      <li>alterar preços ou condições comerciais;</li>
+      <li>conceder descontos;</li>
+      <li>assumir compromissos financeiros;</li>
+      <li>receber pagamentos destinados à TDigital;</li>
+      <li>oferecer garantias de resultados;</li>
+      <li>apresentar-se como funcionário, sócio ou representante legal da empresa;</li>
+      <li>utilizar marcas ou materiais fora das finalidades autorizadas.</li>
+    </ol>
+
+    <h3>Parte II — Indicações e Comissionamento</h3>
+
+    <h4>6. Registro das indicações</h4>
+    <p>As indicações deverão ser registradas pelos canais ou sistemas oficiais disponibilizados pela TDigital.</p>
+    <p>O Parceiro deverá fornecer informações suficientes para permitir a identificação da indicação.</p>
+    <p>Quando houver conflito entre dois ou mais Parceiros sobre a origem de determinado cliente, a TDigital poderá considerar os registros disponíveis em seus sistemas, incluindo data e horário, origem do lead, histórico de contatos e registros comerciais.</p>
+
+    <h4>7. Indicações duplicadas ou preexistentes</h4>
+    <p>Poderão não ser consideradas elegíveis para comissão indicações:</p>
+    <ol type="a">
+      <li>duplicadas;</li>
+      <li>fraudulentas;</li>
+      <li>fictícias;</li>
+      <li>sem informações suficientes;</li>
+      <li>referentes a empresas que já sejam clientes da TDigital;</li>
+      <li>referentes a empresas que já estejam em negociação comercial comprovadamente registrada com a TDigital;</li>
+      <li>realizadas em desacordo com as regras vigentes do Programa.</li>
+    </ol>
+    <p>A eventual inelegibilidade deverá estar relacionada a critérios objetivos do Programa e aos registros disponíveis.</p>
+
+    <h4>8. Regra fundamental da comissão</h4>
+    <p>O direito à comissão depende da existência de negócio elegível e de receita efetivamente recebida pela TDigital.</p>
+    <p>Consequentemente, a mera indicação não garante remuneração.</p>
+    <p>O Parceiro somente fará jus às comissões quando forem atendidas as condições aplicáveis ao negócio indicado, incluindo contratação e pagamento pelo cliente.</p>
+
+    <h4>9. Percentuais e faixas</h4>
+    <p>Os percentuais de comissão, faixas, níveis, campanhas, períodos de recorrência e demais critérios econômicos poderão ser definidos no Regulamento Comercial do Programa, painel do Parceiro ou documento específico disponibilizado pela TDigital.</p>
+    <p>As condições apresentadas e vigentes para determinada operação integrarão as regras aplicáveis à respectiva comissão.</p>
+
+    <h4>10. Comissões recorrentes</h4>
+    <p>Quando determinada modalidade oferecer comissão recorrente, o Parceiro poderá continuar recebendo a comissão durante o período estabelecido nas regras comerciais, desde que o cliente indicado permaneça elegível e realizando os pagamentos correspondentes.</p>
+    <p>A existência de recorrência não significa garantia de recebimento durante todo o período máximo previsto.</p>
+    <p>Se o cliente encerrar o contrato, deixar de pagar ou ocorrer outra hipótese de inelegibilidade prevista nas regras do Programa, as comissões futuras vinculadas às receitas que deixarem de existir também poderão cessar.</p>
+
+    <h4>11. Valores não elegíveis</h4>
+    <p>Salvo regra comercial específica em sentido diferente, não gerarão comissão valores:</p>
+    <ul>
+      <li>não pagos;</li>
+      <li>cancelados;</li>
+      <li>estornados;</li>
+      <li>devolvidos;</li>
+      <li>reembolsados;</li>
+      <li>contestados e definitivamente revertidos;</li>
+      <li>relacionados a operações fraudulentas;</li>
+      <li>decorrentes de indicações consideradas inválidas;</li>
+      <li>não enquadrados nas condições do Programa.</li>
+    </ul>
+
+    <h4>12. Cancelamento do cliente</h4>
+    <p>Caso o cliente indicado cancele o serviço, o Parceiro continuará tendo direito apenas às comissões definitivamente constituídas sobre receitas elegíveis efetivamente recebidas, observadas as regras aplicáveis.</p>
+    <p>Não serão geradas novas comissões sobre mensalidades ou receitas que deixarem de existir após o encerramento da relação comercial.</p>
+
+    <h4>13. Inadimplência</h4>
+    <p>Enquanto o cliente estiver inadimplente, a comissão vinculada ao respectivo pagamento poderá não ser considerada devida.</p>
+    <p>Caso o cliente regularize posteriormente o pagamento e a operação continue elegível, a comissão correspondente poderá ser processada de acordo com as regras vigentes.</p>
+
+    <h4>14. Pagamento das comissões</h4>
+    <p>Os pagamentos serão realizados de acordo com calendário, procedimento, documentação, valor mínimo ou demais condições operacionais informadas pela TDigital.</p>
+    <p>O Parceiro deverá manter seus dados cadastrais e de pagamento corretos e atualizados.</p>
+    <p>A TDigital poderá solicitar documentos necessários ao processamento financeiro, identificação, cumprimento de obrigações fiscais ou prevenção de fraude.</p>
+
+    <h4>15. Tributos</h4>
+    <p>Cada parte será responsável pelas obrigações fiscais, tributárias, previdenciárias ou administrativas que legalmente lhe forem atribuídas.</p>
+    <p>Quando exigido pela legislação, poderão ser realizadas retenções tributárias ou solicitados documentos fiscais necessários ao pagamento.</p>
+
+    <h4>16. Ausência de promessa de renda</h4>
+    <p>A TDigital não garante quantidade de clientes, volume de vendas, faturamento, renda mínima ou retorno financeiro ao Parceiro.</p>
+    <p>Os resultados dependem da geração de oportunidades, qualificação dos potenciais clientes, fechamento das vendas, permanência dos clientes e efetivo pagamento pelos serviços.</p>
+
+    <h3>Parte III — Indicação de Outros Parceiros</h3>
+
+    <h4>17. Indicação de novos Parceiros</h4>
+    <p>A TDigital poderá permitir que participantes apresentem outros potenciais Parceiros ao Programa.</p>
+    <p>A mera indicação, cadastro, aprovação ou entrada de outro Parceiro não gera automaticamente remuneração.</p>
+    <p>Caso exista benefício relacionado à rede de Parceiros, sua geração dependerá das condições comerciais específicas estabelecidas pela TDigital e, quando envolver comissão, deverá estar vinculada a negócios elegíveis e receitas efetivamente geradas por vendas de produtos ou serviços da TDigital.</p>
+    <p>O Programa não remunera a simples entrada de pessoas como finalidade econômica autônoma.</p>
+
+    <h3>Parte IV — Conduta, Publicidade e Marca</h3>
+
+    <h4>18. Obrigações do Parceiro</h4>
+    <p>O Parceiro compromete-se a atuar de forma ética, transparente e compatível com a legislação.</p>
+    <p>É vedado:</p>
+    <ul>
+      <li>fornecer informações falsas;</li>
+      <li>praticar fraude;</li>
+      <li>criar clientes fictícios;</li>
+      <li>manipular indicações;</li>
+      <li>realizar publicidade enganosa;</li>
+      <li>prometer resultados não autorizados;</li>
+      <li>utilizar métodos ilegais para obtenção de dados;</li>
+      <li>utilizar spam ou práticas abusivas;</li>
+      <li>prejudicar deliberadamente a reputação da TDigital por meio de informações sabidamente falsas;</li>
+      <li>utilizar a identidade da empresa para atividades ilícitas.</li>
+    </ul>
+
+    <h4>19. Divulgação publicitária</h4>
+    <p>Ao divulgar publicamente a TDigital, seus serviços ou o Programa, o Parceiro deverá respeitar as regras aplicáveis à publicidade.</p>
+    <p>Quando aplicável, deverá deixar clara a existência da relação comercial, parceria, publicidade ou possibilidade de remuneração.</p>
+    <p>O Parceiro não deverá divulgar informações falsas ou promessas não autorizadas sobre preços, resultados, características ou garantias dos serviços.</p>
+
+    <h4>20. Marca e propriedade intelectual</h4>
+    <p>A participação não transfere ao Parceiro propriedade sobre marcas, logotipos, sistemas, materiais, conteúdos ou demais ativos da TDigital.</p>
+    <p>Materiais disponibilizados ao Parceiro poderão ser utilizados exclusivamente dentro das autorizações concedidas pela TDigital.</p>
+    <p>Encerrada a autorização ou participação, o uso da identidade da empresa deverá cessar quando solicitado ou quando não houver outra base legítima para sua utilização.</p>
+
+    <h3>Parte V — Plataforma</h3>
+
+    <h4>21. Conta do Parceiro</h4>
+    <p>Caso seja disponibilizado painel ou aplicativo exclusivo, as credenciais serão pessoais e deverão ser protegidas pelo Parceiro.</p>
+    <p>O Parceiro deverá comunicar à TDigital qualquer suspeita de acesso indevido.</p>
+
+    <h4>22. Disponibilidade</h4>
+    <p>Sistemas eletrônicos poderão eventualmente passar por manutenções, atualizações ou indisponibilidades.</p>
+    <p>Registros financeiros e comerciais poderão ser corrigidos quando identificado erro técnico ou material, preservados os direitos legitimamente constituídos.</p>
+
+    <h3>Parte VI — Fraudes, Suspensão e Encerramento</h3>
+
+    <h4>23. Verificação de operações</h4>
+    <p>A TDigital poderá realizar verificações razoáveis antes da liberação de comissões quando houver inconsistência cadastral, duplicidade ou indício de fraude.</p>
+    <p>Durante a análise, o processamento da operação questionada poderá ser temporariamente suspenso.</p>
+
+    <h4>24. Fraude comprovada</h4>
+    <p>A comprovação de fraude, falsidade, manipulação de operações ou outra violação relevante poderá resultar em:</p>
+    <ul>
+      <li>cancelamento da operação irregular;</li>
+      <li>suspensão da conta;</li>
+      <li>encerramento da participação;</li>
+      <li>adoção das medidas legais cabíveis.</li>
+    </ul>
+
+    <h4>25. Encerramento voluntário</h4>
+    <p>O Parceiro poderá solicitar sua saída do Programa pelos canais oficiais da TDigital.</p>
+    <p>O encerramento não elimina direitos e obrigações já constituídos anteriormente, observadas as regras aplicáveis às respectivas operações.</p>
+
+    <h4>26. Encerramento pela TDigital</h4>
+    <p>A TDigital poderá encerrar ou suspender a participação em caso de violação destes Termos, fraude, utilização indevida da marca, atividade ilícita ou outra circunstância legítima que comprometa a segurança ou integridade do Programa.</p>
+
+    <h3>Parte VII — Política de Privacidade e LGPD</h3>
+
+    <h4>27. Responsável pelo tratamento</h4>
+    <p>Para as atividades de tratamento de dados pessoais realizadas no âmbito deste Programa, a responsável é:</p>
+    <p>TDIGITAL TRAFEGO E MIDIAS SOCIAIS LTDA<br>
+    CNPJ: 27.835.742/0001-93<br>
+    Rua do Trabalho, nº 51, Nova Iguaçu – RJ<br>
+    E-mail: <a href="mailto:comercial@tdigitalsocialmedia.com">comercial@tdigitalsocialmedia.com</a></p>
+
+    <h4>28. Dados tratados</h4>
+    <p>Conforme as funcionalidades utilizadas, poderão ser tratados:</p>
+    <ul>
+      <li>nome;</li>
+      <li>telefone;</li>
+      <li>e-mail;</li>
+      <li>CPF ou CNPJ, quando necessário;</li>
+      <li>data de nascimento, quando necessária;</li>
+      <li>dados profissionais;</li>
+      <li>perfis e identificadores de redes sociais;</li>
+      <li>dados necessários para pagamentos;</li>
+      <li>histórico de indicações;</li>
+      <li>histórico de comissões;</li>
+      <li>informações de suporte;</li>
+      <li>registros de acesso;</li>
+      <li>endereço IP;</li>
+      <li>data e horário;</li>
+      <li>dispositivo e navegador;</li>
+      <li>registros de aceite;</li>
+      <li>informações necessárias à prevenção de fraude.</li>
+    </ul>
+
+    <h4>29. Finalidades</h4>
+    <p>Os dados poderão ser tratados para:</p>
+    <ol type="a">
+      <li>realizar o cadastro;</li>
+      <li>verificar identidade e elegibilidade;</li>
+      <li>administrar o Programa;</li>
+      <li>registrar indicações;</li>
+      <li>calcular comissões;</li>
+      <li>processar pagamentos;</li>
+      <li>prevenir fraude;</li>
+      <li>prestar suporte;</li>
+      <li>realizar comunicações operacionais;</li>
+      <li>manter registros financeiros;</li>
+      <li>cumprir obrigações legais;</li>
+      <li>exercer regularmente direitos;</li>
+      <li>proteger sistemas e usuários;</li>
+      <li>melhorar a operação do Programa, observadas as bases legais aplicáveis.</li>
+    </ol>
+
+    <h4>30. Bases legais</h4>
+    <p>O tratamento será realizado de acordo com as bases legais aplicáveis previstas na Lei nº 13.709/2018 — LGPD, podendo envolver, conforme a finalidade:</p>
+    <ul>
+      <li>execução de contrato ou procedimentos preliminares;</li>
+      <li>cumprimento de obrigação legal ou regulatória;</li>
+      <li>exercício regular de direitos;</li>
+      <li>legítimo interesse;</li>
+      <li>consentimento, quando esta for a base legal adequada.</li>
+    </ul>
+    <p>O aceite destes Termos não representa autorização irrestrita para qualquer utilização de dados pessoais.</p>
+
+    <h4>31. Compartilhamento</h4>
+    <p>Quando necessário às finalidades do Programa, dados poderão ser compartilhados com prestadores de serviços relacionados a:</p>
+    <ul>
+      <li>infraestrutura tecnológica;</li>
+      <li>hospedagem;</li>
+      <li>armazenamento;</li>
+      <li>sistemas de CRM;</li>
+      <li>processamento financeiro;</li>
+      <li>contabilidade;</li>
+      <li>atendimento;</li>
+      <li>comunicação;</li>
+      <li>segurança;</li>
+      <li>prevenção de fraude;</li>
+      <li>assessoria jurídica.</li>
+    </ul>
+    <p>Também poderá ocorrer compartilhamento em cumprimento de obrigação legal, ordem judicial ou determinação de autoridade competente.</p>
+    <p>A TDigital não comercializa dados pessoais como finalidade deste Programa.</p>
+
+    <h4>32. Segurança</h4>
+    <p>A TDigital adotará medidas técnicas e administrativas razoáveis e compatíveis com os riscos envolvidos para proteger os dados pessoais contra acessos não autorizados, perda, alteração, destruição ou tratamento inadequado ou ilícito.</p>
+
+    <h4>33. Retenção</h4>
+    <p>Os dados serão armazenados pelo período necessário às finalidades que justificaram seu tratamento.</p>
+    <p>Após o encerramento da participação, determinadas informações poderão continuar armazenadas quando necessárias para cumprimento de obrigação legal, exercício regular de direitos, prevenção de fraude ou demais hipóteses autorizadas pela legislação.</p>
+
+    <h4>34. Direitos do titular</h4>
+    <p>Nos termos da LGPD e quando aplicável, o titular poderá solicitar:</p>
+    <ul>
+      <li>confirmação da existência de tratamento;</li>
+      <li>acesso;</li>
+      <li>correção;</li>
+      <li>anonimização, bloqueio ou eliminação nas hipóteses legais;</li>
+      <li>portabilidade, observada a regulamentação aplicável;</li>
+      <li>informações sobre compartilhamentos;</li>
+      <li>revogação do consentimento quando esta for a base utilizada;</li>
+      <li>demais direitos assegurados pela legislação.</li>
+    </ul>
+    <p>Solicitações poderão ser encaminhadas para: <a href="mailto:comercial@tdigitalsocialmedia.com">comercial@tdigitalsocialmedia.com</a></p>
+    <p>A TDigital poderá solicitar informações necessárias para confirmar a identidade do requerente.</p>
+
+    <h4>35. Cookies</h4>
+    <p>O site e a plataforma poderão utilizar cookies necessários ao funcionamento, autenticação e segurança.</p>
+    <p>Cookies ou tecnologias não essenciais utilizados para determinadas finalidades analíticas, publicitárias ou semelhantes observarão as escolhas disponibilizadas ao usuário e a legislação aplicável.</p>
+
+    <h3>Parte VIII — Aceite Eletrônico</h3>
+
+    <h4>36. Manifestação de aceite</h4>
+    <p>Antes da conclusão do cadastro, o participante deverá ter acesso a estes Termos e à Política de Privacidade.</p>
+    <p>A caixa de aceite deverá ser apresentada desmarcada, cabendo ao próprio participante realizar a ação positiva de marcá-la.</p>
+    <p>Ao marcar a opção e concluir o cadastro, o participante declara:</p>
+    <ol type="I">
+      <li>que teve acesso ao documento;</li>
+      <li>que pôde ler suas condições;</li>
+      <li>que concorda com as regras aplicáveis ao Programa;</li>
+      <li>que solicita sua adesão;</li>
+      <li>que as informações fornecidas são verdadeiras;</li>
+      <li>que reconhece sua manifestação eletrônica de concordância, observada a legislação aplicável.</li>
+    </ol>
+
+    <h4>37. Registro do aceite</h4>
+    <p>Para fins de segurança, auditoria e comprovação da manifestação eletrônica, a TDigital poderá registrar, conforme tecnicamente disponível e juridicamente aplicável:</p>
+    <ul>
+      <li>identificação do participante;</li>
+      <li>data e horário do aceite;</li>
+      <li>versão dos Termos aceita;</li>
+      <li>endereço IP;</li>
+      <li>registro da ação de aceite;</li>
+      <li>identificadores técnicos relacionados à sessão;</li>
+      <li>demais evidências eletrônicas pertinentes.</li>
+    </ul>
+    <p>O registro deverá ser protegido contra alterações indevidas e mantido pelo período juridicamente necessário.</p>
+
+    <h4>38. Alteração dos Termos</h4>
+    <p>A TDigital poderá atualizar este documento em razão de alterações legais, regulatórias, tecnológicas, comerciais ou operacionais.</p>
+    <p>Alterações relevantes serão comunicadas ou disponibilizadas aos participantes.</p>
+    <p>Quando a natureza da alteração exigir nova manifestação de concordância, poderá ser solicitado novo aceite eletrônico.</p>
+    <p>As alterações não deverão ser utilizadas retroativamente para eliminar direitos definitivamente constituídos sob regras anteriormente aplicáveis.</p>
+
+    <h3>Parte IX — Disposições Finais</h3>
+
+    <h4>39. Integridade</h4>
+    <p>Caso alguma disposição deste documento seja considerada inválida ou inexequível, as demais disposições permanecerão vigentes, na medida permitida pela legislação.</p>
+
+    <h4>40. Tolerância</h4>
+    <p>A eventual ausência de exercício imediato de determinado direito não deverá ser interpretada automaticamente como renúncia definitiva a esse direito.</p>
+
+    <h4>41. Legislação</h4>
+    <p>Estes Termos serão regidos pelas leis da República Federativa do Brasil.</p>
+    <p>Eventuais controvérsias deverão, sempre que possível, ser inicialmente submetidas à tentativa de solução amigável.</p>
+    <p>Não havendo acordo, será observado o foro juridicamente competente, inclusive eventuais regras legais de competência obrigatória.</p>
+
+    <h4>Declaração eletrônica associada ao aceite</h4>
+    <p class="terms__declaration">“Declaro que tive acesso aos Termos de Uso, às condições do Programa de Influenciadores Parceiros e à Política de Privacidade da TDigital, e manifesto minha concordância com suas condições, solicitando minha adesão ao Programa.”</p>
+
+    <p class="terms__copy">© 2026 TDIGITAL TRAFEGO E MIDIAS SOCIAIS LTDA · CNPJ 27.835.742/0001-93<br>
+    Rua do Trabalho, nº 51 — Nova Iguaçu — RJ · Todos os direitos reservados.<br>
+    Versão do documento: TERMOS_INFLUENCIADORES_TDIGITAL_V1.0_2026-08-11</p>
+  </div>
+
+  <div class="terms__foot">
+    <button class="btn btn--primary btn--sm" type="button" data-terms-dismiss>Fechar</button>
+  </div>
+</dialog>
 
   <footer class="site-footer">
     <div class="site-footer__inner">
@@ -1505,17 +1987,70 @@
       const CONTACT_EMAIL = "comercial@tdigitalsocialmedia.com";
       const WHATSAPP_URL = "https://wa.me/552126952086";
 
+      /* ---------------- Termos ----------------
+         <dialog> nativo: cuida sozinho de Escape, foco preso e fundo inerte. */
+      const termsDialog = document.getElementById("terms-dialog");
+      const termsBody = termsDialog.querySelector(".terms__body");
+      let termsOpener = null;
+
+      const openTerms = (origem) => {
+        termsOpener = origem || null;
+        termsDialog.showModal();
+        termsBody.scrollTop = 0;
+        termsBody.focus();
+        track("terms_open");
+      };
+
+      document.querySelectorAll("[data-terms-open]").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          // O botão vive dentro de um <label>: sem isto, abrir marcaria o checkbox.
+          e.preventDefault();
+          e.stopPropagation();
+          openTerms(el);
+        });
+      });
+
+      termsDialog.querySelectorAll("#terms-close, [data-terms-dismiss]").forEach((el) => {
+        el.addEventListener("click", () => termsDialog.close());
+      });
+
+      // Clique no fundo escuro também fecha.
+      termsDialog.addEventListener("click", (e) => {
+        if (e.target === termsDialog) termsDialog.close();
+      });
+
+      termsDialog.addEventListener("close", () => {
+        if (termsOpener) termsOpener.focus();
+        termsOpener = null;
+      });
+
       const form = document.getElementById("apply-form");
       const status = document.getElementById("form-status");
       const submitBtn = form.querySelector("button[type=submit]");
       const submitLabel = submitBtn.textContent;
       let formStarted = false;
       let sending = false;
+      let primeiraInteracao = 0;
+
+      /* Segunda barreira anti-robô. Robôs enviam em milissegundos; pessoas não.
+         Um envio rápido demais não é descartado — pede confirmação e libera no
+         clique seguinte. Assim quem usa preenchimento automático nunca perde a
+         candidatura, e o robô teria que insistir. */
+      const TEMPO_MINIMO_MS = 1500;
+      let confirmouEnvioRapido = false;
 
       form.addEventListener("input", () => {
         if (formStarted) return;
         formStarted = true;
+        primeiraInteracao = Date.now();
         track("form_start");
+      });
+
+      // Carimba quando o aceite foi dado, para o registro previsto na seção 37.
+      const consent = document.getElementById("f-consent");
+      const aceiteEm = document.getElementById("f-aceite-em");
+      consent.addEventListener("change", () => {
+        aceiteEm.value = consent.checked ? new Date().toISOString() : "";
       });
 
       const fieldOf = (el) => el.closest(".field") || el.closest(".check");
@@ -1570,6 +2105,14 @@
 
         // Armadilha de spam: robôs preenchem o campo escondido, gente não.
         if (data.get("_honey")) return;
+
+        // Preenchimento rápido demais para ser humano: confirma uma vez.
+        const rapidoDemais = primeiraInteracao && Date.now() - primeiraInteracao < TEMPO_MINIMO_MS;
+        if (rapidoDemais && !confirmouEnvioRapido) {
+          confirmouEnvioRapido = true;
+          showStatus("Confira os dados e clique novamente para enviar.");
+          return;
+        }
 
         track("partner_application_submit");
 
