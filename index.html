@@ -1464,17 +1464,17 @@
             </div>
 
             <label class="check" for="f-consent">
-              <input type="checkbox" id="f-consent" name="consent" required>
+              <input type="checkbox" id="f-consent" name="consent" value="Aceito" required>
               <span>Li e aceito os Termos de Uso e a Política de Privacidade do Programa de Influenciadores Parceiros TDigital, incluindo as regras de cadastro, indicações e comissionamento. <b>(obrigatório)</b> — <button type="button" class="terms-link" data-terms-open>clique aqui para visualizar o documento</button></span>
             </label>
 
             <label class="check" for="f-analise">
-              <input type="checkbox" id="f-analise" name="analise" required>
+              <input type="checkbox" id="f-analise" name="analise" value="Ciente" required>
               <span>Estou ciente de que o cadastro passará por análise e que a aprovação não é automática. <b>(obrigatório)</b></span>
             </label>
 
             <label class="check" for="f-mkt">
-              <input type="checkbox" id="f-mkt" name="marketing">
+              <input type="checkbox" id="f-mkt" name="marketing" value="Sim">
               <span>Quero receber comunicações da TDigital sobre o programa. (opcional)</span>
             </label>
 
@@ -2093,7 +2093,7 @@
         const skip = ["consent", "analise", "marketing", "_subject", "_captcha", "_template", "_honey"];
         const lines = [];
         data.forEach((value, key) => { if (!skip.includes(key)) lines.push(key + ": " + value); });
-        lines.push("consentimento: sim", "ciente da analise: sim", "marketing: " + (data.get("marketing") ? "sim" : "nao"));
+        lines.push("consent: Aceito", "analise: Ciente", "marketing: " + data.get("marketing"));
         window.location.href = "mailto:" + CONTACT_EMAIL
           + "?subject=" + encodeURIComponent("Candidatura — TDigital Partners")
           + "&body=" + encodeURIComponent(lines.join("\n"));
@@ -2112,6 +2112,11 @@
         }
 
         const data = new FormData(form);
+
+        // Um checkbox desmarcado não é enviado pelo navegador. Sem isto, o
+        // e-mail não teria a linha e "não quis receber" ficaria indistinguível
+        // de "campo faltando".
+        data.set("marketing", document.getElementById("f-mkt").checked ? "Sim" : "Não");
 
         // Armadilha de spam: robôs preenchem o campo escondido, gente não.
         if (data.get("_honey")) return;

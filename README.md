@@ -110,6 +110,12 @@ Campos de controle no HTML: `_subject`, `_template=table`, `_captcha=false`
 (a validação é nossa) e `_honey`, um campo escondido que funciona como
 armadilha de spam — robôs preenchem, gente não.
 
+Os três checkboxes têm `value` explícito, senão o navegador enviaria a string
+`on` e o e-mail chegaria ilegível: `consent=Aceito`, `analise=Ciente`,
+`marketing=Sim`. Como um checkbox desmarcado não é enviado, o `marketing` é
+normalizado para `Não` no envio — assim dá para distinguir quem recusou de um
+campo que faltou.
+
 Se o envio falhar, os dados digitados são preservados e a página oferece o
 WhatsApp como saída. Nenhum dado do formulário vai para analytics.
 
