@@ -1,0 +1,84 @@
+<!doctype html>
+<!--
+  TDigital — esqueleto técnico de uma Landing Page.
+  Contém apenas <head>, SEO, OG e wiring de scripts. NÃO contém identidade
+  visual, seções ou layout: isso é definido projeto a projeto.
+  Substitua todos os {{PLACEHOLDERS}}.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="{{COR_TEMA}}">
+
+  <title>{{TITULO}} | {{EMPRESA}}</title>
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <link rel="canonical" href="{{URL_CANONICA}}">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / social -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="{{EMPRESA}}">
+  <meta property="og:title" content="{{TITULO}}">
+  <meta property="og:description" content="{{META_DESCRIPTION}}">
+  <meta property="og:url" content="{{URL_CANONICA}}">
+  <meta property="og:image" content="{{URL_CANONICA}}/public/images/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Ícones -->
+  <link rel="icon" href="/public/images/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/public/images/apple-touch-icon.png">
+
+  <!-- Fontes: preconnect só se realmente usar Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Imagem do hero: precarregar para melhorar o LCP -->
+  <link rel="preload" as="image" href="/public/images/{{IMAGEM_HERO}}" fetchpriority="high">
+
+  <link rel="stylesheet" href="/shared/css/reset.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Dados estruturados: ajustar o @type ao negócio -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "{{SCHEMA_TYPE}}",
+    "name": "{{EMPRESA}}",
+    "url": "{{URL_CANONICA}}",
+    "telephone": "{{TELEFONE}}",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ENDERECO}}",
+      "addressLocality": "{{CIDADE}}",
+      "addressRegion": "{{UF}}",
+      "addressCountry": "BR"
+    }
+  }
+  </script>
+
+  <!-- Pixel Meta / GA4: inserir apenas quando fornecidos pelo cliente -->
+</head>
+<body>
+  <a class="sr-only" href="#conteudo">Pular para o conteúdo</a>
+
+  <main id="conteudo">
+    <!-- Seções da LP -->
+  </main>
+
+  <script type="module">
+    import { initReveal, initScrollSpy } from '/shared/js/reveal.js';
+    import { initWhatsApp } from '/shared/js/whatsapp.js';
+    import { initLeadForm } from '/shared/js/form.js';
+
+    initReveal();
+    initScrollSpy();
+    initWhatsApp({
+      phone: '{{WHATSAPP_DDI_DDD_NUMERO}}',
+      message: '{{MENSAGEM_WHATSAPP}}',
+    });
+    initLeadForm({ endpoint: '{{ENDPOINT_FORMULARIO}}' });
+  </script>
+</body>
+</html>
