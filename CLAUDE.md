@@ -46,9 +46,10 @@ A estrutura da página responde a essas perguntas.
 
 ## FLUXO PADRÃO (10 FASES)
 
-1. **BRIEFING** — interpretar tudo que foi fornecido. Perguntar somente o que
-   for realmente indispensável e impossível de inferir. Decisão profissional
-   segura → decidir e seguir.
+1. **BRIEFING** — interpretar tudo que foi fornecido. Havendo `BUILD-SPEC.md`,
+   ele é a fonte de verdade e substitui esta fase (ver *Modos de entrada*).
+   Perguntar somente o que for realmente indispensável e impossível de inferir.
+   Decisão profissional segura → decidir e seguir.
 2. **ESTRATÉGIA** — objetivo, conversão principal, público, estágio do funil,
    proposta de valor, hierarquia de mensagens, objeções, provas, CTA principal
    e secundários.
@@ -76,32 +77,90 @@ A estrutura da página responde a essas perguntas.
 
 ---
 
-## COMANDO "NOVA LP"
+## MODOS DE ENTRADA
 
-Mensagem iniciada com `NOVA LP` = início de uma nova produção. Extrair do
-restante todas as informações disponíveis e iniciar o fluxo.
+Uma LP começa de duas formas. O Modo A é o preferencial.
+
+### MODO A — BUILD-SPEC (preferencial)
+
+O usuário fornece um `BUILD-SPEC.md` produzido externamente, já com pesquisa,
+estratégia, copy, direção visual, arquitetura, plano de imagens, SEO,
+conversão e requisitos.
+
+**O BUILD-SPEC é a fonte principal de verdade do projeto.** O que estiver nele
+não é perguntado de novo — nem empresa, segmento, objetivo, conversão, público,
+oferta, identidade ou referências. Pergunta redundante é erro de processo.
+
+Sequência obrigatória:
+
+1. **Ler o arquivo inteiro** antes de tocar em qualquer código.
+2. Identificar o nome do projeto.
+3. Derivar um slug seguro (minúsculas, sem acento, `[a-z0-9-]`).
+4. Criar o projeto isolado: `scripts/new-lp.sh "<Nome>" <caminho do spec>`.
+5. A cópia da spec fica preservada em `lps/<slug>/BUILD-SPEC.md` — trabalhar
+   sempre sobre a cópia, nunca sobre o original do usuário.
+6. Validar segundo `docs/BUILD-SPEC-VALIDATION.md`.
+7. Classificar cada achado em INFO / WARNING / BLOCKER.
+8. Registrar tudo em `lps/<slug>/PROJECT-STATE.md`.
+9. **Continuar automaticamente** sempre que a pendência não impedir
+   tecnicamente o desenvolvimento — decidir, registrar e seguir.
+10. Perguntar ao usuário **somente** diante de BLOCKER, com todas as pendências
+    bloqueantes consolidadas em uma única rodada, enquanto o restante da página
+    continua sendo construído.
+
+Fluxo completo do Modo A:
+
+```
+BUILD-SPEC.md → validação → projeto isolado → planejamento técnico → assets →
+construção → responsividade → conversão e integrações → SEO → QA → prévia →
+aprovação do usuário → publicação (somente autorizada)
+```
+
+O contrato de seções esperado da ferramenta externa está em
+`docs/BUILD-SPEC-CONTRATO.md`.
+
+### MODO B — NOVA LP
+
+Usado quando não há BUILD-SPEC. Mensagem iniciada com `NOVA LP` = início de uma
+nova produção: extrair do restante todas as informações disponíveis, completar
+com `docs/BRIEFING.md` e seguir o fluxo de 10 fases.
+
+Em ambos os modos o projeto nasce com `PROJECT-STATE.md`, atualizado durante
+toda a execução.
 
 ---
 
 ## ESTRUTURA DO REPOSITÓRIO
 
 ```
-lps/<cliente-slug>/          # uma pasta por Landing Page
-  index.html
-  assets/css/
-  assets/js/
+lps/<cliente-slug>/          # uma pasta por Landing Page, isolada
+  BUILD-SPEC.md              # cópia da spec — fonte de verdade (Modo A)
+  PROJECT-STATE.md           # manifesto: etapas, pendências, assets, decisões
+  README.md                  # o que é o projeto, como rodar, como publicar
+  src/                       # marcação da página
+  assets/css/  assets/js/    # CSS e JS próprios desta LP
   public/images/             # imagens finais, nomes semânticos
-  BRIEFING.md                # briefing + decisões estratégicas da LP
+  docs/                      # notas do projeto, relatório de QA
 shared/                      # infra técnica reutilizável (SEM identidade visual)
   css/reset.css
   js/reveal.js               # animação de entrada por IntersectionObserver
   js/whatsapp.js             # montagem de link wa.me + rastreio
   js/form.js                 # validação e envio de formulário
   templates/base.html        # esqueleto de <head>, SEO, OG, schema
+scripts/
+  new-lp.sh                  # cria o projeto isolado, sem sobrescrever nada
 docs/
-  BRIEFING.md                # modelo de briefing
+  BUILD-SPEC-CONTRATO.md     # seções esperadas no BUILD-SPEC
+  BUILD-SPEC-VALIDATION.md   # INFO / WARNING / BLOCKER antes de codar
+  BRIEFING.md                # modelo de briefing do Modo B
   CHECKLIST-QA.md            # checklist da Fase 9
+  templates/                 # modelos de PROJECT-STATE.md e README do projeto
 ```
+
+A estrutura do projeto é referência, não camisa de força: adaptar quando o
+framework exigir. Onde o BUILD-SPEC disser `DECISÃO TÉCNICA: CLAUDE`, escolher
+a stack mais simples que atenda ao caso e registrar a justificativa. Não impor
+tecnologia onde a spec não pediu.
 
 **Reutilizar:** componentes técnicos, grid, integrações, formulários, analytics,
 estrutura de código, funções, padrões de responsividade.
@@ -111,25 +170,72 @@ ordem das seções, headlines, paletas, imagens, efeitos, narrativa comercial.
 
 ---
 
-## AUTONOMIA
+## PIPELINE DE IMAGENS (TDIGITAL GPT)
 
-Aprovada a criação de uma LP, executar autonomamente. Não pedir autorização
-para cada arquivo, componente, seção, imagem, ajuste de CSS, correção ou teste.
+Quando o BUILD-SPEC trouxer Plano de Imagens, ele manda. Para **cada** asset,
+individualmente:
 
-Pedir intervenção apenas quando: faltar informação crítica não inferível;
-houver decisão comercial relevante; forem necessárias credenciais; houver risco
-de ação irreversível; ou for necessário publicar em produção sem autorização.
+1. Ler a entrada do plano: função, seção de destino, proporção, briefing visual
+   e nome do arquivo.
+2. Gerar com `mcp__TDigital_GPT__gerar_imagem`, seguindo o briefing da spec.
+3. Obter o ID retornado.
+4. Baixar pelo endpoint do Worker.
+5. Salvar em `lps/<cliente-slug>/public/images/` com o nome semântico definido
+   na spec.
+6. Implementar a imagem na seção correta, com `alt` descritivo.
+7. Registrar o asset em `PROJECT-STATE.md` › *Assets gerados* (arquivo, seção,
+   origem, ID, proporção, data).
+
+Regras:
+
+- **Não gerar imagem desnecessária.** Imagem que só decora é peso, não
+  comunicação.
+- **Não substituir imagem fornecida pelo cliente por IA** sem necessidade real.
+- **Prova real não se gera:** foto do time, do espaço, do produto entregue ou
+  de resultado é ativo do cliente. Ausência vira BLOCKER, não prompt.
+- Evitar texto e logotipo dentro da imagem gerada.
+- Se a qualidade alta exceder o limite operacional, usar automaticamente a
+  melhor qualidade que conclua a operação — não travar a produção por isso.
+- Sem plano de imagens na spec, Claude identifica o mínimo que agrega.
 
 ---
 
-## GIT E PRODUÇÃO
+## AUTONOMIA
 
-Permitido criar e editar arquivos da LP. **Sem autorização explícita, não:**
-fazer merge na `main`, excluir projetos, alterar infraestrutura crítica,
-publicar em produção, expor secrets ou inserir credenciais no repositório.
+Aprovada a criação de uma LP, executar autonomamente até a prévia.
+
+**Não pedir autorização para:** criar arquivos internos do projeto; implementar
+seções especificadas; ajustar responsividade; corrigir bugs; executar QA; gerar
+imagens previstas no BUILD-SPEC; otimizar performance; aplicar o SEO
+especificado; escolher stack onde a spec disser `DECISÃO TÉCNICA: CLAUDE`.
+
+**Pedir autorização antes de:** publicar em produção; fazer merge na `main`;
+alterar de forma destrutiva a infraestrutura compartilhada da fábrica
+(`shared/`, `scripts/`, `docs/`); tomar decisão comercial relevante não
+definida no BUILD-SPEC; substituir uma decisão estratégica explicitamente
+aprovada na spec.
+
+Diante de BLOCKER: consolidar todas as pendências bloqueantes em **uma única
+pergunta** e continuar construindo tudo que não depende delas.
+
+---
+
+## SEGURANÇA, GIT E PRODUÇÃO
+
+Permitido criar e editar arquivos da LP livremente.
+
+**Nunca:** imprimir secrets; inserir API keys no código; aceitar ou registrar
+credenciais dentro do BUILD-SPEC; commitar `.env`; publicar automaticamente;
+fazer merge na `main` sem autorização explícita; excluir projetos; alterar
+infraestrutura crítica sem autorização.
 
 `OPENAI_API_KEY` e qualquer outro secret nunca aparecem em código versionado —
-usar `.env` (ignorado) a partir de `.env.example`.
+usar `.env` (ignorado) a partir de `.env.example`. Número de WhatsApp, endpoint
+público de formulário e ID de pixel são configuração, não secret, e podem
+constar no projeto.
+
+Se um BUILD-SPEC chegar com credencial dentro, não copiar o valor para o
+projeto: registrar a pendência e pedir o dado por canal adequado.
 
 Branch de desenvolvimento: `claude/tdigital-landing-factory-icthgl`.
 
