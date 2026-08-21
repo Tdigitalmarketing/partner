@@ -1,0 +1,12 @@
+{
+  "name": "digital-para-todos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ecossistema de quatro rotas do Digital para Todos — inclusão, autonomia e segurança digital.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node build.mjs && node --run preview",
+    "preview": "node servidor.mjs"
+  }
+}
