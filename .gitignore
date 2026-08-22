@@ -24,3 +24,6 @@ npm-debug.log*
 
 # Assets temporários de geração de imagem
 **/_tmp-assets/
+
+# Prévia gerada (1,4 MB, reconstruível com previa-artifact.mjs)
+lps/*/previa.html

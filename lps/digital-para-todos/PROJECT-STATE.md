@@ -2,7 +2,7 @@
 
 Projeto: Digital para Todos — Ecossistema de Inclusão Digital
 Slug: digital-para-todos
-Status: PRONTA PARA REVISÃO (§30) — aguardando aprovação do usuário
+Status: PRONTA PARA REVISÃO (§30) · prévia publicada para aprovação · produção pendente de hospedagem e domínio
 Data de início: 2026-08-21
 Origem do briefing: BUILD-SPEC v1.0.0
 
@@ -189,3 +189,10 @@ Defeitos encontrados e corrigidos durante o QA:
 - 2026-08-21 · Fontes migradas do Google Fonts para self-host: o carregamento
   externo é um ponto de falha e um vazamento de dado do visitante para terceiro.
   Figtree e Inter em arquivo variável, subset latin, 76 KB no total.
+- 2026-08-21 · Publicação autorizada pelo usuário. Não há hospedagem, domínio
+  nem credencial de deploy neste ambiente (§24 deixou ambos como
+  `[PENDENTE — USUÁRIO]`), então a publicação em produção não é executável
+  daqui. Publicada uma **prévia navegável para aprovação**, gerada por
+  `previa-artifact.mjs`: as quatro rotas em página única com roteamento por
+  hash e todos os recursos embutidos. O site real, com rotas de verdade,
+  continua em `dist/` e está pronto para subir em qualquer servidor estático.
